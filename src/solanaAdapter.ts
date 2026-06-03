@@ -50,6 +50,40 @@ interface AccountInfo {
   };
 }
 
+interface TokenAccount {
+  address: string;
+  amount: string;
+  decimals: number;
+  uiAmount: number;
+  uiAmountString: string;
+}
+
+interface LargestAccountsResult {
+  value: TokenAccount[];
+}
+
+async function getTopHoldersConcentration(mintAddress: string, totalSupply: string): Promise<number> {
+  try {
+    const result = await rpc('getTokenLargestAccounts', [mintAddress]) as LargestAccountsResult;
+    const accounts = result.value;
+
+    if (!accounts || accounts.length === 0) return 0;
+
+    const total = parseFloat(totalSupply);
+    if (total === 0) return 0;
+
+    // Top 10 holders concentration
+    const top10Amount = accounts.slice(0, 10).reduce((sum, acc) => {
+      return sum + parseFloat(acc.amount);
+    }, 0);
+
+    const concentration = Math.round((top10Amount / total) * 100);
+    return Math.min(100, concentration);
+  } catch {
+    return 0;
+  }
+}
+
 export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSnapshot> {
   const info = await rpc('getAccountInfo', [
     mintAddress,
@@ -57,13 +91,14 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
   ]) as AccountInfo;
 
   const parsed = info.value.data.parsed.info;
+  const topHoldersConcentration = await getTopHoldersConcentration(mintAddress, parsed.supply);
 
   return {
     meta: {
       mintAuthorityEnabled: parsed.mintAuthority !== null,
       freezeAuthorityEnabled: parsed.freezeAuthority !== null,
       lpLockedOrBurned: true,
-      topHoldersConcentration: 0,
+      topHoldersConcentration,
     },
   };
 }
