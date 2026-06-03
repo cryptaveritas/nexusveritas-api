@@ -1,54 +1,64 @@
-# NexusVeritas API v0.3
+# NexusVeritas API
 
-REST API for Solana token risk assessment. Connected to Solana mainnet via Helius RPC.
+Solana security intelligence API with real-time risk scoring and on-chain analysis.
 
-## Changelog
+## Current Status
 
-### v0.3.0
-- Token Age Analysis with reliability validation
-- Age penalty only when creation time is reliably determined
-- No false positives for established tokens (USDC, BONK, JUP)
+**Version: v0.4.1**
 
-### v0.2.0
-- Real Solana mainnet integration via Helius RPC
-- Top holder concentration analysis
-- Sample results in README
+NexusVeritas analyzes real Solana mainnet tokens through Helius RPC and returns deterministic risk scores based on on-chain data. Architecture is designed for future multichain expansion.
 
-### v0.1.0
-- Risk Engine MVP
-- Mint authority detection
-- Freeze authority detection
+## Current Risk Signals
+
+- Mint Authority Analysis
+- Freeze Authority Analysis
+- Holder Concentration Analysis
+- Token Age Analysis
+- Burner Wallet Detection
+- Reliability Validation
+- Confidence Scoring
+
+## Architecture
+
+```
+Client
+  ↓
+NexusVeritas API
+  ↓
+Solana Adapter (Helius RPC)
+  ↓
+Risk Engine
+  ↓
+Risk Score + Reasons
+```
 
 ## Endpoints
 
 ### GET /api/risk/solana/:address
 
-```
-GET /api/risk/solana/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+```json
+{
+  "address": "EPjFWdd5...",
+  "chain": "solana",
+  "score": 40,
+  "class": "MEDIUM",
+  "reasons": [
+    "Mint authority enabled — unlimited supply inflation risk",
+    "Freeze authority enabled — blacklist/pause possible"
+  ],
+  "confidence": "standard"
+}
 ```
 
 ### GET /api/risk/solana/:address?debug=true
 
-Returns full snapshot including token metadata and age reliability flag.
+Returns full snapshot including token metadata.
 
-## Risk Signals (v0.3)
+### GET /health
 
-- Mint authority enabled (+25)
-- Freeze authority enabled (+15)
-- LP unlocked (+25)
-- Top holders concentration >= 70% (+15)
-- Token age < 1h (+20, reliable only)
-- Token age < 6h (+15, reliable only)
-- Token age < 24h (+10, reliable only)
-
-## Sample Results (Solana Mainnet)
-
-| Token | Score | Class | Notes |
-|-------|-------|-------|-------|
-| USDC  | 40    | MEDIUM | Mint + Freeze authority (Circle controlled) |
-| BONK  | 0     | LOW    | No risk factors |
-| JUP   | 0     | LOW    | No risk factors |
-| New pump.fun token | 20 | MEDIUM | Age < 1h detected |
+```json
+{ "status": "ok", "version": "0.4.1" }
+```
 
 ## Risk Classes
 
@@ -59,13 +69,30 @@ Returns full snapshot including token metadata and age reliability flag.
 | HIGH     | 60–84  | Strong warning |
 | CRITICAL | 85–100 | Hard refuse    |
 
+## Sample Results (Solana Mainnet)
+
+| Token | Score | Class | Notes |
+|-------|-------|-------|-------|
+| USDC  | 40    | MEDIUM | Mint + Freeze authority (Circle controlled) |
+| BONK  | 0     | LOW    | No risk factors detected |
+| JUP   | 0     | LOW    | No risk factors detected |
+| New pump.fun token | 20 | MEDIUM | Age < 1h detected |
+
+## Changelog
+
+- **v0.4.1** — Rate limiting, fail-safe handling, snapshot validation, audit log
+- **v0.4.0** — Burner Registry, known suspicious wallet detection
+- **v0.3.0** — Token Age Analysis with reliability validation
+- **v0.2.0** — Real Solana RPC integration, holder concentration analysis
+- **v0.1.0** — Risk Engine MVP
+
 ## Stack
 
 TypeScript · Node.js · Express · Helius RPC
 
-## Architecture
+## Architecture Note
 
-Risk scoring logic shown in this repository represents the public MVP ruleset. Advanced behavioral analysis, simulation modules, and proprietary heuristics are implemented in the private NexusVeritas Core.
+Risk scoring logic in this repository represents the public MVP ruleset. Advanced behavioral analysis, simulation modules, and proprietary heuristics are implemented in the private NexusVeritas Core.
 
 ## Part of Veritas Ecosystem
 
