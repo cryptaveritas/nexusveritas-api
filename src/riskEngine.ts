@@ -10,6 +10,7 @@ export interface TokenMeta {
   topHoldersConcentration: number;
   tokenAgeHours: number;
   tokenAgeReliable: boolean;
+  burnerHolderDetected: boolean;
 }
 
 export interface RiskResult {
@@ -23,6 +24,7 @@ const WEIGHTS = {
   FREEZE_AUTHORITY: 15,
   LP_UNLOCKED: 25,
   HOLDER_CONCENTRATION: 15,
+  BURNER_HOLDER: 20,
   AGE_UNDER_1H: 20,
   AGE_UNDER_6H: 15,
   AGE_UNDER_24H: 10,
@@ -55,8 +57,10 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     score += WEIGHTS.HOLDER_CONCENTRATION;
     reasons.push('Top holders concentration is ' + meta.topHoldersConcentration + '%');
   }
-
-  // Token Age — only apply if age detection is reliable
+  if (meta.burnerHolderDetected) {
+    score += WEIGHTS.BURNER_HOLDER;
+    reasons.push('Known burner or suspicious wallet detected in top holders');
+  }
   if (meta.tokenAgeReliable) {
     if (meta.tokenAgeHours < 1) {
       score += WEIGHTS.AGE_UNDER_1H;
