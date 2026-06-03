@@ -46,3 +46,6 @@ TypeScript · Node.js · Express
 
 - [CryptaVeritas](https://github.com/cryptaveritas) — signal verification protocol
 - NexusVeritas — multichain token risk engine (this repo)
+## Architecture
+
+Risk scoring logic shown in this repository represents the public MVP ruleset. Advanced behavioral analysis, simulation modules, and proprietary heuristics are implemented in the private NexusVeritas Core.
