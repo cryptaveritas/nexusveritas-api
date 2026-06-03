@@ -3,7 +3,7 @@
 
 export type RiskClass = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
-export interface TokenSnapshot {
+export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
   lpLockedOrBurned: boolean;
@@ -26,29 +26,29 @@ const WEIGHTS = {
 const THRESHOLDS: Record<RiskClass, number> = {
   CRITICAL: 85,
   HIGH: 60,
-  MEDIUM: 30,
+  MEDIUM: 20,
   LOW: 0,
 };
 
-export function computeRisk(snapshot: TokenSnapshot): RiskResult {
+export function computeRisk(meta: TokenMeta): RiskResult {
   const reasons: string[] = [];
   let score = 0;
 
-  if (snapshot.mintAuthorityEnabled) {
+  if (meta.mintAuthorityEnabled) {
     score += WEIGHTS.MINT_AUTHORITY;
     reasons.push('Mint authority enabled — unlimited supply inflation risk');
   }
-  if (snapshot.freezeAuthorityEnabled) {
+  if (meta.freezeAuthorityEnabled) {
     score += WEIGHTS.FREEZE_AUTHORITY;
     reasons.push('Freeze authority enabled — blacklist/pause possible');
   }
-  if (!snapshot.lpLockedOrBurned) {
+  if (meta.lpLockedOrBurned === false) {
     score += WEIGHTS.LP_UNLOCKED;
     reasons.push('Liquidity pool unlocked — rug pull risk');
   }
-  if (snapshot.topHoldersConcentration >= 70) {
+  if (meta.topHoldersConcentration >= 70) {
     score += WEIGHTS.HOLDER_CONCENTRATION;
-    reasons.push('Top holders concentration is ' + snapshot.topHoldersConcentration + '%');
+    reasons.push('Top holders concentration is ' + meta.topHoldersConcentration + '%');
   }
 
   score = Math.min(100, score);
