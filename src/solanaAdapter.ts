@@ -13,6 +13,8 @@ export interface TokenMeta {
   freezeAuthorityEnabled: boolean;
   lpLockedOrBurned: boolean;
   topHoldersConcentration: number;
+  tokenAgeHours: number;
+  tokenAgeReliable: boolean;
 }
 
 export interface TokenSnapshot {
@@ -53,34 +55,69 @@ interface AccountInfo {
 interface TokenAccount {
   address: string;
   amount: string;
-  decimals: number;
-  uiAmount: number;
-  uiAmountString: string;
 }
 
 interface LargestAccountsResult {
   value: TokenAccount[];
 }
 
+interface SignatureInfo {
+  signature: string;
+  blockTime: number | null;
+}
+
 async function getTopHoldersConcentration(mintAddress: string, totalSupply: string): Promise<number> {
   try {
     const result = await rpc('getTokenLargestAccounts', [mintAddress]) as LargestAccountsResult;
     const accounts = result.value;
-
     if (!accounts || accounts.length === 0) return 0;
-
     const total = parseFloat(totalSupply);
     if (total === 0) return 0;
-
-    // Top 10 holders concentration
-    const top10Amount = accounts.slice(0, 10).reduce((sum, acc) => {
-      return sum + parseFloat(acc.amount);
-    }, 0);
-
-    const concentration = Math.round((top10Amount / total) * 100);
-    return Math.min(100, concentration);
+    const top10Amount = accounts.slice(0, 10).reduce((sum, acc) => sum + parseFloat(acc.amount), 0);
+    return Math.min(100, Math.round((top10Amount / total) * 100));
   } catch {
     return 0;
+  }
+}
+
+interface TokenAgeResult {
+  ageHours: number;
+  reliable: boolean;
+}
+
+async function getTokenAgeHours(mintAddress: string): Promise<TokenAgeResult> {
+  try {
+    let oldestBlockTime: number | null = null;
+    let lastSignature: string | undefined = undefined;
+    const MAX_BATCHES = 3; // limit RPC calls — v0.4 will improve this
+
+    for (let i = 0; i < MAX_BATCHES; i++) {
+      const params: Record<string, unknown> = { limit: 1000 };
+      if (lastSignature) params.before = lastSignature;
+
+      const sigs = await rpc('getSignaturesForAddress', [mintAddress, params]) as SignatureInfo[];
+      if (!sigs || sigs.length === 0) break;
+
+      const batchOldest = sigs[sigs.length - 1];
+      if (batchOldest.blockTime) oldestBlockTime = batchOldest.blockTime;
+
+      // If we got less than 1000, we reached the beginning — reliable
+      if (sigs.length < 1000) {
+        const nowSeconds = Math.floor(Date.now() / 1000);
+        return {
+          ageHours: Math.max(0, (nowSeconds - oldestBlockTime!) / 3600),
+          reliable: true,
+        };
+      }
+
+      lastSignature = batchOldest.signature;
+    }
+
+    // Exceeded MAX_BATCHES — could not reach first transaction
+    // Age is unreliable — do not penalize
+    return { ageHours: 9999, reliable: false };
+  } catch {
+    return { ageHours: 9999, reliable: false };
   }
 }
 
@@ -91,7 +128,11 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
   ]) as AccountInfo;
 
   const parsed = info.value.data.parsed.info;
-  const topHoldersConcentration = await getTopHoldersConcentration(mintAddress, parsed.supply);
+
+  const [topHoldersConcentration, ageResult] = await Promise.all([
+    getTopHoldersConcentration(mintAddress, parsed.supply),
+    getTokenAgeHours(mintAddress),
+  ]);
 
   return {
     meta: {
@@ -99,6 +140,8 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
       freezeAuthorityEnabled: parsed.freezeAuthority !== null,
       lpLockedOrBurned: true,
       topHoldersConcentration,
+      tokenAgeHours: ageResult.ageHours,
+      tokenAgeReliable: ageResult.reliable,
     },
   };
 }

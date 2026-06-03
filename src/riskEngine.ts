@@ -8,6 +8,8 @@ export interface TokenMeta {
   freezeAuthorityEnabled: boolean;
   lpLockedOrBurned: boolean;
   topHoldersConcentration: number;
+  tokenAgeHours: number;
+  tokenAgeReliable: boolean;
 }
 
 export interface RiskResult {
@@ -21,6 +23,9 @@ const WEIGHTS = {
   FREEZE_AUTHORITY: 15,
   LP_UNLOCKED: 25,
   HOLDER_CONCENTRATION: 15,
+  AGE_UNDER_1H: 20,
+  AGE_UNDER_6H: 15,
+  AGE_UNDER_24H: 10,
 };
 
 const THRESHOLDS: Record<RiskClass, number> = {
@@ -49,6 +54,20 @@ export function computeRisk(meta: TokenMeta): RiskResult {
   if (meta.topHoldersConcentration >= 70) {
     score += WEIGHTS.HOLDER_CONCENTRATION;
     reasons.push('Top holders concentration is ' + meta.topHoldersConcentration + '%');
+  }
+
+  // Token Age — only apply if age detection is reliable
+  if (meta.tokenAgeReliable) {
+    if (meta.tokenAgeHours < 1) {
+      score += WEIGHTS.AGE_UNDER_1H;
+      reasons.push('Token created less than 1 hour ago — extreme caution');
+    } else if (meta.tokenAgeHours < 6) {
+      score += WEIGHTS.AGE_UNDER_6H;
+      reasons.push('Token created less than 6 hours ago — high caution');
+    } else if (meta.tokenAgeHours < 24) {
+      score += WEIGHTS.AGE_UNDER_24H;
+      reasons.push('Token created less than 24 hours ago — caution advised');
+    }
   }
 
   score = Math.min(100, score);
