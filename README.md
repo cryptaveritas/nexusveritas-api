@@ -1,36 +1,30 @@
 # NexusVeritas API
 
-Solana security intelligence API with real-time risk scoring and on-chain analysis.
+Solana security intelligence API with real-time multi-signal risk scoring.
 
-## Current Status
+## Overview
 
-**Version: v0.4.1**
+NexusVeritas has evolved from a simple token checker into a multi-signal Solana risk engine. It accepts any Solana token address and returns a deterministic risk score based on 8 independent on-chain signals.
 
-NexusVeritas analyzes real Solana mainnet tokens through Helius RPC and returns deterministic risk scores based on on-chain data. Architecture is designed for future multichain expansion.
-
-## Current Risk Signals
+## Current Risk Signals (v0.7.0)
 
 - Mint Authority Analysis
 - Freeze Authority Analysis
-- Holder Concentration Analysis
+- Holder Concentration
 - Token Age Analysis
 - Burner Wallet Detection
-- Reliability Validation
-- Confidence Scoring
+- Creator Wallet Analysis
+- Whale Dominance
+- Liquidity Analysis
 
-## Architecture
+## Validation on Real Tokens
 
-```
-Client
-  ↓
-NexusVeritas API
-  ↓
-Solana Adapter (Helius RPC)
-  ↓
-Risk Engine
-  ↓
-Risk Score + Reasons
-```
+| Token | Score | Class | Notes |
+|-------|-------|-------|-------|
+| BONK  | 0     | LOW    | Clean — no risk factors |
+| USDC  | 40    | MEDIUM | Mint + Freeze authority (Circle controlled) |
+| SOLARSYS (pump.fun) | 85 | CRITICAL | Low liquidity + young token |
+| Known scam cluster | 100 | CRITICAL | Serial deployer + whale dominance + zero liquidity |
 
 ## Endpoints
 
@@ -38,13 +32,18 @@ Risk Score + Reasons
 
 ```json
 {
-  "address": "EPjFWdd5...",
+  "address": "3RPv...",
   "chain": "solana",
-  "score": 40,
-  "class": "MEDIUM",
+  "score": 100,
+  "class": "CRITICAL",
   "reasons": [
-    "Mint authority enabled — unlimited supply inflation risk",
-    "Freeze authority enabled — blacklist/pause possible"
+    "Mint authority enabled",
+    "Freeze authority enabled",
+    "Top holders concentration is 100%",
+    "Serial token deployer — creator launched 96+ tokens",
+    "Single whale controls 76% of supply",
+    "Top 3 wallets control 97% of supply",
+    "No liquidity pool found"
   ],
   "confidence": "standard"
 }
@@ -52,12 +51,12 @@ Risk Score + Reasons
 
 ### GET /api/risk/solana/:address?debug=true
 
-Returns full snapshot including token metadata.
+Returns full snapshot including all analysis modules.
 
 ### GET /health
 
 ```json
-{ "status": "ok", "version": "0.4.1" }
+{ "status": "ok", "version": "0.7.0" }
 ```
 
 ## Risk Classes
@@ -69,26 +68,20 @@ Returns full snapshot including token metadata.
 | HIGH     | 60–84  | Strong warning |
 | CRITICAL | 85–100 | Hard refuse    |
 
-## Sample Results (Solana Mainnet)
-
-| Token | Score | Class | Notes |
-|-------|-------|-------|-------|
-| USDC  | 40    | MEDIUM | Mint + Freeze authority (Circle controlled) |
-| BONK  | 0     | LOW    | No risk factors detected |
-| JUP   | 0     | LOW    | No risk factors detected |
-| New pump.fun token | 20 | MEDIUM | Age < 1h detected |
-
 ## Changelog
 
-- **v0.4.1** — Rate limiting, fail-safe handling, snapshot validation, audit log
-- **v0.4.0** — Burner Registry, known suspicious wallet detection
+- **v0.7.0** — Liquidity Analysis via DexScreener
+- **v0.6.0** — Whale Dominance Analysis
+- **v0.5.0** — Creator Wallet Analysis, serial deployer detection
+- **v0.4.1** — Rate limiting, fail-safe, snapshot validation
+- **v0.4.0** — Burner Registry detection
 - **v0.3.0** — Token Age Analysis with reliability validation
-- **v0.2.0** — Real Solana RPC integration, holder concentration analysis
+- **v0.2.0** — Real Solana RPC integration via Helius
 - **v0.1.0** — Risk Engine MVP
 
 ## Stack
 
-TypeScript · Node.js · Express · Helius RPC
+TypeScript · Node.js · Express · Helius RPC · DexScreener API
 
 ## Architecture Note
 
