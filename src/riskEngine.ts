@@ -3,6 +3,12 @@
 
 export type RiskClass = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
+export interface CreatorAnalysis {
+  address: string | null;
+  totalTokens: number;
+  reliable: boolean;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -11,6 +17,7 @@ export interface TokenMeta {
   tokenAgeHours: number;
   tokenAgeReliable: boolean;
   burnerHolderDetected: boolean;
+  creator: CreatorAnalysis;
 }
 
 export interface RiskResult {
@@ -25,6 +32,7 @@ const WEIGHTS = {
   LP_UNLOCKED: 25,
   HOLDER_CONCENTRATION: 15,
   BURNER_HOLDER: 20,
+  CREATOR_SERIAL: 20,
   AGE_UNDER_1H: 20,
   AGE_UNDER_6H: 15,
   AGE_UNDER_24H: 10,
@@ -60,6 +68,10 @@ export function computeRisk(meta: TokenMeta): RiskResult {
   if (meta.burnerHolderDetected) {
     score += WEIGHTS.BURNER_HOLDER;
     reasons.push('Known burner or suspicious wallet detected in top holders');
+  }
+  if (meta.creator.reliable && meta.creator.totalTokens >= 5 && meta.creator.totalTokens <= 100) {
+    score += WEIGHTS.CREATOR_SERIAL;
+    reasons.push('Serial token deployer — creator launched ' + meta.creator.totalTokens + '+ tokens');
   }
   if (meta.tokenAgeReliable) {
     if (meta.tokenAgeHours < 1) {

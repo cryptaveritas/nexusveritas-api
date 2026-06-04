@@ -10,15 +10,16 @@ const RPC_URL = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
 const PROXY = process.env.HTTPS_PROXY ?? process.env.HTTP_PROXY;
 const agent = PROXY ? new HttpsProxyAgent(PROXY) : undefined;
 
-// Load burner registry
-interface BurnerRegistry {
-  version: string;
-  addresses: string[];
-}
-
+interface BurnerRegistry { version: string; addresses: string[]; }
 const registryPath = path.join(__dirname, '../data/burnerRegistry.json');
 const burnerRegistry: BurnerRegistry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 const BURNER_SET = new Set(burnerRegistry.addresses.map(a => a.toLowerCase()));
+
+export interface CreatorAnalysis {
+  address: string | null;
+  totalTokens: number;
+  reliable: boolean;
+}
 
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
@@ -28,11 +29,10 @@ export interface TokenMeta {
   tokenAgeHours: number;
   tokenAgeReliable: boolean;
   burnerHolderDetected: boolean;
+  creator: CreatorAnalysis;
 }
 
-export interface TokenSnapshot {
-  meta: TokenMeta;
-}
+export interface TokenSnapshot { meta: TokenMeta; }
 
 async function rpc(method: string, params: unknown[]): Promise<unknown> {
   const options: RequestInit = {
@@ -40,9 +40,7 @@ async function rpc(method: string, params: unknown[]): Promise<unknown> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
   };
-  if (agent) {
-    (options as Record<string, unknown>).agent = agent;
-  }
+  if (agent) (options as Record<string, unknown>).agent = agent;
   const res = await fetch(RPC_URL, options);
   const data = await res.json() as { result: unknown };
   return data.result;
@@ -56,28 +54,12 @@ interface MintInfo {
 }
 
 interface AccountInfo {
-  value: {
-    data: {
-      parsed: {
-        info: MintInfo;
-      };
-    };
-  };
+  value: { data: { parsed: { info: MintInfo } } };
 }
 
-interface TokenAccount {
-  address: string;
-  amount: string;
-}
-
-interface LargestAccountsResult {
-  value: TokenAccount[];
-}
-
-interface SignatureInfo {
-  signature: string;
-  blockTime: number | null;
-}
+interface TokenAccount { address: string; amount: string; }
+interface LargestAccountsResult { value: TokenAccount[]; }
+interface SignatureInfo { signature: string; blockTime: number | null; }
 
 async function getTopHoldersConcentration(mintAddress: string, totalSupply: string): Promise<number> {
   try {
@@ -88,9 +70,7 @@ async function getTopHoldersConcentration(mintAddress: string, totalSupply: stri
     if (total === 0) return 0;
     const top10Amount = accounts.slice(0, 10).reduce((sum, acc) => sum + parseFloat(acc.amount), 0);
     return Math.min(100, Math.round((top10Amount / total) * 100));
-  } catch {
-    return 0;
-  }
+  } catch { return 0; }
 }
 
 async function checkBurnerHolders(mintAddress: string): Promise<boolean> {
@@ -99,61 +79,83 @@ async function checkBurnerHolders(mintAddress: string): Promise<boolean> {
     const accounts = result.value;
     if (!accounts || accounts.length === 0) return false;
     return accounts.some(acc => BURNER_SET.has(acc.address.toLowerCase()));
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
 
-interface TokenAgeResult {
-  ageHours: number;
-  reliable: boolean;
-}
+interface TokenAgeResult { ageHours: number; reliable: boolean; }
 
 async function getTokenAgeHours(mintAddress: string): Promise<TokenAgeResult> {
   try {
     let oldestBlockTime: number | null = null;
     let lastSignature: string | undefined = undefined;
     const MAX_BATCHES = 3;
-
     for (let i = 0; i < MAX_BATCHES; i++) {
       const params: Record<string, unknown> = { limit: 1000 };
       if (lastSignature) params.before = lastSignature;
-
       const sigs = await rpc('getSignaturesForAddress', [mintAddress, params]) as SignatureInfo[];
       if (!sigs || sigs.length === 0) break;
-
       const batchOldest = sigs[sigs.length - 1];
       if (batchOldest.blockTime) oldestBlockTime = batchOldest.blockTime;
-
       if (sigs.length < 1000) {
         const nowSeconds = Math.floor(Date.now() / 1000);
-        return {
-          ageHours: Math.max(0, (nowSeconds - oldestBlockTime!) / 3600),
-          reliable: true,
-        };
+        return { ageHours: Math.max(0, (nowSeconds - oldestBlockTime!) / 3600), reliable: true };
       }
-
       lastSignature = batchOldest.signature;
     }
+    return { ageHours: 9999, reliable: false };
+  } catch { return { ageHours: 9999, reliable: false }; }
+}
 
-    return { ageHours: 9999, reliable: false };
-  } catch {
-    return { ageHours: 9999, reliable: false };
-  }
+async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis> {
+  try {
+    let lastSignature: string | undefined = undefined;
+    let oldestSig: string | null = null;
+    const MAX_BATCHES = 3;
+    for (let i = 0; i < MAX_BATCHES; i++) {
+      const params: Record<string, unknown> = { limit: 1000 };
+      if (lastSignature) params.before = lastSignature;
+      const sigs = await rpc('getSignaturesForAddress', [mintAddress, params]) as SignatureInfo[];
+      if (!sigs || sigs.length === 0) break;
+      oldestSig = sigs[sigs.length - 1].signature;
+      if (sigs.length < 1000) break;
+      lastSignature = oldestSig;
+    }
+    if (!oldestSig) return { address: null, totalTokens: 0, reliable: false };
+
+    const tx = await rpc('getTransaction', [
+      oldestSig,
+      { encoding: 'jsonParsed', maxSupportedTransactionVersion: 0 },
+    ]) as { transaction: { message: { accountKeys: Array<{ pubkey: string } | string> } } };
+
+    if (!tx?.transaction?.message?.accountKeys) return { address: null, totalTokens: 0, reliable: false };
+
+    // accountKeys can be string[] or {pubkey, ...}[]
+    const firstKey = tx.transaction.message.accountKeys[0];
+    const creatorAddress = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey;
+    if (!creatorAddress) return { address: null, totalTokens: 0, reliable: false };
+
+    // Count signatures for creator wallet as proxy for activity
+    const creatorSigs = await rpc('getSignaturesForAddress', [
+      creatorAddress,
+      { limit: 1000 },
+    ]) as SignatureInfo[];
+
+    // Rough estimate: each token deploy = ~3-5 transactions
+    const totalTokens = creatorSigs ? Math.floor(creatorSigs.length / 4) : 0;
+
+    return { address: creatorAddress, totalTokens, reliable: true };
+  } catch { return { address: null, totalTokens: 0, reliable: false }; }
 }
 
 export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSnapshot> {
-  const info = await rpc('getAccountInfo', [
-    mintAddress,
-    { encoding: 'jsonParsed' },
-  ]) as AccountInfo;
-
+  const info = await rpc('getAccountInfo', [mintAddress, { encoding: 'jsonParsed' }]) as AccountInfo;
   const parsed = info.value.data.parsed.info;
 
-  const [topHoldersConcentration, ageResult, burnerHolderDetected] = await Promise.all([
+  const [topHoldersConcentration, ageResult, burnerHolderDetected, creator] = await Promise.all([
     getTopHoldersConcentration(mintAddress, parsed.supply),
     getTokenAgeHours(mintAddress),
     checkBurnerHolders(mintAddress),
+    getCreatorAnalysis(mintAddress),
   ]);
 
   return {
@@ -165,6 +167,7 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
       tokenAgeHours: ageResult.ageHours,
       tokenAgeReliable: ageResult.reliable,
       burnerHolderDetected,
+      creator,
     },
   };
 }
