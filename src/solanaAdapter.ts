@@ -27,6 +27,15 @@ export interface WhaleAnalysis {
   top10Percent: number;
 }
 
+export interface LiquidityAnalysis {
+  poolExists: boolean;
+  liquidityUsd: number;
+  dex: string | null;
+  lpLocked: boolean;
+  lpBurned: boolean;
+  reliable: boolean;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -37,6 +46,7 @@ export interface TokenMeta {
   burnerHolderDetected: boolean;
   creator: CreatorAnalysis;
   whales: WhaleAnalysis;
+  liquidity: LiquidityAnalysis;
 }
 
 export interface TokenSnapshot { meta: TokenMeta; }
@@ -80,7 +90,6 @@ async function getHolderAnalysis(mintAddress: string, totalSupply: string): Prom
     if (total === 0) return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
 
     const pct = (n: number) => Math.min(100, Math.round((n / total) * 100));
-
     const top10Amount = accounts.slice(0, 10).reduce((s, a) => s + parseFloat(a.amount), 0);
     const top3Amount = accounts.slice(0, 3).reduce((s, a) => s + parseFloat(a.amount), 0);
     const largestAmount = parseFloat(accounts[0]?.amount ?? '0');
@@ -155,21 +164,68 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
   } catch { return { address: null, totalTokens: 0, reliable: false }; }
 }
 
+interface DexScreenerPair {
+  dexId: string;
+  liquidity?: { usd?: number };
+  lpBurned?: boolean;
+  info?: { socials?: unknown[] };
+}
+
+interface DexScreenerResponse {
+  pairs: DexScreenerPair[] | null;
+}
+
+async function getLiquidityAnalysis(mintAddress: string): Promise<LiquidityAnalysis> {
+  try {
+    const url = `https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`;
+    const fetchOptions: RequestInit = { method: 'GET' };
+    if (agent) (fetchOptions as Record<string, unknown>).agent = agent;
+
+    const res = await fetch(url, fetchOptions);
+    const data = await res.json() as DexScreenerResponse;
+
+    if (!data.pairs || data.pairs.length === 0) {
+      return { poolExists: false, liquidityUsd: 0, dex: null, lpLocked: false, lpBurned: false, reliable: true };
+    }
+
+    // Sort by liquidity descending, take the biggest pool
+    const pairs = data.pairs.filter(p => p.liquidity?.usd !== undefined);
+    pairs.sort((a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0));
+    const best = pairs[0] ?? data.pairs[0];
+
+    const liquidityUsd = best.liquidity?.usd ?? 0;
+    const dex = best.dexId ?? null;
+    const lpBurned = best.lpBurned ?? false;
+
+    return {
+      poolExists: true,
+      liquidityUsd,
+      dex,
+      lpLocked: false, // v0.8: real LP lock detection
+      lpBurned,
+      reliable: true,
+    };
+  } catch {
+    return { poolExists: false, liquidityUsd: 0, dex: null, lpLocked: false, lpBurned: false, reliable: false };
+  }
+}
+
 export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSnapshot> {
   const info = await rpc('getAccountInfo', [mintAddress, { encoding: 'jsonParsed' }]) as AccountInfo;
   const parsed = info.value.data.parsed.info;
 
-  const [holderAnalysis, ageResult, creator] = await Promise.all([
+  const [holderAnalysis, ageResult, creator, liquidity] = await Promise.all([
     getHolderAnalysis(mintAddress, parsed.supply),
     getTokenAgeHours(mintAddress),
     getCreatorAnalysis(mintAddress),
+    getLiquidityAnalysis(mintAddress),
   ]);
 
   return {
     meta: {
       mintAuthorityEnabled: parsed.mintAuthority !== null,
       freezeAuthorityEnabled: parsed.freezeAuthority !== null,
-      lpLockedOrBurned: true,
+      lpLockedOrBurned: liquidity.lpBurned || liquidity.lpLocked,
       topHoldersConcentration: holderAnalysis.top10Percent,
       tokenAgeHours: ageResult.ageHours,
       tokenAgeReliable: ageResult.reliable,
@@ -180,6 +236,7 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
         top3Percent: holderAnalysis.top3Percent,
         top10Percent: holderAnalysis.top10Percent,
       },
+      liquidity,
     },
   };
 }

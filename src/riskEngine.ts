@@ -15,6 +15,15 @@ export interface WhaleAnalysis {
   top10Percent: number;
 }
 
+export interface LiquidityAnalysis {
+  poolExists: boolean;
+  liquidityUsd: number;
+  dex: string | null;
+  lpLocked: boolean;
+  lpBurned: boolean;
+  reliable: boolean;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -25,6 +34,7 @@ export interface TokenMeta {
   burnerHolderDetected: boolean;
   creator: CreatorAnalysis;
   whales: WhaleAnalysis;
+  liquidity: LiquidityAnalysis;
 }
 
 export interface RiskResult {
@@ -43,6 +53,9 @@ const WEIGHTS = {
   WHALE_LARGEST_OVER_50: 20,
   WHALE_LARGEST_OVER_25: 10,
   WHALE_TOP3_OVER_75: 15,
+  LIQUIDITY_NONE: 30,
+  LIQUIDITY_VERY_LOW: 20,
+  LIQUIDITY_LOW: 10,
   AGE_UNDER_1H: 20,
   AGE_UNDER_6H: 15,
   AGE_UNDER_24H: 10,
@@ -67,7 +80,7 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     score += WEIGHTS.FREEZE_AUTHORITY;
     reasons.push('Freeze authority enabled — blacklist/pause possible');
   }
-  if (meta.lpLockedOrBurned === false) {
+  if (meta.lpLockedOrBurned === false && meta.liquidity.poolExists && meta.liquidity.liquidityUsd < 100000) {
     score += WEIGHTS.LP_UNLOCKED;
     reasons.push('Liquidity pool unlocked — rug pull risk');
   }
@@ -95,6 +108,20 @@ export function computeRisk(meta: TokenMeta): RiskResult {
   if (meta.whales.top3Percent >= 75) {
     score += WEIGHTS.WHALE_TOP3_OVER_75;
     reasons.push('Top 3 wallets control ' + meta.whales.top3Percent + '% of supply');
+  }
+
+  // Liquidity Analysis
+  if (meta.liquidity.reliable) {
+    if (!meta.liquidity.poolExists) {
+      score += WEIGHTS.LIQUIDITY_NONE;
+      reasons.push('No liquidity pool found — token may be untradeable');
+    } else if (meta.liquidity.liquidityUsd < 1000) {
+      score += WEIGHTS.LIQUIDITY_VERY_LOW;
+      reasons.push('Liquidity critically low — $' + Math.round(meta.liquidity.liquidityUsd));
+    } else if (meta.liquidity.liquidityUsd < 10000) {
+      score += WEIGHTS.LIQUIDITY_LOW;
+      reasons.push('Liquidity low — $' + Math.round(meta.liquidity.liquidityUsd));
+    }
   }
 
   if (meta.tokenAgeReliable) {
