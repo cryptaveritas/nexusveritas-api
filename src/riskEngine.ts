@@ -9,6 +9,12 @@ export interface CreatorAnalysis {
   reliable: boolean;
 }
 
+export interface WhaleAnalysis {
+  largestHolderPercent: number;
+  top3Percent: number;
+  top10Percent: number;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -18,6 +24,7 @@ export interface TokenMeta {
   tokenAgeReliable: boolean;
   burnerHolderDetected: boolean;
   creator: CreatorAnalysis;
+  whales: WhaleAnalysis;
 }
 
 export interface RiskResult {
@@ -33,6 +40,9 @@ const WEIGHTS = {
   HOLDER_CONCENTRATION: 15,
   BURNER_HOLDER: 20,
   CREATOR_SERIAL: 20,
+  WHALE_LARGEST_OVER_50: 20,
+  WHALE_LARGEST_OVER_25: 10,
+  WHALE_TOP3_OVER_75: 15,
   AGE_UNDER_1H: 20,
   AGE_UNDER_6H: 15,
   AGE_UNDER_24H: 10,
@@ -73,6 +83,20 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     score += WEIGHTS.CREATOR_SERIAL;
     reasons.push('Serial token deployer — creator launched ' + meta.creator.totalTokens + '+ tokens');
   }
+
+  // Whale Dominance
+  if (meta.whales.largestHolderPercent >= 50) {
+    score += WEIGHTS.WHALE_LARGEST_OVER_50;
+    reasons.push('Single whale controls ' + meta.whales.largestHolderPercent + '% of supply');
+  } else if (meta.whales.largestHolderPercent >= 25) {
+    score += WEIGHTS.WHALE_LARGEST_OVER_25;
+    reasons.push('Large holder controls ' + meta.whales.largestHolderPercent + '% of supply');
+  }
+  if (meta.whales.top3Percent >= 75) {
+    score += WEIGHTS.WHALE_TOP3_OVER_75;
+    reasons.push('Top 3 wallets control ' + meta.whales.top3Percent + '% of supply');
+  }
+
   if (meta.tokenAgeReliable) {
     if (meta.tokenAgeHours < 1) {
       score += WEIGHTS.AGE_UNDER_1H;

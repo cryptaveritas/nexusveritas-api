@@ -21,6 +21,12 @@ export interface CreatorAnalysis {
   reliable: boolean;
 }
 
+export interface WhaleAnalysis {
+  largestHolderPercent: number;
+  top3Percent: number;
+  top10Percent: number;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -30,6 +36,7 @@ export interface TokenMeta {
   tokenAgeReliable: boolean;
   burnerHolderDetected: boolean;
   creator: CreatorAnalysis;
+  whales: WhaleAnalysis;
 }
 
 export interface TokenSnapshot { meta: TokenMeta; }
@@ -52,34 +59,42 @@ interface MintInfo {
   supply: string;
   decimals: number;
 }
-
-interface AccountInfo {
-  value: { data: { parsed: { info: MintInfo } } };
-}
-
+interface AccountInfo { value: { data: { parsed: { info: MintInfo } } }; }
 interface TokenAccount { address: string; amount: string; }
 interface LargestAccountsResult { value: TokenAccount[]; }
 interface SignatureInfo { signature: string; blockTime: number | null; }
 
-async function getTopHoldersConcentration(mintAddress: string, totalSupply: string): Promise<number> {
+async function getHolderAnalysis(mintAddress: string, totalSupply: string): Promise<{
+  top10Percent: number;
+  largestHolderPercent: number;
+  top3Percent: number;
+  burnerDetected: boolean;
+}> {
   try {
     const result = await rpc('getTokenLargestAccounts', [mintAddress]) as LargestAccountsResult;
     const accounts = result.value;
-    if (!accounts || accounts.length === 0) return 0;
+    if (!accounts || accounts.length === 0) {
+      return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
+    }
     const total = parseFloat(totalSupply);
-    if (total === 0) return 0;
-    const top10Amount = accounts.slice(0, 10).reduce((sum, acc) => sum + parseFloat(acc.amount), 0);
-    return Math.min(100, Math.round((top10Amount / total) * 100));
-  } catch { return 0; }
-}
+    if (total === 0) return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
 
-async function checkBurnerHolders(mintAddress: string): Promise<boolean> {
-  try {
-    const result = await rpc('getTokenLargestAccounts', [mintAddress]) as LargestAccountsResult;
-    const accounts = result.value;
-    if (!accounts || accounts.length === 0) return false;
-    return accounts.some(acc => BURNER_SET.has(acc.address.toLowerCase()));
-  } catch { return false; }
+    const pct = (n: number) => Math.min(100, Math.round((n / total) * 100));
+
+    const top10Amount = accounts.slice(0, 10).reduce((s, a) => s + parseFloat(a.amount), 0);
+    const top3Amount = accounts.slice(0, 3).reduce((s, a) => s + parseFloat(a.amount), 0);
+    const largestAmount = parseFloat(accounts[0]?.amount ?? '0');
+    const burnerDetected = accounts.some(a => BURNER_SET.has(a.address.toLowerCase()));
+
+    return {
+      top10Percent: pct(top10Amount),
+      largestHolderPercent: pct(largestAmount),
+      top3Percent: pct(top3Amount),
+      burnerDetected,
+    };
+  } catch {
+    return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
+  }
 }
 
 interface TokenAgeResult { ageHours: number; reliable: boolean; }
@@ -129,18 +144,11 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
 
     if (!tx?.transaction?.message?.accountKeys) return { address: null, totalTokens: 0, reliable: false };
 
-    // accountKeys can be string[] or {pubkey, ...}[]
     const firstKey = tx.transaction.message.accountKeys[0];
     const creatorAddress = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey;
     if (!creatorAddress) return { address: null, totalTokens: 0, reliable: false };
 
-    // Count signatures for creator wallet as proxy for activity
-    const creatorSigs = await rpc('getSignaturesForAddress', [
-      creatorAddress,
-      { limit: 1000 },
-    ]) as SignatureInfo[];
-
-    // Rough estimate: each token deploy = ~3-5 transactions
+    const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 1000 }]) as SignatureInfo[];
     const totalTokens = creatorSigs ? Math.floor(creatorSigs.length / 4) : 0;
 
     return { address: creatorAddress, totalTokens, reliable: true };
@@ -151,10 +159,9 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
   const info = await rpc('getAccountInfo', [mintAddress, { encoding: 'jsonParsed' }]) as AccountInfo;
   const parsed = info.value.data.parsed.info;
 
-  const [topHoldersConcentration, ageResult, burnerHolderDetected, creator] = await Promise.all([
-    getTopHoldersConcentration(mintAddress, parsed.supply),
+  const [holderAnalysis, ageResult, creator] = await Promise.all([
+    getHolderAnalysis(mintAddress, parsed.supply),
     getTokenAgeHours(mintAddress),
-    checkBurnerHolders(mintAddress),
     getCreatorAnalysis(mintAddress),
   ]);
 
@@ -163,11 +170,16 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
       mintAuthorityEnabled: parsed.mintAuthority !== null,
       freezeAuthorityEnabled: parsed.freezeAuthority !== null,
       lpLockedOrBurned: true,
-      topHoldersConcentration,
+      topHoldersConcentration: holderAnalysis.top10Percent,
       tokenAgeHours: ageResult.ageHours,
       tokenAgeReliable: ageResult.reliable,
-      burnerHolderDetected,
+      burnerHolderDetected: holderAnalysis.burnerDetected,
       creator,
+      whales: {
+        largestHolderPercent: holderAnalysis.largestHolderPercent,
+        top3Percent: holderAnalysis.top3Percent,
+        top10Percent: holderAnalysis.top10Percent,
+      },
     },
   };
 }
