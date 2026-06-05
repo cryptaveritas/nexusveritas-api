@@ -1,3 +1,5 @@
+![NexusVeritas Demo](nexusveritas_demo.gif)
+
 # NexusVeritas API
 
 Solana risk intelligence API with deterministic multi-signal risk scoring.
