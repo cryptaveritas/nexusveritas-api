@@ -1,7 +1,5 @@
 ![NexusVeritas Banner](nexusveritas_banner.png)
 
-![NexusVeritas Demo](nexusveritas_demo.gif)
-
 # NexusVeritas API
 
 Solana risk intelligence API with deterministic multi-signal risk scoring.
@@ -109,3 +107,7 @@ Risk scoring logic in this repository represents the public MVP ruleset. Advance
 
 - [CryptaVeritas](https://github.com/cryptaveritas) — signal verification protocol
 - NexusVeritas — multichain token risk engine (this repo)
+
+## Media
+
+![NexusVeritas Demo](nexusveritas_demo.gif)
