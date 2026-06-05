@@ -11,8 +11,8 @@ app.use(express.json());
 
 // Rate limiting — simple in-memory
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 30; // requests per window
-const RATE_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 60_000;
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
@@ -26,7 +26,6 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-// Cleanup stale entries every 5 minutes
 setInterval(() => {
   const now = Date.now();
   for (const [ip, entry] of rateLimitMap.entries()) {
@@ -46,7 +45,6 @@ app.get('/api/risk/solana/:address', async (req, res) => {
   const { address } = req.params;
   const debug = req.query.debug === 'true';
 
-  // Basic address validation
   if (!address || address.length < 32 || address.length > 44) {
     return res.status(400).json({
       error: 'invalid_address',
@@ -62,7 +60,6 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       ),
     ]) as Awaited<ReturnType<typeof fetchUnifiedSnapshot>>;
 
-    // Snapshot validation
     const meta = snapshot.meta;
     if (
       typeof meta.mintAuthorityEnabled !== 'boolean' ||
@@ -82,7 +79,6 @@ app.get('/api/risk/solana/:address', async (req, res) => {
 
     const result = computeRisk(meta);
 
-    // Audit log (no personal data)
     console.log(JSON.stringify({
       ts: new Date().toISOString(),
       address: address.slice(0, 8) + '...',
@@ -97,6 +93,7 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       score: result.score,
       class: result.class,
       reasons: result.reasons,
+      contributors: result.contributors,
       confidence: 'standard',
       ...(debug ? { snapshot: meta } : {}),
     });
@@ -120,8 +117,8 @@ app.get('/api/risk/solana/:address', async (req, res) => {
 });
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', version: '0.4.1' });
+  res.json({ status: 'ok', version: '0.8.0' });
 });
 
 const port = Number(process.env.PORT ?? 3000);
-app.listen(port, () => console.log(`NexusVeritas API v0.4.1 running on http://localhost:${port}`));
+app.listen(port, () => console.log(`NexusVeritas API v0.8.0 running on http://localhost:${port}`));
