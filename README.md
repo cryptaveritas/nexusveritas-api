@@ -1,3 +1,5 @@
+![NexusVeritas Banner](nexusveritas_banner.png)
+
 ![NexusVeritas Demo](nexusveritas_demo.gif)
 
 # NexusVeritas API
