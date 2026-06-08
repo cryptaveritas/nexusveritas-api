@@ -1,4 +1,4 @@
-// NexusVeritas Risk Engine — Public API Layer
+// NexusVeritas Risk Engine - Public API Layer
 // Core implementation is proprietary. This module exposes the public interface.
 
 export type RiskClass = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -100,13 +100,13 @@ export function computeRisk(meta: TokenMeta): RiskResult {
   };
 
   if (meta.mintAuthorityEnabled) {
-    add('mintAuthority', WEIGHTS.MINT_AUTHORITY, 'Mint authority enabled — unlimited supply inflation risk');
+    add('mintAuthority', WEIGHTS.MINT_AUTHORITY, 'Mint authority enabled - unlimited supply inflation risk');
   }
   if (meta.freezeAuthorityEnabled) {
-    add('freezeAuthority', WEIGHTS.FREEZE_AUTHORITY, 'Freeze authority enabled — blacklist/pause possible');
+    add('freezeAuthority', WEIGHTS.FREEZE_AUTHORITY, 'Freeze authority enabled - blacklist/pause possible');
   }
   if (meta.lpLockedOrBurned === false && meta.liquidity.poolExists && meta.liquidity.liquidityUsd < 100000) {
-    add('lpUnlocked', WEIGHTS.LP_UNLOCKED, 'Liquidity pool unlocked — rug pull risk');
+    add('lpUnlocked', WEIGHTS.LP_UNLOCKED, 'Liquidity pool unlocked - rug pull risk');
   }
   if (meta.topHoldersConcentration >= 70) {
     add('holderConcentration', WEIGHTS.HOLDER_CONCENTRATION, 'Top holders concentration is ' + meta.topHoldersConcentration + '%');
@@ -115,7 +115,7 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     add('burnerHolder', WEIGHTS.BURNER_HOLDER, 'Known burner or suspicious wallet detected in top holders');
   }
   if (meta.creator.reliable && meta.creator.totalTokens >= 5 && meta.creator.totalTokens <= 100) {
-    add('creatorSerial', WEIGHTS.CREATOR_SERIAL, 'Serial token deployer — creator launched ' + meta.creator.totalTokens + '+ tokens');
+    add('creatorSerial', WEIGHTS.CREATOR_SERIAL, 'Serial token deployer - creator launched ' + meta.creator.totalTokens + '+ tokens');
   }
 
   // Whale Dominance
@@ -128,7 +128,7 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     add('whaleTop3', WEIGHTS.WHALE_TOP3_OVER_75, 'Top 3 wallets control ' + meta.whales.top3Percent + '% of supply');
   }
 
-  // Insider Network — graduated scoring
+  // Insider Network - graduated scoring
   if (meta.insiderNetwork.reliable && meta.insiderNetwork.insiderNetworkDetected) {
     const cs = meta.insiderNetwork.clusterSize;
     let points = WEIGHTS.INSIDER_SMALL;
@@ -136,28 +136,28 @@ export function computeRisk(meta: TokenMeta): RiskResult {
     else if (cs >= 5) points = WEIGHTS.INSIDER_MEDIUM;
     const coverage = meta.insiderNetwork.topHolderCoverage;
     add('insiderNetwork', points,
-      'Insider network detected — ' + cs + ' wallets control ' + coverage + '% of supply and share a common funding source');
+      'Insider network detected - ' + cs + ' wallets control ' + coverage + '% of supply and share a common funding source');
   }
 
   // Liquidity
   if (meta.liquidity.reliable) {
     if (!meta.liquidity.poolExists) {
-      add('liquidity', WEIGHTS.LIQUIDITY_NONE, 'No liquidity pool found — token may be untradeable');
+      add('liquidity', WEIGHTS.LIQUIDITY_NONE, 'No liquidity pool found - token may be untradeable');
     } else if (meta.liquidity.liquidityUsd < 1000) {
-      add('liquidity', WEIGHTS.LIQUIDITY_VERY_LOW, 'Liquidity critically low — $' + Math.round(meta.liquidity.liquidityUsd));
+      add('liquidity', WEIGHTS.LIQUIDITY_VERY_LOW, 'Liquidity critically low - $' + Math.round(meta.liquidity.liquidityUsd));
     } else if (meta.liquidity.liquidityUsd < 10000) {
-      add('liquidity', WEIGHTS.LIQUIDITY_LOW, 'Liquidity low — $' + Math.round(meta.liquidity.liquidityUsd));
+      add('liquidity', WEIGHTS.LIQUIDITY_LOW, 'Liquidity low - $' + Math.round(meta.liquidity.liquidityUsd));
     }
   }
 
   // Token Age
   if (meta.tokenAgeReliable) {
     if (meta.tokenAgeHours < 1) {
-      add('tokenAge', WEIGHTS.AGE_UNDER_1H, 'Token created less than 1 hour ago — extreme caution');
+      add('tokenAge', WEIGHTS.AGE_UNDER_1H, 'Token created less than 1 hour ago - extreme caution');
     } else if (meta.tokenAgeHours < 6) {
-      add('tokenAge', WEIGHTS.AGE_UNDER_6H, 'Token created less than 6 hours ago — high caution');
+      add('tokenAge', WEIGHTS.AGE_UNDER_6H, 'Token created less than 6 hours ago - high caution');
     } else if (meta.tokenAgeHours < 24) {
-      add('tokenAge', WEIGHTS.AGE_UNDER_24H, 'Token created less than 24 hours ago — caution advised');
+      add('tokenAge', WEIGHTS.AGE_UNDER_24H, 'Token created less than 24 hours ago - caution advised');
     }
   }
 
