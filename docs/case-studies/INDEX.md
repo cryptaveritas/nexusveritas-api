@@ -2,8 +2,15 @@
 
 Real-world Solana token investigations using NexusVeritas behavioral risk engine.
 
-**Cases Analyzed: 5**
-**Last updated: 2026-06-08**
+## Statistics
+
+| Metric | Count |
+|--------|-------|
+| Cases Analyzed | 7 |
+| Operators Identified | 1 |
+| Insider Networks Detected | 4 |
+| Serial Deployers Found | 3 |
+| CRITICAL Risk Profiles | 2 |
 
 ---
 
@@ -15,6 +22,15 @@ Coordinated wallet clusters funded by a common source.
 |------|-------|-------|---------|----------|
 | [CASE_001](case-001-SV151D5.md) | SV151D5... | 20 MEDIUM | 5 wallets | 10% |
 | [CASE_002](case-002-BGAED7f6.md) | BGAED7f6... | 35 MEDIUM | 4 wallets | 10% |
+| [CASE_006](case-006-CXwQDqJzr.md) | CXwQDqJzr... | 35 MEDIUM | 3 wallets | 7% |
+
+## High-Risk Concentration
+
+Insider networks with majority supply control.
+
+| Case | Token | Score | Coverage | Notes |
+|------|-------|-------|----------|-------|
+| [CASE_007](case-007-3suqBmsd.md) | 3suqBmsdtG... | 70 HIGH | **53%** | Strongest insider concentration |
 
 ## Serial Deployers
 
@@ -35,15 +51,37 @@ Tokens where multiple risk signals triggered simultaneously.
 
 ---
 
+## Operator Intelligence
+
+Known operators linked to multiple token deployments.
+
+### Operator: AgmLJBMDCqWynYnQiPCuj9ewsNNsBJXyzoUhD9LJzN51
+
+| Field | Value |
+|-------|-------|
+| SOL Balance | ~733 SOL (~$110,000+) |
+| Transactions | 1000+ |
+| Status | Under observation |
+
+**Linked Cases:**
+- CASE_001 — SV151D5 (5 wallets, 10% supply)
+- CASE_006 — CXwQDqJzr (3 wallets, 7% supply)
+
+**Observed Pattern:** Systematic insider wallet cluster creation across multiple token launches.
+
+See [../operators/operator-AgmLJBM.md](../operators/operator-AgmLJBM.md) for full profile.
+
+---
+
 ## Observed Patterns
 
 ```
-Insider Networks:     2
-Serial Deployers:     3
-LP Unlocked:          4
-Whale >25%:           3
-Low Liquidity:        3
-Young Token (<6h):    2
+Insider Networks:      4
+Serial Deployers:      3
+LP Unlocked:           5
+Whale >25%:            4
+Low Liquidity:         4
+Young Token (<6h):     2
 ```
 
 See [../datasets/patterns.md](../datasets/patterns.md) for full statistics.
