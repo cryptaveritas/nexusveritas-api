@@ -1,6 +1,8 @@
 # NexusVeritas
 
-Behavioral risk intelligence engine for Solana.
+Solana Risk Research Platform.
+
+Behavioral risk intelligence, operator tracking, and documented case studies — built on real on-chain data.
 
 Most tools analyze tokens.
 
