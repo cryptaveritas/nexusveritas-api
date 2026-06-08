@@ -20,6 +20,23 @@ The goal is simple: identify suspicious tokens before users interact with them.
 
 Every risk signal is derived from observable blockchain state. Scores are reproducible for identical blockchain conditions.
 
+## Explainable Scoring (v0.8.0)
+
+Every score includes a full breakdown showing how each signal contributed.
+
+```
+Risk Score: 100 (CRITICAL)
+
+Contributors:
++30  No Liquidity Pool
++25  Mint Authority Enabled
++20  Serial Token Deployer (96+ tokens)
++20  Whale Controls 76%
++15  Freeze Authority Enabled
++15  Holder Concentration 100%
++15  Top 3 Wallets Control 97%
+```
+
 ## Risk Signals (v0.7.0)
 
 - Mint Authority Analysis

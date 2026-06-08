@@ -10,10 +10,17 @@ const RPC_URL = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
 const PROXY = process.env.HTTPS_PROXY ?? process.env.HTTP_PROXY;
 const agent = PROXY ? new HttpsProxyAgent(PROXY) : undefined;
 
+// Load burner registry
 interface BurnerRegistry { version: string; addresses: string[]; }
 const registryPath = path.join(__dirname, '../data/burnerRegistry.json');
 const burnerRegistry: BurnerRegistry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 const BURNER_SET = new Set(burnerRegistry.addresses.map(a => a.toLowerCase()));
+
+// Load known services whitelist
+interface KnownServices { version: string; addresses: string[]; }
+const servicesPath = path.join(__dirname, '../data/knownServices.json');
+const knownServices: KnownServices = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
+const KNOWN_SERVICES_SET = new Set(knownServices.addresses.map(a => a.toLowerCase()));
 
 export interface CreatorAnalysis {
   address: string | null;
@@ -36,6 +43,15 @@ export interface LiquidityAnalysis {
   reliable: boolean;
 }
 
+export interface InsiderNetworkAnalysis {
+  insiderNetworkDetected: boolean;
+  clusterSize: number;
+  clusterType: string | null;
+  topHolderCoverage: number; // % of supply controlled by cluster
+  fundingWallet: string | null; // only exposed in debug mode
+  reliable: boolean;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -47,6 +63,7 @@ export interface TokenMeta {
   creator: CreatorAnalysis;
   whales: WhaleAnalysis;
   liquidity: LiquidityAnalysis;
+  insiderNetwork: InsiderNetworkAnalysis;
 }
 
 export interface TokenSnapshot { meta: TokenMeta; }
@@ -79,30 +96,36 @@ async function getHolderAnalysis(mintAddress: string, totalSupply: string): Prom
   largestHolderPercent: number;
   top3Percent: number;
   burnerDetected: boolean;
+  topHolders: string[];
+  holderAmounts: number[];
 }> {
   try {
     const result = await rpc('getTokenLargestAccounts', [mintAddress]) as LargestAccountsResult;
     const accounts = result.value;
     if (!accounts || accounts.length === 0) {
-      return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
+      return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false, topHolders: [], holderAmounts: [] };
     }
     const total = parseFloat(totalSupply);
-    if (total === 0) return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
+    if (total === 0) return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false, topHolders: [], holderAmounts: [] };
 
     const pct = (n: number) => Math.min(100, Math.round((n / total) * 100));
     const top10Amount = accounts.slice(0, 10).reduce((s, a) => s + parseFloat(a.amount), 0);
     const top3Amount = accounts.slice(0, 3).reduce((s, a) => s + parseFloat(a.amount), 0);
     const largestAmount = parseFloat(accounts[0]?.amount ?? '0');
     const burnerDetected = accounts.some(a => BURNER_SET.has(a.address.toLowerCase()));
+    const topHolders = accounts.slice(0, 10).map(a => a.address);
+    const holderAmounts = accounts.slice(0, 10).map(a => parseFloat(a.amount));
 
     return {
       top10Percent: pct(top10Amount),
       largestHolderPercent: pct(largestAmount),
       top3Percent: pct(top3Amount),
       burnerDetected,
+      topHolders,
+      holderAmounts,
     };
   } catch {
-    return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false };
+    return { top10Percent: 0, largestHolderPercent: 0, top3Percent: 0, burnerDetected: false, topHolders: [], holderAmounts: [] };
   }
 }
 
@@ -145,68 +168,123 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
       lastSignature = oldestSig;
     }
     if (!oldestSig) return { address: null, totalTokens: 0, reliable: false };
-
     const tx = await rpc('getTransaction', [
       oldestSig,
       { encoding: 'jsonParsed', maxSupportedTransactionVersion: 0 },
     ]) as { transaction: { message: { accountKeys: Array<{ pubkey: string } | string> } } };
-
     if (!tx?.transaction?.message?.accountKeys) return { address: null, totalTokens: 0, reliable: false };
-
     const firstKey = tx.transaction.message.accountKeys[0];
     const creatorAddress = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey;
     if (!creatorAddress) return { address: null, totalTokens: 0, reliable: false };
-
     const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 1000 }]) as SignatureInfo[];
     const totalTokens = creatorSigs ? Math.floor(creatorSigs.length / 4) : 0;
-
     return { address: creatorAddress, totalTokens, reliable: true };
   } catch { return { address: null, totalTokens: 0, reliable: false }; }
 }
 
-interface DexScreenerPair {
-  dexId: string;
-  liquidity?: { usd?: number };
-  lpBurned?: boolean;
-  info?: { socials?: unknown[] };
-}
-
-interface DexScreenerResponse {
-  pairs: DexScreenerPair[] | null;
-}
+interface DexScreenerPair { dexId: string; liquidity?: { usd?: number }; lpBurned?: boolean; }
+interface DexScreenerResponse { pairs: DexScreenerPair[] | null; }
 
 async function getLiquidityAnalysis(mintAddress: string): Promise<LiquidityAnalysis> {
   try {
     const url = `https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`;
     const fetchOptions: RequestInit = { method: 'GET' };
     if (agent) (fetchOptions as Record<string, unknown>).agent = agent;
-
     const res = await fetch(url, fetchOptions);
     const data = await res.json() as DexScreenerResponse;
-
     if (!data.pairs || data.pairs.length === 0) {
       return { poolExists: false, liquidityUsd: 0, dex: null, lpLocked: false, lpBurned: false, reliable: true };
     }
-
-    // Sort by liquidity descending, take the biggest pool
     const pairs = data.pairs.filter(p => p.liquidity?.usd !== undefined);
     pairs.sort((a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0));
     const best = pairs[0] ?? data.pairs[0];
-
-    const liquidityUsd = best.liquidity?.usd ?? 0;
-    const dex = best.dexId ?? null;
-    const lpBurned = best.lpBurned ?? false;
-
     return {
       poolExists: true,
-      liquidityUsd,
-      dex,
-      lpLocked: false, // v0.8: real LP lock detection
-      lpBurned,
+      liquidityUsd: best.liquidity?.usd ?? 0,
+      dex: best.dexId ?? null,
+      lpLocked: false,
+      lpBurned: best.lpBurned ?? false,
       reliable: true,
     };
   } catch {
     return { poolExists: false, liquidityUsd: 0, dex: null, lpLocked: false, lpBurned: false, reliable: false };
+  }
+}
+
+async function getWalletFunder(walletAddress: string): Promise<string | null> {
+  try {
+    const sigs = await rpc('getSignaturesForAddress', [walletAddress, { limit: 1000 }]) as SignatureInfo[];
+    if (!sigs || sigs.length === 0) return null;
+    const oldestSig = sigs[sigs.length - 1].signature;
+    const tx = await rpc('getTransaction', [
+      oldestSig,
+      { encoding: 'jsonParsed', maxSupportedTransactionVersion: 0 },
+    ]) as { transaction: { message: { accountKeys: Array<{ pubkey: string } | string> } } };
+    if (!tx?.transaction?.message?.accountKeys) return null;
+    const firstKey = tx.transaction.message.accountKeys[0];
+    const funder = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey ?? null;
+    if (funder && KNOWN_SERVICES_SET.has(funder.toLowerCase())) return null;
+    return funder;
+  } catch { return null; }
+}
+
+async function getInsiderNetworkAnalysis(
+  topHolders: string[],
+  holderAmounts: number[],
+  totalSupply: string
+): Promise<InsiderNetworkAnalysis> {
+  try {
+    if (topHolders.length < 3) {
+      return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: false };
+    }
+
+    const holdersToCheck = topHolders.slice(0, 8);
+    const funderPromises = holdersToCheck.map(h => getWalletFunder(h));
+    const funders = await Promise.all(funderPromises);
+
+    // Map funder → {count, indices}
+    const funderMap = new Map<string, { count: number; indices: number[] }>();
+    for (let i = 0; i < funders.length; i++) {
+      const funder = funders[i];
+      if (funder) {
+        const entry = funderMap.get(funder) ?? { count: 0, indices: [] };
+        entry.count++;
+        entry.indices.push(i);
+        funderMap.set(funder, entry);
+      }
+    }
+
+    // Find largest cluster
+    let maxCluster = 0;
+    let fundingWallet: string | null = null;
+    let clusterIndices: number[] = [];
+    for (const [wallet, entry] of funderMap.entries()) {
+      if (entry.count > maxCluster) {
+        maxCluster = entry.count;
+        fundingWallet = wallet;
+        clusterIndices = entry.indices;
+      }
+    }
+
+    if (maxCluster < 3) {
+      return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: true };
+    }
+
+    // Calculate % of supply controlled by cluster
+    const total = parseFloat(totalSupply);
+    const clusterAmount = clusterIndices.reduce((sum, i) => sum + (holderAmounts[i] ?? 0), 0);
+    const topHolderCoverage = total > 0 ? Math.round((clusterAmount / total) * 100) : 0;
+
+    return {
+      insiderNetworkDetected: true,
+      clusterSize: maxCluster,
+      clusterType: 'shared_funding',
+      topHolderCoverage,
+      fundingWallet, // only shown in debug mode via index.ts
+      reliable: true,
+    };
+  } catch {
+    return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: false };
   }
 }
 
@@ -220,6 +298,12 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
     getCreatorAnalysis(mintAddress),
     getLiquidityAnalysis(mintAddress),
   ]);
+
+  const insiderNetwork = await getInsiderNetworkAnalysis(
+    holderAnalysis.topHolders,
+    holderAnalysis.holderAmounts,
+    parsed.supply
+  );
 
   return {
     meta: {
@@ -237,6 +321,7 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
         top10Percent: holderAnalysis.top10Percent,
       },
       liquidity,
+      insiderNetwork,
     },
   };
 }

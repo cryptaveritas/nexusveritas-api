@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "description": "Known exchange and service wallets — excluded from insider network detection",
+  "addresses": [
+    "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvh9x",
+    "AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2",
+    "G2YxRa6wt1qePMwfJzdXZG62ej4qaTC7YURzuh2Lwd3t",
+    "H8sMJSCQxfKiFTCfDR3DUMLPwcRbM61LGFJ8N4dK3WjS",
+    "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "11111111111111111111111111111111",
+    "So11111111111111111111111111111111111111112",
+    "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+    "TSLvdd1pWpHVjahSpsvCXUbgwsL3JAacvokwaKt1eokM",
+    "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+    "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK",
+    "KLend2g3cP87fffoy8q1mQqGKjrL1AyFQpgkEBwrg5KL"
+  ],
+  "updated": "2026-06-08"
+}

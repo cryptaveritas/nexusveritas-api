@@ -24,6 +24,15 @@ export interface LiquidityAnalysis {
   reliable: boolean;
 }
 
+export interface InsiderNetworkAnalysis {
+  insiderNetworkDetected: boolean;
+  clusterSize: number;
+  clusterType: string | null;
+  topHolderCoverage: number;
+  fundingWallet: string | null;
+  reliable: boolean;
+}
+
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
@@ -35,6 +44,7 @@ export interface TokenMeta {
   creator: CreatorAnalysis;
   whales: WhaleAnalysis;
   liquidity: LiquidityAnalysis;
+  insiderNetwork: InsiderNetworkAnalysis;
 }
 
 export interface RiskContributor {
@@ -60,6 +70,9 @@ const WEIGHTS = {
   WHALE_LARGEST_OVER_50: 20,
   WHALE_LARGEST_OVER_25: 10,
   WHALE_TOP3_OVER_75: 15,
+  INSIDER_SMALL: 10,   // 3-4 wallets
+  INSIDER_MEDIUM: 20,  // 5-7 wallets
+  INSIDER_LARGE: 30,   // 8+ wallets
   LIQUIDITY_NONE: 30,
   LIQUIDITY_VERY_LOW: 20,
   LIQUIDITY_LOW: 10,
@@ -113,6 +126,17 @@ export function computeRisk(meta: TokenMeta): RiskResult {
   }
   if (meta.whales.top3Percent >= 75) {
     add('whaleTop3', WEIGHTS.WHALE_TOP3_OVER_75, 'Top 3 wallets control ' + meta.whales.top3Percent + '% of supply');
+  }
+
+  // Insider Network — graduated scoring
+  if (meta.insiderNetwork.reliable && meta.insiderNetwork.insiderNetworkDetected) {
+    const cs = meta.insiderNetwork.clusterSize;
+    let points = WEIGHTS.INSIDER_SMALL;
+    if (cs >= 8) points = WEIGHTS.INSIDER_LARGE;
+    else if (cs >= 5) points = WEIGHTS.INSIDER_MEDIUM;
+    const coverage = meta.insiderNetwork.topHolderCoverage;
+    add('insiderNetwork', points,
+      'Insider network detected — ' + cs + ' wallets control ' + coverage + '% of supply and share a common funding source');
   }
 
   // Liquidity

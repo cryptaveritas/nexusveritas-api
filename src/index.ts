@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rate limiting — simple in-memory
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60_000;
@@ -36,28 +35,20 @@ setInterval(() => {
 app.get('/api/risk/solana/:address', async (req, res) => {
   const ip = req.ip ?? 'unknown';
   if (!checkRateLimit(ip)) {
-    return res.status(429).json({
-      error: 'rate_limit_exceeded',
-      message: 'Too many requests. Limit: 30 per minute.',
-    });
+    return res.status(429).json({ error: 'rate_limit_exceeded', message: 'Too many requests. Limit: 30 per minute.' });
   }
 
   const { address } = req.params;
   const debug = req.query.debug === 'true';
 
   if (!address || address.length < 32 || address.length > 44) {
-    return res.status(400).json({
-      error: 'invalid_address',
-      message: 'Invalid Solana address format.',
-    });
+    return res.status(400).json({ error: 'invalid_address', message: 'Invalid Solana address format.' });
   }
 
   try {
     const snapshot = await Promise.race([
       fetchUnifiedSnapshot(address),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('timeout')), 15_000)
-      ),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 15_000)),
     ]) as Awaited<ReturnType<typeof fetchUnifiedSnapshot>>;
 
     const meta = snapshot.meta;
@@ -69,10 +60,7 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       meta.topHoldersConcentration > 100
     ) {
       return res.status(200).json({
-        address,
-        chain: 'solana',
-        status: 'insufficient_data',
-        confidence: 'low',
+        address, chain: 'solana', status: 'insufficient_data', confidence: 'low',
         message: 'Snapshot validation failed — data may be incomplete.',
       });
     }
@@ -87,6 +75,21 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       rules: result.reasons.length,
     }));
 
+    // Build insider network response — hide fundingWallet unless debug mode
+    const insiderNetworkPublic = {
+      insiderNetworkDetected: meta.insiderNetwork.insiderNetworkDetected,
+      clusterSize: meta.insiderNetwork.clusterSize,
+      clusterType: meta.insiderNetwork.clusterType,
+      topHolderCoverage: meta.insiderNetwork.topHolderCoverage,
+      reliable: meta.insiderNetwork.reliable,
+      ...(debug ? { fundingWallet: meta.insiderNetwork.fundingWallet } : {}),
+    };
+
+    const snapshotPublic = debug ? {
+      ...meta,
+      insiderNetwork: insiderNetworkPublic,
+    } : undefined;
+
     res.json({
       address,
       chain: 'solana',
@@ -95,22 +98,15 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       reasons: result.reasons,
       contributors: result.contributors,
       confidence: 'standard',
-      ...(debug ? { snapshot: meta } : {}),
+      ...(debug ? { snapshot: snapshotPublic } : {}),
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     if (message === 'timeout') {
-      return res.status(503).json({
-        error: 'timeout',
-        status: 'insufficient_data',
-        message: 'RPC request timed out. Try again.',
-      });
+      return res.status(503).json({ error: 'timeout', status: 'insufficient_data', message: 'RPC request timed out. Try again.' });
     }
     return res.status(200).json({
-      address,
-      chain: 'solana',
-      status: 'insufficient_data',
-      confidence: 'low',
+      address, chain: 'solana', status: 'insufficient_data', confidence: 'low',
       message: 'Could not fetch token data from Solana RPC.',
     });
   }
