@@ -12,6 +12,16 @@ Real-world Solana token investigations using NexusVeritas behavioral risk engine
 | Serial Deployers Found | 4 |
 | CRITICAL Risk Profiles | 7 |
 
+## Records
+
+```
+Largest Insider Cluster:    8 wallets         (CASE_008)
+Largest Insider Coverage:   53% supply        (CASE_007)
+Largest Serial Deployer:    70+ tokens        (CASE_008)
+Largest Whale Position:     99% supply        (CASE_009)
+Most Signals Triggered:     7 simultaneously  (CASE_013)
+```
+
 ---
 
 ## Insider Networks
@@ -28,8 +38,6 @@ Coordinated wallet clusters funded by a common source.
 | [CASE_011](case-011-9Kqf3LeU.md) | 9Kqf3LeU... | 20 MEDIUM | 4 wallets | 5% |
 
 ## Serial Deployers
-
-Creators with history of multiple token launches.
 
 | Case | Token | Score | Tokens |
 |------|-------|-------|--------|
@@ -52,7 +60,7 @@ Creators with history of multiple token launches.
 |------|-------|-------|---------|
 | [CASE_003](case-003-6KPM7gXt.md) | 6KPM7gXt... | 100 CRITICAL | 6 signals |
 | [CASE_009](case-009-2jXcdw23.md) | 2jXcdw23... | 100 CRITICAL | 6 signals |
-| [CASE_013](case-013-NQhrMnDm.md) | NQhrMnDm... | 100 CRITICAL | 7 signals |
+| [CASE_013](case-013-NQhrMnDm.md) | NQhrMnDm... | 100 CRITICAL | **7 signals** ← record |
 
 ---
 
@@ -62,7 +70,7 @@ Creators with history of multiple token launches.
 |----------|-------|---------|--------|
 | [Operator A](../operators/operator-AgmLJBM.md) — AgmLJBM... | CASE_001, CASE_006 | Insider networks, 733 SOL | Under observation |
 | [Operator B](../operators/operator-9N8NvuM1.md) — 9N8NvuM1... | CASE_008 | 70+ tokens, 8-wallet cluster | Under observation |
-| [Operator C](../operators/operator-DCVXmYyd.md) — DCVXmYyd... | CASE_011 | New operator, 4-wallet cluster | Under observation |
+| [Operator C](../operators/operator-DCVXmYyd.md) — DCVXmYyd... | CASE_011 | 4-wallet cluster | Under observation |
 
 ---
 
