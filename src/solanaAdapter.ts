@@ -270,10 +270,28 @@ async function getInsiderNetworkAnalysis(
       return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: true };
     }
 
-    // Calculate % of supply controlled by cluster
-    const total = parseFloat(totalSupply);
-    const clusterAmount = clusterIndices.reduce((sum, i) => sum + (holderAmounts[i] ?? 0), 0);
-    const topHolderCoverage = total > 0 ? Math.round((clusterAmount / total) * 100) : 0;
+    // Calculate coverage first to apply minimum threshold
+
+    // Calculate % of supply controlled by cluster — use BigInt for large supply tokens
+    let topHolderCoverage = 0;
+    try {
+      const totalBig = BigInt(totalSupply);
+      const clusterBig = clusterIndices.reduce((sum, i) => {
+        const amt = holderAmounts[i] ?? 0;
+        return sum + BigInt(Math.round(amt));
+      }, BigInt(0));
+      topHolderCoverage = totalBig > 0n ? Math.round(Number(clusterBig * 100n / totalBig)) : 0;
+    } catch {
+      const total = parseFloat(totalSupply);
+      const clusterAmount = clusterIndices.reduce((sum, i) => sum + (holderAmounts[i] ?? 0), 0);
+      topHolderCoverage = total > 0 ? Math.round((clusterAmount / total) * 100) : 0;
+    }
+
+    // Minimum coverage threshold — suppress noise from large-cap tokens
+    // where cluster owns negligible supply (< 3%)
+    if (topHolderCoverage < 3) {
+      return { insiderNetworkDetected: false, clusterSize: maxCluster, clusterType: 'shared_funding', topHolderCoverage, fundingWallet: null, reliable: true };
+    }
 
     return {
       insiderNetworkDetected: true,
