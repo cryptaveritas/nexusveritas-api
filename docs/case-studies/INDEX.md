@@ -6,10 +6,11 @@ Real-world Solana token investigations using NexusVeritas behavioral risk engine
 
 | Metric | Count |
 |--------|-------|
-| Cases Analyzed | 21 |
-| Operators Identified | 6 |
-| Insider Networks Detected | 11 |
-| Serial Deployers Found | 5 |
+| Cases Analyzed | 23 |
+| Operators Identified | 7 |
+| Recurring Operators | 1 |
+| Insider Networks Detected | 13 |
+| Serial Deployers Found | 6 |
 | CRITICAL Risk Profiles | 9 |
 
 ## Records
@@ -19,8 +20,22 @@ Largest Insider Cluster:    8 wallets         (CASE_008, CASE_016)
 Largest Insider Coverage:   53% supply        (CASE_007)
 Largest Serial Deployer:    70+ tokens        (CASE_008)
 Largest Whale Position:     100% supply       (CASE_021)
-Most Signals Triggered:     7 simultaneously  (CASE_013)
+Most Tokens per Operator:   3 tokens          (Operator A)
 ```
+
+---
+
+## Known Recurring Operators
+
+Operators confirmed across multiple independent token launches through shared funding wallet analysis.
+
+### Operator A — AgmLJBMDCqWynYnQiPCuj9ewsNNsBJXyzoUhD9LJzN51
+- **3 tokens** — CASE_001, CASE_006, CASE_022
+- 733 SOL balance, 1000+ transactions
+- Consistent insider cluster creation
+- Associated with 47+ token deployments
+
+This is the core demonstration of Operator Intelligence — three independent tokens connected through a single funding wallet. Most scanners would treat these as unrelated. NexusVeritas links them to one operator.
 
 ---
 
@@ -39,11 +54,14 @@ Most Signals Triggered:     7 simultaneously  (CASE_013)
 | [CASE_016](case-016-GD3sA83p.md) | GD3sA83p... | 70 HIGH | **8 wallets** | 7% |
 | [CASE_017](case-017-PAYmo6mo.md) | PAYmo6mo... | 10 LOW | 4 wallets | 15% |
 | [CASE_018](case-018-EkDGB5fb.md) | EkDGB5fb... | 10 LOW | 3 wallets | 3% |
+| [CASE_022](case-022-DBYp1sxG.md) | DBYp1sxG... | 55 MEDIUM | 4 wallets | 9% |
+| [CASE_023](case-023-oreoU2P8.md) | oreoU2P8... | 45 MEDIUM | 5 wallets | 14% |
 
 ## Serial Deployers
 
 | Case | Token | Score | Tokens |
 |------|-------|-------|--------|
+| [CASE_022](case-022-DBYp1sxG.md) | DBYp1sxG... | 55 MEDIUM | 47+ |
 | [CASE_005](case-005-C5GuQ6ck.md) | C5GuQ6ck... | 55 MEDIUM | 28+ |
 | [CASE_004](case-004-Wc8KRpZhc.md) | Wc8KRpZhc... | 85 CRITICAL | 10+ |
 | [CASE_008](case-008-SPARxAFU.md) | SPARxAFU... | 95 CRITICAL | **70+** |
@@ -71,22 +89,21 @@ Most Signals Triggered:     7 simultaneously  (CASE_013)
 
 ---
 
-## Operator Intelligence
+## All Operators
 
-| Operator | Cases | Pattern | Status |
-|----------|-------|---------|--------|
-| [Op. A](../operators/operator-AgmLJBM.md) — AgmLJBM... | CASE_001, CASE_006 | Insider networks, 733 SOL | Under observation |
-| [Op. B](../operators/operator-9N8NvuM1.md) — 9N8NvuM1... | CASE_008 | 70+ tokens, 8-wallet cluster | Under observation |
-| [Op. C](../operators/operator-DCVXmYyd.md) — DCVXmYyd... | CASE_011 | 4-wallet cluster | Under observation |
-| [Op. D](../operators/operator-EV4pfgCo.md) — EV4pfgCo... | CASE_014 | 7-wallet cluster | Under observation |
-| [Op. E](../operators/operator-6ps9Zn4p.md) — 6ps9Zn4p... | CASE_015 | 5 wallets, 38% coverage | Under observation |
-| [Op. F](../operators/operator-8y26AztwD.md) — 8y26Aztw... | CASE_016 | 8-wallet cluster | Under observation |
-
-**Recurring Operators:** 1 of 6 (Operator A — confirmed across 2 tokens)
+| Operator | Tokens | Pattern | Status |
+|----------|--------|---------|--------|
+| [Op. A](../operators/operator-AgmLJBM.md) — AgmLJBM... | **3** | Recurring — CASE_001, 006, 022 | **Recurring** |
+| [Op. B](../operators/operator-9N8NvuM1.md) — 9N8NvuM1... | 1 | 70+ tokens, 8-wallet cluster | Under observation |
+| [Op. C](../operators/operator-DCVXmYyd.md) — DCVXmYyd... | 1 | 4-wallet cluster | Under observation |
+| [Op. D](../operators/operator-EV4pfgCo.md) — EV4pfgCo... | 1 | 7-wallet cluster | Under observation |
+| [Op. E](../operators/operator-6ps9Zn4p.md) — 6ps9Zn4p... | 1 | 5 wallets, 38% coverage | Under observation |
+| [Op. F](../operators/operator-8y26AztwD.md) — 8y26Aztw... | 1 | 8-wallet cluster | Under observation |
+| [Op. G](../operators/operator-HBUh9g46.md) — HBUh9g46... | 1 | 5 wallets + mint authority | Under observation |
 
 ---
 
-## Notable: Social Engineering
+## Social Engineering
 
 | Case | Token | Narrative | Reality |
 |------|-------|-----------|---------|
@@ -97,12 +114,12 @@ Most Signals Triggered:     7 simultaneously  (CASE_013)
 ## Observed Patterns
 
 ```
-Insider Networks:      11
-Serial Deployers:      5
-LP Unlocked:           11
+Insider Networks:      13
+Serial Deployers:      6
+LP Unlocked:           13
 Whale >50%:            5
 Zero Liquidity:        5
-Young Token (<6h):     5
+Recurring Operators:   1 (3 tokens)
 ```
 
 ---
