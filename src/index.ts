@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
 import { computeRisk } from './riskEngine';
 import { fetchUnifiedSnapshot } from './solanaAdapter';
 dotenv.config();
@@ -8,6 +10,23 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// — Stats counter —
+const STATS_FILE = path.join(__dirname, '../data/stats.json');
+
+function loadStats(): { totalAnalyzed: number; startedAt: string } {
+  try {
+    return JSON.parse(fs.readFileSync(STATS_FILE, 'utf-8'));
+  } catch {
+    return { totalAnalyzed: 0, startedAt: new Date().toISOString() };
+  }
+}
+
+function incrementStats(): void {
+  const stats = loadStats();
+  stats.totalAnalyzed++;
+  fs.writeFileSync(STATS_FILE, JSON.stringify(stats, null, 2));
+}
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 30;
@@ -65,6 +84,9 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       });
     }
 
+    // Increment counter
+    incrementStats();
+
     const result = computeRisk(meta);
 
     console.log(JSON.stringify({
@@ -75,7 +97,6 @@ app.get('/api/risk/solana/:address', async (req, res) => {
       rules: result.reasons.length,
     }));
 
-    // Build insider network response — hide fundingWallet unless debug mode
     const insiderNetworkPublic = {
       insiderNetworkDetected: meta.insiderNetwork.insiderNetworkDetected,
       clusterSize: meta.insiderNetwork.clusterSize,
@@ -113,7 +134,8 @@ app.get('/api/risk/solana/:address', async (req, res) => {
 });
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', version: '0.8.0' });
+  const stats = loadStats();
+  res.json({ status: 'ok', version: '0.8.0', totalAnalyzed: stats.totalAnalyzed, startedAt: stats.startedAt });
 });
 
 const port = Number(process.env.PORT ?? 3000);
