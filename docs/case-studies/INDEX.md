@@ -6,7 +6,7 @@ Real-world Solana token investigations using NexusVeritas behavioral risk engine
 
 | Metric | Count |
 |--------|-------|
-| Cases Analyzed | 42 |
+| Cases Analyzed | 43 |
 | Operators Identified | 7 |
 | Recurring Operators | 1 |
 | Insider Networks Detected | 22+ |
@@ -18,7 +18,7 @@ Real-world Solana token investigations using NexusVeritas behavioral risk engine
 ```
 Largest Insider Coverage:    74% supply        (CASE_038) ← record
 Largest Insider Cluster:     8 wallets         (CASE_008, CASE_016, CASE_037)
-Most Active Serial Deployer: 77+ tokens        (CASE_029, CASE_033)
+Most Active Serial Deployer: 250+ tokens       (CASE_043) ← record
 Largest Whale Position:      100% supply       (CASE_021)
 Most Tokens per Operator:    4 tokens          (Operator A)
 Most Signals Triggered:      7 simultaneously  (CASE_013, CASE_021)
@@ -77,7 +77,8 @@ All four tokens scored MEDIUM — the operator appears to calibrate cluster size
 
 | Case | Token | Score | Tokens |
 |------|-------|-------|--------|
-| [CASE_029](case-029-BMvHHwX8.md) | BMvHHwX8... | 85 CRIT | **77+** ← record |
+| [CASE_043](case-043-HW6hiaqM.md) | HW6hiaqM... | 100 CRIT | **250+** ← record |
+| [CASE_029](case-029-BMvHHwX8.md) | BMvHHwX8... | 85 CRIT | 77+ |
 | [CASE_033](case-033-7X3vUdJe.md) | 7X3vUdJe... | 85 CRIT | **77+** |
 | [CASE_027](case-027-3jTwRtn7.md) | 3jTwRtn7... | 90 CRIT | 54+ |
 | [CASE_035](case-035-3VQYaSrm.md) | 3VQYaSrm... | 85 CRIT | 51+ |
