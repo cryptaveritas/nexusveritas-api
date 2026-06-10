@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Known exchange and service wallets — excluded from insider network detection",
   "addresses": [
     "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvh9x",
@@ -14,7 +14,16 @@
     "TSLvdd1pWpHVjahSpsvCXUbgwsL3JAacvokwaKt1eokM",
     "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
     "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK",
-    "KLend2g3cP87fffoy8q1mQqGKjrL1AyFQpgkEBwrg5KL"
+    "KLend2g3cP87fffoy8q1mQqGKjrL1AyFQpgkEBwrg5KL",
+    "DoAsxPQgiyAxyaJNvpAAUb2ups6rbJRdYrCPyWxwRxBb"
   ],
-  "updated": "2026-06-08"
+  "services": {
+    "DoAsxPQgiyAxyaJNvpAAUb2ups6rbJRdYrCPyWxwRxBb": {
+      "type": "probable_exchange",
+      "confidence": "low",
+      "note": "1M+ SOL balance, mass distribution pattern, unconfirmed exchange infrastructure",
+      "addedAt": "2026-06-10"
+    }
+  },
+  "updated": "2026-06-10"
 }
