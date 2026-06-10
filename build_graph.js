@@ -89,7 +89,7 @@ async function main(){
     largest_cluster_creators:clusters.length?Math.max(...clusters.map(c=>c.total_creators)):0,
   };
   const output={generated_at:new Date().toISOString(),wallets_analyzed:graph.size,clusters_found:clusters.length,hub_ranking:hubRanking,clusters,metrics};
-  const outPath=hubsPath.replace('hubs_','graph_');
+  const outPath=hubsPath.replace('hubs','graph');
   fs2.writeFileSync(outPath,JSON.stringify(output,null,2));
   console.error('Saved to '+outPath);
   console.log('\n=== HUB RANKING ===');
