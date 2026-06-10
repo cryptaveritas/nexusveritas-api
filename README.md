@@ -121,6 +121,30 @@ Real-world token investigations using NexusVeritas. Based on analysis of 5 Solan
 See [docs/case-studies/](docs/case-studies/) for full investigations.
 See [docs/operators/](docs/operators/) for operator profiles.
 
+
+## Research Finding — 2026-06-10
+
+After 85 creator investigations across 3 automated pipeline runs:
+
+- **0 L1 funding overlap clusters** detected
+- **0 L2 parent funding clusters** detected
+- **CLUSTER_001** confirmed via behavioral analysis
+
+**Key insight:** Operators have adapted. Direct funding overlap is not a reliable detection mechanism. Operators use unique funding wallets per creator.
+
+CLUSTER_001 was discovered through behavioral signals:
+- transfer_count: 53 (automated feeder pattern)
+- avg_transfer: 0.002 SOL (wallet initialization amount)
+- mutual_funding: true (SOL recycling loop)
+- wallet_age_days: 6 (fresh infrastructure)
+
+This finding redirects core methodology from graph analysis to behavioral fingerprinting.
+
+```
+Old: Creator → Funder → Overlap → Operator
+New: Creator → Behavior → Fingerprint → Operator
+```
+
 ## API
 
 ### GET /api/risk/solana/:address
@@ -168,8 +192,8 @@ Returns full snapshot including all analysis modules and funding wallet data.
 
 ```
 v0.8.0  Insider Network Detection + Confidence Breakdown  ✅
-v0.9.0  Risk Score History
-v1.0.0  Early Dump Detection
+v0.9.0  Behavioral Fingerprint Engine  ← in progress
+v1.0.0  Operator Clustering
 v1.1.0  Cross-Token Tracking + GET /risk/creator
 v1.2.0  Batch Endpoint
 v1.3.0  Webhooks
@@ -179,6 +203,7 @@ v1.5.0  Trust Graph
 
 ## Changelog
 
+- **v0.9.0** — Behavioral Fingerprint Engine (structural + behavioral + operational signals)
 - **v0.8.0** — Insider Network Detection, Confidence Breakdown, service wallet whitelist
 - **v0.7.0** — Liquidity Analysis via DexScreener
 - **v0.6.0** — Whale Dominance Analysis
