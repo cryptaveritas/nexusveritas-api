@@ -1,0 +1,20 @@
+🔍 CASE-046 | NexusVeritas Investigation
+
+Token: 2SahEeix...pump (Solana / PumpSwap)
+
+🔴 82% supply — single wallet
+🔴 96% — top 10 holders
+🔴 Creator: 250+ token launches
+🔴 Creator wallet: 0 days old
+⚠️ Liquidity: $3.2k, unlocked
+
+Behavioral fingerprint:
+Fresh wallet + serial deployer + 0.002 SOL split init
+→ Wallet rotation pattern detected
+
+Not matched to a known operator.
+Under analysis.
+
+📊 Full case: github.com/cryptaveritas/nexusveritas-api/blob/main/docs/case-studies/case-046-2SahEeix.md
+
+#NexusVeritas #Solana #CryptoSecurity #OnChainIntelligence
