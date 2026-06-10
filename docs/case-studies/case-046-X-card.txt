@@ -4,16 +4,15 @@ Token: 2SahEeix...pump (Solana / PumpSwap)
 
 🔴 82% supply — single wallet
 🔴 96% — top 10 holders
-🔴 Creator: 250+ token launches
-🔴 Creator wallet: 0 days old
+🔴 Creator: 250+ token launches (est.)
+🔴 Funders: 3+ single-use wallets × 0.001 SOL each
 ⚠️ Liquidity: $3.2k, unlocked
 
 Behavioral fingerprint:
-Fresh wallet + serial deployer + 0.002 SOL split init
+Serial deployer + split init infrastructure
 → Wallet rotation pattern detected
 
-Not matched to a known operator.
-Under analysis.
+Operator unconfirmed. Under analysis.
 
 📊 Full case: github.com/cryptaveritas/nexusveritas-api/blob/main/docs/case-studies/case-046-2SahEeix.md
 
