@@ -1,0 +1,225 @@
+{
+  "generated_at": "2026-06-10T20:52:39.641Z",
+  "creators_analyzed": 16,
+  "hubs_found": 7,
+  "cluster_candidates": 0,
+  "l2_cluster_candidates": 0,
+  "hub_ranking": [
+    {
+      "hub_wallet": "9bJFAQ6SNhrxzcZV9xTnPPs8PG2aaUUErHhE8RJfvLhH",
+      "creator_count": 1,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "hub_wallet": "6au2AmhAisHvAWYuGxcv3e5eXS1FH3dDaUxjH1o4RBc9",
+      "creator_count": 1,
+      "first_seen": "2026-06-06",
+      "last_seen": "2026-06-06"
+    },
+    {
+      "hub_wallet": "9yMwSPk9mrXSN7yDHUuZurAh1sjbJsfpUqjZ7SvVtdco",
+      "creator_count": 1,
+      "first_seen": "2026-05-28",
+      "last_seen": "2026-05-28"
+    },
+    {
+      "hub_wallet": "3Z3x7bJgVMgeaiSgenNwVBmH9iezTJXswiLWYYD5QdBt",
+      "creator_count": 1,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "hub_wallet": "Bcg4Wz4UHUGXQnh4ZmeG5MtHqo1uA8mwNnMCtK9Bkc9c",
+      "creator_count": 1,
+      "first_seen": "2026-03-07",
+      "last_seen": "2026-03-07"
+    },
+    {
+      "hub_wallet": "E3285B2P1Q3CWUW6tT4hcKi4kDNiqyp2PV69AEJcbnc7",
+      "creator_count": 1,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "hub_wallet": "yuansUi5E6KcN9pRnmh9pLM6Si2dB3M8cpmxcUjtmXU",
+      "creator_count": 1,
+      "first_seen": "2026-05-27",
+      "last_seen": "2026-05-27"
+    }
+  ],
+  "clusters": [],
+  "l2_clusters": [],
+  "creator_profiles": [
+    {
+      "creator": "2C4cYijaJeUmLJRPtrjQViFfFRZLnf7Q3t1EhbatCYwU",
+      "top_funder": "9bJFAQ6SNhrxzcZV9xTnPPs8PG2aaUUErHhE8RJfvLhH",
+      "top_funder_transfers": 2,
+      "top_funder_sol": 101.0061,
+      "total_funding_sources": 1,
+      "funding_concentration": 1,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": "Ht2wJDb5GXbFCBKjtcTmwrQTR9FS6cTz5WMpCf2BR6bX"
+    },
+    {
+      "creator": "2QfBNK2WDwSLoUQRb1zAnp3KM12N9hQ8q6ApwUMnWW2T",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "3pcz387Lg1xgYDQxgt3nSSzMV5u4PqmvjwgQ9qa66MNa",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "4YP7YJFDpjJ9DePSH64ouj8cs52CZip7UfCbGBK98Nyg",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "4beTFfAZbDT9FZmPMxeWociYaXvKJX7jMJ3eHikwmeNr",
+      "top_funder": "6au2AmhAisHvAWYuGxcv3e5eXS1FH3dDaUxjH1o4RBc9",
+      "top_funder_transfers": 25,
+      "top_funder_sol": 0.051,
+      "total_funding_sources": 1,
+      "funding_concentration": 1,
+      "first_seen": "2026-06-06",
+      "last_seen": "2026-06-10",
+      "parent_funder": "4beTFfAZbDT9FZmPMxeWociYaXvKJX7jMJ3eHikwmeNr"
+    },
+    {
+      "creator": "6zEfr6HNF8KitqbroHTGoFQLa6fyQa1YY5CR9DMwRFA4",
+      "top_funder": "9yMwSPk9mrXSN7yDHUuZurAh1sjbJsfpUqjZ7SvVtdco",
+      "top_funder_transfers": 7,
+      "top_funder_sol": 0.0589,
+      "total_funding_sources": 3,
+      "funding_concentration": 0.02,
+      "first_seen": "2026-05-28",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "7R19Ljfh1b4AmfBTgQYwTGVQCyFnDttziPQmzccLAez7",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "7rhxnLV8C77o6d8oz26AgK8x8m5ePsdeRawjqvojbjnQ",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "F2BoBGtBxeYaPTkDtkv8dpo8akbUby5KfVjen5Do3NQ6",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-06-05",
+      "parent_funder": null
+    },
+    {
+      "creator": "FzZ77TM8Ekcb6gyWPmcT9upWkAZKZc5xrYfuFu7pifPn",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-05-04",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "G7jzvyXR5ojoQ7wJSfsjWdgJVfc3Fe8QyQJPAfNTxShV",
+      "top_funder": "3Z3x7bJgVMgeaiSgenNwVBmH9iezTJXswiLWYYD5QdBt",
+      "top_funder_transfers": 21,
+      "top_funder_sol": 0.0428,
+      "total_funding_sources": 1,
+      "funding_concentration": 1,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": "G7jzvyXR5ojoQ7wJSfsjWdgJVfc3Fe8QyQJPAfNTxShV"
+    },
+    {
+      "creator": "GjWKdCUUiR9Hnd1bCeuLn5bsS5D6Bf7xcy2mcXADEcy2",
+      "top_funder": "Bcg4Wz4UHUGXQnh4ZmeG5MtHqo1uA8mwNnMCtK9Bkc9c",
+      "top_funder_transfers": 3,
+      "top_funder_sol": 5.6198,
+      "total_funding_sources": 15,
+      "funding_concentration": 0.21,
+      "first_seen": "2026-03-07",
+      "last_seen": "2026-06-05",
+      "parent_funder": "8BHi2Re9hRPxmkoHNn9ENjPE4GjXw64KLGfZXFFEc473"
+    },
+    {
+      "creator": "J4zsDMzPriV3fpkWACMze4o8SuZ72d2cqsRm4phZWph8",
+      "top_funder": "E3285B2P1Q3CWUW6tT4hcKi4kDNiqyp2PV69AEJcbnc7",
+      "top_funder_transfers": 26,
+      "top_funder_sol": 0.053,
+      "total_funding_sources": 1,
+      "funding_concentration": 1,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-10",
+      "parent_funder": "J4zsDMzPriV3fpkWACMze4o8SuZ72d2cqsRm4phZWph8"
+    },
+    {
+      "creator": "env",
+      "top_funder": null,
+      "parent_funder": null
+    },
+    {
+      "creator": "freeupq4fM9nSdZ5Q52AjSUp5NQ1UXC3y3y9rZVEByC",
+      "top_funder": null,
+      "top_funder_transfers": 0,
+      "top_funder_sol": 0,
+      "total_funding_sources": 0,
+      "funding_concentration": 0,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10",
+      "parent_funder": null
+    },
+    {
+      "creator": "yuanBzEqzEs2ufmbwDTk99KN74h4MtYn7f2LUhKrmNU",
+      "top_funder": "yuansUi5E6KcN9pRnmh9pLM6Si2dB3M8cpmxcUjtmXU",
+      "top_funder_transfers": 6,
+      "top_funder_sol": 0.006,
+      "total_funding_sources": 1,
+      "funding_concentration": 1,
+      "first_seen": "2026-05-27",
+      "last_seen": "2026-06-10",
+      "parent_funder": "yuanBzEqzEs2ufmbwDTk99KN74h4MtYn7f2LUhKrmNU"
+    }
+  ]
+}

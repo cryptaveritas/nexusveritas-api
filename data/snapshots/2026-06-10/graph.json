@@ -1,0 +1,121 @@
+{
+  "generated_at": "2026-06-10T20:52:54.257Z",
+  "wallets_analyzed": 13,
+  "clusters_found": 0,
+  "hub_ranking": [
+    {
+      "wallet": "9bJFAQ6SNhrxzcZV9xTnPPs8PG2aaUUErHhE8RJfvLhH",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "Ht2wJDb5GXbFCBKjtcTmwrQTR9FS6cTz5WMpCf2BR6bX"
+    },
+    {
+      "wallet": "6au2AmhAisHvAWYuGxcv3e5eXS1FH3dDaUxjH1o4RBc9",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "4beTFfAZbDT9FZmPMxeWociYaXvKJX7jMJ3eHikwmeNr"
+    },
+    {
+      "wallet": "3Z3x7bJgVMgeaiSgenNwVBmH9iezTJXswiLWYYD5QdBt",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "G7jzvyXR5ojoQ7wJSfsjWdgJVfc3Fe8QyQJPAfNTxShV"
+    },
+    {
+      "wallet": "Bcg4Wz4UHUGXQnh4ZmeG5MtHqo1uA8mwNnMCtK9Bkc9c",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "CYoGKv889a6BnWeDRZc4RwGHQMgBhUYgThAPrxvYMua4"
+    },
+    {
+      "wallet": "E3285B2P1Q3CWUW6tT4hcKi4kDNiqyp2PV69AEJcbnc7",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "J4zsDMzPriV3fpkWACMze4o8SuZ72d2cqsRm4phZWph8"
+    },
+    {
+      "wallet": "yuansUi5E6KcN9pRnmh9pLM6Si2dB3M8cpmxcUjtmXU",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.18,
+      "parent": "yuanBzEqzEs2ufmbwDTk99KN74h4MtYn7f2LUhKrmNU"
+    },
+    {
+      "wallet": "Ht2wJDb5GXbFCBKjtcTmwrQTR9FS6cTz5WMpCf2BR6bX",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "4beTFfAZbDT9FZmPMxeWociYaXvKJX7jMJ3eHikwmeNr",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "G7jzvyXR5ojoQ7wJSfsjWdgJVfc3Fe8QyQJPAfNTxShV",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "CYoGKv889a6BnWeDRZc4RwGHQMgBhUYgThAPrxvYMua4",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "J4zsDMzPriV3fpkWACMze4o8SuZ72d2cqsRm4phZWph8",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "yuanBzEqzEs2ufmbwDTk99KN74h4MtYn7f2LUhKrmNU",
+      "level": 2,
+      "creator_count": 0,
+      "child_hub_count": 1,
+      "hub_score": 0.1,
+      "parent": null
+    },
+    {
+      "wallet": "9yMwSPk9mrXSN7yDHUuZurAh1sjbJsfpUqjZ7SvVtdco",
+      "level": 1,
+      "creator_count": 1,
+      "child_hub_count": 0,
+      "hub_score": 0.08,
+      "parent": null
+    }
+  ],
+  "clusters": [],
+  "metrics": {
+    "date": "2026-06-10",
+    "creators_analyzed": 16,
+    "funders_discovered": 7,
+    "parent_funders_discovered": 6,
+    "clusters_l1": 0,
+    "clusters_l2": 0,
+    "largest_cluster_creators": 0
+  }
+}
