@@ -2,8 +2,20 @@
 
 ## What NexusVeritas Does
 
-Most tools analyze tokens.
-NexusVeritas analyzes the operators behind them.
+Most crypto analytics platforms analyze tokens, contracts, or wallets.
+NexusVeritas analyzes the operators and infrastructure behind them.
+
+## Why This Matters
+
+Wallets change.
+Operators adapt.
+Behavior leaves fingerprints.
+
+A creator wallet can be replaced in minutes.
+An operator's behavioral patterns are much harder to change.
+
+NexusVeritas focuses on behavioral signals that persist across
+wallets, tokens, and infrastructure rotations.
 
 ## Analysis Pipeline
 
@@ -20,13 +32,13 @@ Funding Graph
 Behavior Profile
   structural + behavioral + operational signals
   ↓
-Fingerprint Score
-  0.0 - 1.0  how operator-like is this creator
+Behavioral Fingerprint
+  similarity scoring across creator population
   ↓
-Cluster
-  group of creators sharing behavioral fingerprint
+Cluster Detection
+  group creators by shared behavioral patterns
   ↓
-Operator
+Operator Attribution
   attributed entity behind the cluster
 ```
 
@@ -52,6 +64,7 @@ pipeline scripts        Operator discovery automation
   pipeline.sh           Full automated run
 
 docs/
+  PROJECT_MAP.md        This file
   METHODOLOGY.md        How NexusVeritas differs
   FINGERPRINT_ENGINE.md Behavioral fingerprinting strategy
   ROADMAP.md            Version history and plan
@@ -70,8 +83,6 @@ Completed
   Funding graph engine
   Automated discovery pipeline
   CLUSTER_001 confirmed
-  45 case studies
-  7 operator profiles
 
 In Progress
   Behavioral Fingerprint Engine (v0.9)
@@ -81,24 +92,44 @@ Planned
   Operator Profiles API
   Operator Alerts
   B2B API
+
+Research Dataset
+  45 case studies
+  7 operator profiles
+  1 confirmed behavioral cluster
+  85 creator profiles analyzed
 ```
 
 ## Key Research Finding
 
-After 85 automated creator analyses:
-  Funding overlap (L1/L2) -> 0 clusters detected
-  Behavioral analysis     -> CLUSTER_001 confirmed
+```
+Finding #001
 
-Conclusion: operators are detected through behavior, not wallet connections.
+Dataset:
+  85 creator wallets across 3 automated pipeline runs
+
+Result:
+  0 meaningful L1/L2 funding overlap clusters
+
+Outcome:
+  CLUSTER_001 identified through behavioral signals
+
+Implication:
+  Behavioral attribution is more effective than
+  funding overlap analysis at current market conditions.
+```
+
 See docs/research/FINDING_001.md
+See docs/clusters/CLUSTER_001.md
 
 ## Competitive Position
 
 ```
-DexScreener    Token prices and discovery
-Rugcheck       Smart contract risk flags
-Bubblemaps     Token holder distribution
-Arkham         Wallet-to-entity labeling
-NexusVeritas   Creator-to-operator attribution
-               via behavioral fingerprinting
+Platform        Primary Object    Method
+
+DexScreener     Token             Price and volume data
+Rugcheck        Contract          On-chain contract state
+Bubblemaps      Holders           Token distribution graph
+Arkham          Wallet            Entity labeling
+NexusVeritas    Operator          Behavioral fingerprinting
 ```
