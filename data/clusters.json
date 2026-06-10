@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "generated_at": "2026-06-10",
+  "clusters": [
+    {
+      "cluster_id": "CLUSTER_001",
+      "status": "confirmed",
+      "confidence_score": 0.85,
+      "signals": ["wallet_factory", "sol_recycling", "one_token_per_wallet"],
+      "infrastructure": {
+        "feeder_loop": [
+          "3DDmb2kPULsqsKPAaDF8BMfJJfVoye3QhaKfHzsar8C4",
+          "ML1xEaENmi4bZDznjSng6R4rRJJwJJuhuH21zCmqc2m"
+        ],
+        "factory_wallet": "3DDmb2kPULsqsKPAaDF8BMfJJfVoye3QhaKfHzsar8C4",
+        "init_amount_sol": 0.002,
+        "wallets_per_day": 3
+      },
+      "creator_wallets": [
+        { "address": "CTVF8GZHavxdkrBMJBpMygcyKTaxiHWtLxXRWaeWuNHT", "token": "D9GWCGn3KrMzvMGypVuzcVQ4SqzDAbaSRDJCuCRG7B89", "first_seen": "2026-06-10" },
+        { "address": "Ctj86t1MPmsyqi9NpRoRW8YveUkukquUNsdVpyVbBrRv", "token": "7zqRRPmbCD9o51nEhjoa41zA3cM9Z4vAcweuNwkwtbVL", "first_seen": "2026-06-10" },
+        { "address": "ENFSrQp5LqL3nrtfT7PPqL9bULRGAgEfceA9odWBdvzt", "token": "4jBNbTaGwe3SPmKY9bgEG51CenHHCkYtQJ8YGotL3G39", "first_seen": "2026-06-10" },
+        { "address": "2TX53ajRudwNhbMbYfPn6StdsFLMYAUmJYt49gvHcBBB", "token": "72BW1upMMD4QkqVxmNvofRM8q8HCGqtknPFfXRSBcVud", "first_seen": "2026-06-10" },
+        { "address": "hQz4h2VJUvhAUvqkDrnjE1UNcAwqG6jRQPU5vP6sGG9", "token": "5rkRr4FspXmLu13dwFd5ZtYBchnrtQtAK2Ffa4u7pMko", "first_seen": "2026-06-09" },
+        { "address": "6eSP86sKpZAWEpvXD4mAs75VVRn7X6NvsQ9Xr8zR6ghi", "token": "5XwUYDrGqJSgX1edcApqhXDEqn4gieTbK3GiTLwFzuFs", "first_seen": "2026-06-09" },
+        { "address": "89Yvf4k1JVS5Mk4azFftUzQHTvvz5MbhDq5yxBCexevX", "token": "4x8Ra18iSxEyy7ARZkfMMTanvqmMi4Au4jzJ6jxakHzs", "first_seen": "2026-06-09" },
+        { "address": "EknteZnWBsfu6BDAzAZxGQKECdwmyvh8461hBfrnUgjR", "token": "GCCh6rztXecWfA4SYXpc4xM2eoHjKYNGVn38ZDca7Gff", "first_seen": "2026-06-08" }
+      ],
+      "notes": "Automated wallet factory. SOL recycling loop active since 2026-06-04. Creates 3-4 new creator wallets per day, each launches exactly one token."
+    }
+  ]
+}
