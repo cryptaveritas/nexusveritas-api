@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-06-10",
+  "profiles": [
+    {
+      "mint": "2SahEeixDPartmSoRmdUS58F9CNt2VLe54epYZCipump",
+      "liq_usd": 3236,
+      "creator": "XUrKb2aK4jBm77q75EemchVUNRTJyeFQ5KebTJygPhF",
+      "token_risk": "HIGH",
+      "operator_archetype": "INDUSTRIAL_DEPLOYER",
+      "behavior_profile": {
+        "structural": {
+          "wallet_age_days": 0,
+          "funding_sources_count": 0,
+          "funding_concentration": 0,
+          "first_seen": "2026-06-11"
+        },
+        "behavioral": {
+          "transfer_count": 0,
+          "avg_transfer_sol": 0,
+          "total_incoming_sol": 0,
+          "recycling_loop": false,
+          "split_init_pattern": false
+        },
+        "operational": {
+          "tokens_created": 750,
+          "days_active": 0,
+          "total_signatures": 3000,
+          "launch_frequency": 0
+        }
+      }
+    },
+    {
+      "mint": "KgkjLNjMymZpxPmm59Fqw7VVeGZSfSqTeRgy49Tpump",
+      "liq_usd": 0,
+      "creator": "FW3s9XgTHbDSUR1hz1tDHqTWQ6yTFLSMqVaku8eZju98",
+      "token_risk": "HIGH",
+      "operator_archetype": "CASUAL_CREATOR",
+      "behavior_profile": {
+        "structural": {
+          "wallet_age_days": 1,
+          "funding_sources_count": 2,
+          "funding_concentration": 0.91,
+          "first_seen": "2026-06-09"
+        },
+        "behavioral": {
+          "transfer_count": 3,
+          "avg_transfer_sol": 2.21,
+          "total_incoming_sol": 6.63,
+          "recycling_loop": false,
+          "split_init_pattern": false
+        },
+        "operational": {
+          "tokens_created": 6,
+          "days_active": 1,
+          "total_signatures": 25,
+          "launch_frequency": 6
+        }
+      }
+    },
+    {
+      "mint": "BcHEaaTCvycPwwsJ9yQTXdHP9X2gCLkznDbZ8VySpump",
+      "liq_usd": 287269,
+      "creator": "VUUXnZKyT1Zn2Tcr217sTdXymzyJ2Xs34k28Lnqqto9",
+      "token_risk": "LOW",
+      "operator_archetype": "INDUSTRIAL_DEPLOYER",
+      "behavior_profile": {
+        "structural": {
+          "wallet_age_days": 4,
+          "funding_sources_count": 0,
+          "funding_concentration": 0,
+          "first_seen": "2026-06-05"
+        },
+        "behavioral": {
+          "transfer_count": 0,
+          "avg_transfer_sol": 0,
+          "total_incoming_sol": 0,
+          "recycling_loop": false,
+          "split_init_pattern": false
+        },
+        "operational": {
+          "tokens_created": 750,
+          "days_active": 0,
+          "total_signatures": 3000,
+          "launch_frequency": 0
+        }
+      }
+    }
+  ]
+}
