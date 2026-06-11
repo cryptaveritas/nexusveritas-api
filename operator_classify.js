@@ -4,7 +4,7 @@ const readline = require('readline');
 // Archetype definitions — signal rules + confidence weights
 const ARCHETYPES = [
   {
-    class: 'WALLET_FACTORY',
+    class: 'WALLET_FACTORY_HUB',
     baseline_risk: 'elevated',
     rules: [
       { signal: 'recycling_loop_true',        check: p => p.behavioral.recycling_loop,                         weight: 0.40 },
@@ -13,6 +13,18 @@ const ARCHETYPES = [
       { signal: 'fresh_wallet',               check: p => p.structural.wallet_age_days <= 1,                   weight: 0.15 },
     ],
     min_confidence: 0.40,
+  },
+  {
+    class: 'WALLET_FACTORY',
+    baseline_risk: 'elevated',
+    rules: [
+      { signal: 'single_token_wallet',        check: p => p.operational.tokens_created <= 2,                   weight: 0.35 },
+      { signal: 'minimal_activity',           check: p => p.operational.total_signatures <= 15,                weight: 0.30 },
+      { signal: 'fresh_wallet',               check: p => p.structural.wallet_age_days <= 1,                   weight: 0.20 },
+      { signal: 'init_amount_0002',           check: p => p.behavioral.total_incoming_sol <= 0.005 && p.behavioral.total_incoming_sol > 0, weight: 0.20 },
+      { signal: 'no_large_funding',           check: p => p.behavioral.total_incoming_sol < 1.0,               weight: 0.10 },
+    ],
+    min_confidence: 0.50,
   },
   {
     class: 'ROTATION_OPERATOR',
@@ -81,7 +93,7 @@ function classify(profile) {
         score += rule.weight;
       }
     }
-    const confidence = Math.round(score * 100) / 100;
+    const confidence = Math.min(Math.round(score * 100) / 100, 1.0);
     if (confidence >= archetype.min_confidence) {
       results.push({ class: archetype.class, confidence, baseline_risk: archetype.baseline_risk, matched_signals: matched });
     }
