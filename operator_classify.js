@@ -121,7 +121,7 @@ async function main() {
     try {
       const profile = JSON.parse(line.trim());
       const result = classify(profile);
-      console.log(JSON.stringify(result, null, 2));
+      console.log(JSON.stringify(result));
       console.error(result.creator.slice(0,8)+'... -> '+result.operator_class+' ('+result.confidence+')');
     } catch (e) {
       console.error('parse error:', e.message);
