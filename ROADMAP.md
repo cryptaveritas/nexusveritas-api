@@ -58,6 +58,42 @@ Ground truth: CLUSTER_001 (confidence 0.85).
 - v1.4.0  Webhooks
 - v1.5.0  B2B API + Trust Graph
 
+
+## Current Completion
+
+```
+Token Risk Engine           80%   9 signals, live on mainnet
+Operator Discovery          60%   pipeline, funding graph, CLUSTER_001
+Behavior Profiling          40%   behavior_profile v0, 3 archetypes
+Operator Classification     15%   archetypes defined, classifier not built
+Operator Attribution        10%   manual only, no automation
+```
+
+## Next Milestone
+
+First automatic classification output:
+
+  "operator_class": "INDUSTRIAL_DEPLOYER"
+  "confidence": 0.87
+  "matched_signals": [...]
+
+When this runs on fresh data without manual analysis,
+Fingerprint Engine will be live.
+
+## Operator Archetypes (draft baselines)
+
+```
+CASUAL_CREATOR        operator_risk: LOW
+PROFESSIONAL_CREATOR  operator_risk: LOW-MEDIUM
+INDUSTRIAL_DEPLOYER   operator_risk: NEUTRAL
+WALLET_FACTORY        operator_risk: ELEVATED
+ROTATION_OPERATOR     operator_risk: HIGH
+INFRASTRUCTURE_HUB    operator_risk: UNKNOWN
+```
+
+Baselines are directional only — no scores assigned until
+10+ observations per archetype.
+
 ## Research
 
 Finding #001 — Funding overlap insufficient for operator attribution
