@@ -12,6 +12,7 @@ After running behavior_profile v0 on three tokens:
 | CASE-046 | 750 | HIGH | $3,236 |
 | CASE-047 | 6   | HIGH | $0 |
 | CASE-048 | 750 | LOW  | $287,269 |
+| CASE-049 | 8   | CRITICAL | $0 |
 
 ## Key Finding
 
@@ -54,3 +55,14 @@ Not a single combined score.
 - docs/fingerprints/INDUSTRIAL_DEPLOYER_V1.md
 - docs/fingerprints/WALLET_FACTORY_V1.md
 - docs/research/FINDING_001.md
+## Updated Risk Matrix (after CASE-049)
+
+| Operator Class | Token Risk | Case |
+|----------------|------------|------|
+| INDUSTRIAL_DEPLOYER | LOW | CASE-048 |
+| INDUSTRIAL_DEPLOYER | HIGH | CASE-046 |
+| CASUAL_CREATOR | HIGH | CASE-047 |
+| CASUAL_CREATOR | CRITICAL | CASE-049 |
+
+FINDING_003 now has 4 data points across 3 operator classes.
+The two-dimensional model is empirically validated.
