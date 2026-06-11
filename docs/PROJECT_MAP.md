@@ -44,7 +44,7 @@ TOKEN RISK SCORE                   ↓
 
 **Validation result (VALIDATION_001):** 8/8 CLUSTER_001 wallets → WALLET_FACTORY (confidence 1.0)
 
-**Key finding (FINDING_003):** Token Risk and Operator Risk are independent dimensions.
+**Key finding (FINDING_003):** operator_class ≠ token_risk — operator class and token risk are independent dimensions. 4 data points across 3 operator classes confirm this.
 A high-volume deployer (INDUSTRIAL_DEPLOYER) can produce both HIGH and LOW risk tokens.
 This is why NexusVeritas is not another Rugcheck.
 
