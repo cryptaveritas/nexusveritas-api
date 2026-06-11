@@ -65,8 +65,8 @@ Ground truth: CLUSTER_001 (confidence 0.85).
 Token Risk Engine           80%   9 signals, live on mainnet
 Operator Discovery          60%   pipeline, funding graph, CLUSTER_001
 Behavior Profiling          40%   behavior_profile v0, 3 archetypes
-Operator Classification     15%   archetypes defined, classifier not built
-Operator Attribution        10%   manual only, no automation
+Operator Classification     75%   3 archetypes confirmed, VALIDATION_001 passed (8/8)
+Operator Attribution        20%   automatic via classifier pipeline
 ```
 
 ## Next Milestone
