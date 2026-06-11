@@ -96,3 +96,22 @@ LIMIT 20;
 
 When system finds unexpected 94% similarity between
 INDUSTRIAL_DEPLOYER and WALLET_FACTORY — that is a new cluster candidate.
+## V3 Improvements (from field investigations)
+
+### Fix: init_amount_score → factory_confirmed_score
+
+Problem discovered: 0.002 SOL transfers can be:
+  A) WALLET_FACTORY leaf initialization (true signal)
+  B) ATA creation for stablecoins (false positive)
+
+V3 fix:
+  Remove init_amount_score (amount-based)
+  Add factory_confirmed_score:
+    = 1 if (init_amount AND downstream_token_launch)
+    = 0 if (init_amount AND downstream_stablecoin_only)
+
+### Fix: binary feature agreement
+
+Zero-zero agreement is not a shared signal.
+Only count feature as "shared" when both values > 0.3.
+(discovered via CASUAL_CREATOR ↔ WALLET_FACTORY false positive)

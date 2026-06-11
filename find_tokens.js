@@ -110,10 +110,7 @@ async function findTokens() {
     seen.add(addr);
     const liq = await checkLiquidity(addr);
     if (liq >= MIN_LIQ && liq <= MAX_LIQ) {
-      const creator = await getCreator(addr);
-      const creatorStr = creator.address ?? 'unknown';
-      const tokensStr = creator.totalTokens ?? 0;
-      console.log(`${addr} creator: ${creatorStr} tokens: ${tokensStr}`);
+      console.log(`${addr} liq:${Math.round(liq)}`);
     }
   }
 }
