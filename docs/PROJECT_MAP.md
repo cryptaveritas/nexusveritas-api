@@ -17,7 +17,34 @@ An operator's behavioral patterns are much harder to change.
 NexusVeritas focuses on behavioral signals that persist across
 wallets, tokens, and infrastructure rotations.
 
-## Analysis Pipeline
+## Analysis Architecture
+
+```
+TOKEN                          CREATOR
+  ↓                              ↓
+Token Risk Engine            Behavior Profile
+  ↓                              ↓
+holder concentration         structural signals
+liquidity                    behavioral signals
+LP status                    operational signals
+mint/freeze authority              ↓
+  ↓                        Operator Classification
+TOKEN RISK SCORE                   ↓
+                           CASUAL_CREATOR
+                           INDUSTRIAL_DEPLOYER
+                           WALLET_FACTORY
+                           ROTATION_OPERATOR
+                           INFRASTRUCTURE_HUB
+                                   ↓
+                           OPERATOR RISK SCORE
+                                   ↓
+              Combined Intelligence
+  token_risk: 82  +  operator_risk: 18
+```
+
+**Key finding (FINDING_003):** Token Risk and Operator Risk are independent dimensions.
+A high-volume deployer (INDUSTRIAL_DEPLOYER) can produce both HIGH and LOW risk tokens.
+This is why NexusVeritas is not another Rugcheck.
 
 ```
 Token
