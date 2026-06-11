@@ -10,17 +10,17 @@ async function main() {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
 
-  const target = await client.query('SELECT vector, archetype, confidence FROM creators WHERE address = $1', [targetAddress]);
+  const target = await client.query('SELECT vector_v2 AS vector, archetype, confidence FROM creators WHERE address = $1', [targetAddress]);
   if (target.rows.length === 0) { console.error('Creator not found in DB:', targetAddress); process.exit(1); }
 
   const { vector, archetype, confidence } = target.rows[0];
 
   const similar = await client.query(`
     SELECT address, archetype, confidence, tokens_created, days_active,
-           1 - (vector <=> $1::vector) AS similarity
+           1 - (vector_v2 <=> $1::vector) AS similarity
     FROM creators
     WHERE address != $2
-    ORDER BY vector <=> $1::vector
+    ORDER BY vector_v2 <=> $1::vector
     LIMIT $3
   `, [vector, targetAddress, topN]);
 
