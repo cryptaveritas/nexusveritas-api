@@ -235,3 +235,213 @@ const discriminator = data.readBigUInt64LE(0);
 | npe_volatility_30d | float | Position volatility |
 | vtd_z_score | float | Terminal drain z-score vs pool median |
 | flow_asymmetry | float | Outgoing/incoming DEX flow ratio |
+
+
+---
+
+## Orca Whirlpool Deserialization — Audit & Fixed Specification
+
+**Audit date:** 2026-06-12
+**Status:** Specification audited, bugs fixed, ready for Phase 1 implementation
+
+---
+
+### Program ID (verified)
+
+```
+whirLbMiicVdio4iUfT557125FRdmctmsxmNs95S8Y2  ✅ correct mainnet address
+```
+
+---
+
+### Discriminators (verified hex, SHA-256("global:<name>")[:8])
+
+```
+swap:                   f8c69e91e1758761  ✅
+increase_liquidity:     2e921d41dbd176d4  ✅
+increase_liquidity_v2:  1a4de1e32d2df1d5  ✅
+decrease_liquidity:     a0dddf50ff7db317  ✅
+decrease_liquidity_v2:  3a6509f7a9561b32  ✅
+```
+
+---
+
+### BUG FIX #1 — Discriminator BigInt values
+
+```typescript
+// ❌ WRONG (reference code had byte-swapped values):
+const DISCRIMINATORS = {
+  SWAP: BigInt("0x618775e1919ec6f8"),         // bytes reversed!
+  DECREASE_LIQ: BigInt("0x17b37dff50dddda0"), // bytes reversed!
+  DECREASE_LIQ_V2: BigInt("0x321b56a9f709653a") // bytes reversed!
+};
+
+// ✅ CORRECT (readBigUInt64LE handles LE conversion automatically):
+const DISCRIMINATORS = {
+  SWAP:             BigInt("0xf8c69e91e1758761"),
+  DECREASE_LIQ:     BigInt("0xa0dddf50ff7db317"),
+  DECREASE_LIQ_V2:  BigInt("0x3a6509f7a9561b32"),
+  INCREASE_LIQ:     BigInt("0x2e921d41dbd176d4"),
+  INCREASE_LIQ_V2:  BigInt("0x1a4de1e32d2df1d5"),
+};
+```
+
+---
+
+### BUG FIX #2 — Pool address account index
+
+```typescript
+// ❌ WRONG (reference code):
+const poolAddress = instruction.accounts[2].toString();
+
+// ✅ CORRECT — decrease_liquidity accounts layout:
+// accounts[0]: whirlpool (pool address)  ← use this
+// accounts[1]: token_program
+// accounts[2]: position_authority
+// accounts[3]: position
+// accounts[4]: position_token_account
+// accounts[5]: token_owner_account_a
+// accounts[6]: token_vault_a
+// accounts[7]: token_owner_account_b
+// accounts[8]: token_vault_b
+
+const poolAddress = instruction.accounts[0].toString(); // ✅
+```
+
+---
+
+### BUG FIX #3 — Volume extraction (do NOT parse Borsh args)
+
+```typescript
+// ❌ WRONG — parsing liquidity_amount from Borsh args:
+// liquidity_amount (u128) is a virtual ΔL value,
+// NOT the actual SOL/USDC volume moved.
+// Borsh parsing is fragile and version-dependent.
+
+// ✅ CORRECT — use meta token balance deltas:
+function extractVolume(meta, accountIndex) {
+  const pre  = meta.preTokenBalances.find(b => b.accountIndex === accountIndex);
+  const post = meta.postTokenBalances.find(b => b.accountIndex === accountIndex);
+  if (!pre || !post) return 0;
+  return Math.abs(
+    parseFloat(post.uiTokenAmount.uiAmount) -
+    parseFloat(pre.uiTokenAmount.uiAmount)
+  );
+}
+// Advantages:
+// - Works for v1 and v2 instructions
+// - No Borsh offset errors
+// - Always reflects actual token movement
+```
+
+---
+
+### Fixed dex_filter.js — Phase 1 Implementation (VTD z-score)
+
+```javascript
+const ORCA_PROGRAM_ID = "whirLbMiicVdio4iUfT557125FRdmctmsxmNs95S8Y2";
+
+const DISCRIMINATORS = {
+  SWAP:            BigInt("0xf8c69e91e1758761"),
+  DECREASE_LIQ:    BigInt("0xa0dddf50ff7db317"),
+  DECREASE_LIQ_V2: BigInt("0x3a6509f7a9561b32"),
+  INCREASE_LIQ:    BigInt("0x2e921d41dbd176d4"),
+  INCREASE_LIQ_V2: BigInt("0x1a4de1e32d2df1d5"),
+};
+
+function extractVolume(meta, accountIndex) {
+  const pre  = meta.preTokenBalances.find(b => b.accountIndex === accountIndex);
+  const post = meta.postTokenBalances.find(b => b.accountIndex === accountIndex);
+  if (!pre || !post) return 0;
+  return Math.abs(
+    parseFloat(post.uiTokenAmount.uiAmount) -
+    parseFloat(pre.uiTokenAmount.uiAmount)
+  );
+}
+
+function parseOrcaInstruction(instruction, meta) {
+  if (instruction.programId.toString() !== ORCA_PROGRAM_ID) return null;
+
+  const data = Buffer.from(instruction.data, "base58");
+  if (data.length < 8) return null;
+
+  const discriminator = data.readBigUInt64LE(0);
+  const poolAddress = instruction.accounts[0].toString(); // FIX #2
+
+  if (
+    discriminator === DISCRIMINATORS.DECREASE_LIQ ||
+    discriminator === DISCRIMINATORS.DECREASE_LIQ_V2
+  ) {
+    const volumeA = extractVolume(meta, 5); // token_owner_account_a
+    const volumeB = extractVolume(meta, 7); // token_owner_account_b
+    return {
+      type: "DECREASE_LIQUIDITY",
+      poolAddress,
+      volumeA,
+      volumeB,
+      isV2: discriminator === DISCRIMINATORS.DECREASE_LIQ_V2
+    };
+  }
+
+  if (discriminator === DISCRIMINATORS.SWAP) {
+    const volumeA = extractVolume(meta, 4);
+    const volumeB = extractVolume(meta, 6);
+    return {
+      type: "SWAP",
+      poolAddress,
+      volumeA,
+      volumeB
+    };
+  }
+
+  if (
+    discriminator === DISCRIMINATORS.INCREASE_LIQ ||
+    discriminator === DISCRIMINATORS.INCREASE_LIQ_V2
+  ) {
+    const volumeA = extractVolume(meta, 5);
+    const volumeB = extractVolume(meta, 7);
+    return {
+      type: "INCREASE_LIQUIDITY",
+      poolAddress,
+      volumeA,
+      volumeB
+    };
+  }
+
+  return null;
+}
+
+module.exports = { parseOrcaInstruction };
+```
+
+---
+
+### Borsh Layout Reference (for documentation only — do NOT use for volume extraction)
+
+```
+swap (after 8-byte discriminator):
+  amount                   u64   8 bytes
+  other_amount_threshold   u64   8 bytes
+  sqrt_price_limit         u128  16 bytes
+  exact_input              bool  1 byte
+
+decrease_liquidity / increase_liquidity:
+  liquidity_amount         u128  16 bytes  ← virtual ΔL, NOT real volume
+  token_min_a / max_a      u64   8 bytes
+  token_min_b / max_b      u64   8 bytes
+```
+
+---
+
+### Implementation Recommendation (Phase 1)
+
+```
+1. Use Variant 1 (lightweight JS mapper) — NOT Anchor IDL
+2. Filter only DECREASE_LIQ + SWAP discriminators
+3. Extract volumes from meta.postTokenBalances - meta.preTokenBalances
+4. Pool address from accounts[0]
+5. Do NOT parse Borsh args for volume calculation
+
+Variant 2 (Anchor IDL): only if full deserialization needed
+Variant 3 (Rust):       Q4 2026 when pipeline moves to Memgraph
+```
