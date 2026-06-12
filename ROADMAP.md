@@ -1,103 +1,90 @@
 # NexusVeritas — Roadmap
 
-NexusVeritas is evolving from a token scanner into a behavioral
-Operator Intelligence Platform for the Solana ecosystem.
+**Version:** v0.9.1 | **Updated:** 2026-06-12
 
-## Architecture
+---
+
+## Architecture Layers
 
 ```
-Token Layer          analyze a single token
-Creator Layer        analyze who deployed it
-Funding Layer        analyze who funded the creator
-Behavior Layer       analyze HOW the creator operates       <- current
-Fingerprint Layer    score behavioral similarity
-Operator Layer       attribute to known operator clusters
-Intelligence Layer   alerts, batch, B2B API
+Token Layer          analyze a single token                ✅ done
+Creator Layer        analyze who deployed it               ✅ done
+Funding Layer        analyze who funded the creator        ✅ done
+Behavior Layer       behavioral fingerprinting             ✅ done
+Classifier Layer     operator archetype classification     ✅ done
+Validation Layer     ground truth testing                  ✅ done (VALIDATION_001)
+Similarity Layer     pgvector cross-operator search        ✅ done
+API Layer            GET /api/v2/scan/solana/:mint         ✅ done
+Review Layer         Active Learning labeling UI           🔄 Q3 2026
+ML Layer             XGBoost behavioral classifier         🔄 Q3 2026
+Graph Layer          Memgraph multi-hop attribution        📋 Q4 2026
+GNN Layer            structural embeddings                 📋 Q4 2026
 ```
+
+---
 
 ## Completed
 
+- v0.9.1  8 archetypes, 565 operators, API live, parallel pipeline
+- v0.9.0  EXCHANGE_FUNDED_DEPLOYER archetype (FINDING_005)
+- v0.8.5  pgvector + vector_v2 behavioral (25 dimensions)
+- v0.8.2  VALIDATION_001: 8/8 WALLET_FACTORY confirmed
+- v0.8.0  operator_classify.js — automatic archetype classification
+- v0.7.0  behavior_profile pipeline
+- v0.6.0  find_tokens + enrich_creators
 - v0.1.0  Risk Engine MVP
-- v0.2.0  Solana RPC integration (Helius)
-- v0.3.0  Token Age Analysis
-- v0.4.0  Burner Registry
-- v0.5.0  Creator Wallet Analysis
-- v0.6.0  Whale Dominance
-- v0.7.0  Liquidity Analysis (DexScreener)
-- v0.8.0  Insider Network Detection + Confidence Breakdown
-- v0.8.1  Funding Graph Engine (find_hubs, build_graph, pipeline)
-- v0.8.2  CLUSTER_001 confirmed — first behavioral cluster discovery
 
-## In Progress
+---
 
-### v0.9.0 — Behavioral Fingerprint Engine
+## Q3 2026
 
-Replaces funding overlap as primary operator detection mechanism.
-Scores each creator across three signal categories:
+- [ ] 1000+ operator profiles
+- [ ] Express + HTMX Review UI (Active Learning)
+- [ ] Temporal vectors: vector_30d, vector_90d, vector_all
+- [ ] Delta-features for XGBoost
+- [ ] XGBoost baseline (500+ labels needed)
+- [ ] Telegram alerts for known operator detection
+- [ ] GET /risk/creator/:address endpoint
 
-```json
-{
-  "fingerprint_score": 0.89,
-  "structural":   { "wallet_age_days": 6, "funding_concentration": 1.0 },
-  "behavioral":   { "transfer_count": 53, "recycling_loop": 1.0, "feeder_pattern": 0.92 },
-  "operational":  { "wallet_factory": 0.87, "automated_cadence": 0.75 }
-}
-```
+---
 
-### v0.9.1 — Operator Clustering via Fingerprint Similarity
+## Q4 2026
 
-Cluster creators by behavioral similarity instead of funding overlap.
-Ground truth: CLUSTER_001 (confidence 0.85).
+- [ ] Memgraph migration (trigger: 1000-1500 operators)
+- [ ] GNN structural embeddings (GraphSAGE → vector_v3)
+- [ ] DEX Flow Layer (V3 vector):
+      liquidity_reversion_index
+      net_pool_exposure_slope
+      volume_to_drain_zscore
+      flow_asymmetry_score
+- [ ] XGBoost AFT (time-to-scam prediction)
+- [ ] B2B API (Phantom, Jupiter integration targets)
+- [ ] Network graph multi-operator clustering
 
-## Planned
+---
 
-- v1.0.0  Operator Profiles + GET /risk/creator
-- v1.1.0  Operator Alerts (new cluster detected)
-- v1.2.0  Snapshot Intelligence (risk score history)
-- v1.3.0  Batch Endpoint
-- v1.4.0  Webhooks
-- v1.5.0  B2B API + Trust Graph
+## Research Findings
 
+| ID | Title | Status |
+|----|-------|--------|
+| FINDING_001 | Funding overlap → 0 clusters | Closed |
+| FINDING_002 | Split init pattern | Hypothesis |
+| FINDING_003 | operator_class != token_risk | Confirmed |
+| FINDING_004 | Archetypes stable across token risk | Confirmed |
+| FINDING_005 | INFRASTRUCTURE_HUB false positives | Fixed |
 
-## Current Completion
+---
 
-```
-Token Risk Engine           80%   9 signals, live on mainnet
-Operator Discovery          60%   pipeline, funding graph, CLUSTER_001
-Behavior Profiling          40%   behavior_profile v0, 3 archetypes
-Operator Classification     75%   3 archetypes confirmed, VALIDATION_001 passed (8/8)
-Operator Attribution        20%   automatic via classifier pipeline
-```
+## Known Risks
 
-## Next Milestone
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| Graph flood attack | HIGH | Max Degree Threshold (TODO) |
+| Similarity collapse | HIGH | Temporal vectors (Q3) |
+| Silent degradation | HIGH | graph_truncated metric (TODO) |
+| Cold start bias | MEDIUM | Diversity Sampling |
+| Warm-up wallets | MEDIUM | Future: behavioral time series |
 
-First automatic classification output:
+---
 
-  "operator_class": "INDUSTRIAL_DEPLOYER"
-  "confidence": 0.87
-  "matched_signals": [...]
-
-When this runs on fresh data without manual analysis,
-Fingerprint Engine will be live.
-
-## Operator Archetypes (draft baselines)
-
-```
-CASUAL_CREATOR        operator_risk: LOW
-PROFESSIONAL_CREATOR  operator_risk: LOW-MEDIUM
-INDUSTRIAL_DEPLOYER   operator_risk: NEUTRAL
-WALLET_FACTORY        operator_risk: ELEVATED
-ROTATION_OPERATOR     operator_risk: HIGH
-INFRASTRUCTURE_HUB    operator_risk: UNKNOWN
-```
-
-Baselines are directional only — no scores assigned until
-10+ observations per archetype.
-
-## Research
-
-Finding #001 — Funding overlap insufficient for operator attribution
-See docs/research/FINDING_001.md
-
-CLUSTER_001 — First confirmed behavioral cluster
-See docs/clusters/CLUSTER_001.md
+*All archetypes validated against ground truth. All findings documented in docs/research/*
