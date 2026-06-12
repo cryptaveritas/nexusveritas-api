@@ -1,0 +1,1759 @@
+◇ injected env (4) from .env // tip: ⌘ enable debugging { debug: true }
+{
+  "creator": "7FgpxepURgUrYzWfrbtq6bCEzXWxTRXvudEcznhyqiFE",
+  "total_incoming_sol": 76103.394,
+  "funding_concentration": 0.04,
+  "top_funder": "2oggshJYGUJLR9Yv9u3zQbGkCBgt4SGQJN6rvfHXLuY5",
+  "funding_sources": [
+    {
+      "wallet": "2oggshJYGUJLR9Yv9u3zQbGkCBgt4SGQJN6rvfHXLuY5",
+      "count": 1,
+      "sol_received": 2911.744,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "AUixDJLeVJXrS4vubwTjpXrnx5NZtQ3xnXAG1X9qrk2S",
+      "count": 1,
+      "sol_received": 1250.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "4iBmfb9KSdeuP4Uq7AfpThZdVHAXGsEDJX3UGSG2mTu5",
+      "count": 1,
+      "sol_received": 1199.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "7Yo5uEHBLDyk7cgdfcLepDrJngsE5QwdtY1Xiar86ds4",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "AHqMtHNC6naGw4xVHnjfHHYyMzFTURAxe8sTDt8yAtYN",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "89xsRD4n77d5YJ9kJsCpDdNsgm5uwT3kdS9khG9yEuCQ",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "5u5kuqpFTPPeniZqjhyR87mF9eLTo3NArEnTFwSUMg1h",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "8yJ6pXKj2jmkUFKE2xwZUW3kSu6GMAgJuo8VZA4AAKvH",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "JC9o7mmPiYgbThM3rrmEyDsriYBbBYg4HxT1auYaWiJC",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "3hYRnLktHbdiRY5yv37yBURjCQdRzeLCjXV56K5ramAh",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "X5f5GNFBSaawavS2VgLR8Wu1zh9vvW71KJZUYrZ3Gzj",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "B2R3Qmwj9DPCR8zDcNyvMvcuGFMRHfJXs1MHgzjZwkzF",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "sJWfkh5RD6YhCRDbmwmb9zQbFHfjp1NVXNPpWggk8eq",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "HiWjjttPWDL2DxtdpMTCx2Ve5RA23uzHJDeDS6biLdnE",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "76NwYEjJ7Q56gp7etcpQdkTjaMNGnW5k8VS5J8uRoNLh",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "21qSTG5Hda2fPwPRPR5F6wXhd7y4NczAVsHaaVLicuSi",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "4Fj7gHmgmx8zgpAjBfrjZH19xaySjzrJENhdKDhC22hM",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "3XGqJaPfDhJBjKRUEv4HVaEzdGCFXsBiK88kaiWzjb8G",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "GrV5eFfpRx58xFiPhpQ7rEzXrYHWnv94nqtA1sCNUd7z",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "EC8MBpuUjng4e9xuCHF5nynTxXGEfUg6kztwVyXhxQKe",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "BBK1x26424i3keHf3hjJfUzeihRvvQjEef8wGLQm8yju",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CffmzAj15Tru1kpwEZd9cJ9eogDwdreZenmxdJv8aNub",
+      "count": 1,
+      "sol_received": 999.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "BzGbkTH6vvd9YZbnMi1pxETFbXK2aba51JqVTfAjmEWF",
+      "count": 1,
+      "sol_received": 921.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "Cj6gV6iFPG1FkzHqei5VSF27G3oi7X1wUiSp9vm2Xw8H",
+      "count": 1,
+      "sol_received": 899.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "4rWW4axtXN551sGjfit3P3pmQXbx1mvtRLWYNdTD6sTW",
+      "count": 1,
+      "sol_received": 869.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "4cd7jqV7nAufQqfYoYkFEWZ9gp7ZBS4tD8462sepfcz2",
+      "count": 1,
+      "sol_received": 849.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "8yo6E5Acba4dmW7SP45vJ9D5PZWNxDKeJ6L9MgXjsaB5",
+      "count": 1,
+      "sol_received": 699.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "Fckgh3TxCKMcoxutHLY3PNDmq2P28U5xeNBzpDShsSEq",
+      "count": 1,
+      "sol_received": 699.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "3HiCSrWn1nrEzp6YLWrYyecVTd9g3Tr35ouN9ggwMgDB",
+      "count": 1,
+      "sol_received": 649.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "9zaGhxTP2saBK2A2WaMWBH1s6thWuAsKVdBxD2f5fmXn",
+      "count": 1,
+      "sol_received": 599.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "58ZvbMWMdtZTjntpbSQ3pc3591VcECRKJ2Z6zGFdk26F",
+      "count": 1,
+      "sol_received": 549.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "H8bgkyUzfRC9hp1hpRfCZC1AzjKhNVSXmsxUWzQnxhjD",
+      "count": 1,
+      "sol_received": 544.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "2pqkmRUTDArt6ui5Ci6ANSENpEbik9zpDoFJxAwhygfH",
+      "count": 1,
+      "sol_received": 521.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "CEkX3GP5tW5dQFV5EXoQWcsnqiAtfShmD3WUWbh7nog8",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "FPBYHh8N9NbV493gHxfSuP8PrWggR4FzfmVzn4ozvadQ",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "g7iMsFP5tFv7pXnFNDDQANQu7AqTGX47bqVTNWX123Z",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "5gBMahy59NcVSKtpDW9YuqixdGVQuh7mJKJc3qZn8Fqk",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FGfMPhmJX6q2HZ5vzYzvm2fiEc93SiqzfDSqWDdKk5qV",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "QAGnZ8se7iCsS9hAm8Kpaoc11EpDf2TkGpehaev3kGu",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "B8TVeaJUp9FMy7CucA1V9pMLAkRkxHh45rPsTv27sgxA",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "cCikw3h8Kq9p1SN5qSEGsRdUwDAoB8RzQgCAZJGmpMX",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "6zLe4s463RXjgUuAmWGHSBqq5F5zYgTRfDpdqZj2qpLy",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "Hh9pqBEwCgQohyvqDkWtvkiMNTMcquKeLfhed9cYbB31",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "F7aUYS36RMdkGZKWMcZ6XhJijfZzxhJ3wpCJAhLXad6V",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "AXR9zmnFaqndbWSJMp3E4uBjbxs5UEkQvc8AawmngvZp",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "6Nw6na1iXwAySwRki4ZpTYSRA3LP1gzQjsrxk6SnweDM",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FUpNSFEzYseBpQYCDcRVMxC7cP9USyUaWZ35EZSAPLf1",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "8iKTX5GWdx77BhtYgxeEcEUVmms3ZAzL3SuPgvpUTMWH",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "5JM3ze5BQEk666V23VqkHreVGvSsUPoQvUB3fPqtyk7x",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "63p7VX7FuKppXQJvoMYr4EEHEgJPBNA3R5mBATRRQHvB",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "6twM5xzprhm1kmbdC6iuCSS9Adgu5EuBdkfF5Nesn6Z1",
+      "count": 1,
+      "sol_received": 499.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "Fhh2kHbdpDSKnKAWiRQAhCTgxs7xugfDrgUTCBFe51Vj",
+      "count": 1,
+      "sol_received": 493.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "AsFYdnaZGQR2Zik8TxZyW4BBBxhwxrQanKLvR8qvUBW9",
+      "count": 1,
+      "sol_received": 467.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "BaFsXFxtUMjDed8PFQVjF6QRmmk3i2z5dMAhmdCxyk3X",
+      "count": 1,
+      "sol_received": 462.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FDmdic9XqTfSEt7isi9MaaHtf3A5Jcgv2ZuqCyL1F1BN",
+      "count": 1,
+      "sol_received": 456.498,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "AjMCVWrFXStXhLhwwH2VSovR1mhgbNfa7m62ubqmnrbD",
+      "count": 1,
+      "sol_received": 451.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "DPNNXbg6G6PvcZt9svi144t4XPnmZAqWj5icMELqQF5m",
+      "count": 1,
+      "sol_received": 449.498,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "2TF5KRBxh7W98VtrLwUHeeWmpqoHvBugbyD2B5HSDKLT",
+      "count": 1,
+      "sol_received": 432.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "3uaTjwSCiAvFdgg6iV9VK1SELSfgtEdauzkFS4cv24Az",
+      "count": 1,
+      "sol_received": 423.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FHrreSvT8QXHM5dEd5Q2gWfC5pkxDUPKc9aojDNfSgiX",
+      "count": 1,
+      "sol_received": 422.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "HTDzMuTmU41aD7v4FiPoeS3DtSMLHFQcGgjm96ARCjG8",
+      "count": 1,
+      "sol_received": 411.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "7txRWXU218rs3tsbEYjSWNCFxX1fmTPC8XH6b1QcWgqK",
+      "count": 1,
+      "sol_received": 411.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "FLUzi2kGXnTZTKDtZMRCPTPacv1Ldq16dpSabdk6UFYJ",
+      "count": 1,
+      "sol_received": 399.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "EBcKVc77GTqdMpkSTveahVCfxuhUbXafeEUvGnCbMKLm",
+      "count": 1,
+      "sol_received": 399.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "ExeTSUMhwzVtgmsvWCPZ8U3dMSLmXc2xFbPfHHcwLaiK",
+      "count": 1,
+      "sol_received": 399.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "C12xUbxcCjF7aoCnZeXedTowKftGgT4Kdo9hGfrRpGvd",
+      "count": 1,
+      "sol_received": 399.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "2is8HrGZHsPTvLoXLXAmnB6ubxRv6oetMsLhr751AG7M",
+      "count": 1,
+      "sol_received": 399.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "DwoFCf8qt1fszi4idoC2hRux1dxog4KAYkX3XsYEzpCU",
+      "count": 1,
+      "sol_received": 388.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "dTknRDHLfaq5tp5VmakpzVCWhnpnRizBGycFn7r4rx6",
+      "count": 1,
+      "sol_received": 381.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "7DaiwNZVamDgCmhwWMdvdZrv9jQuyTD8Np95WEZRS5wh",
+      "count": 1,
+      "sol_received": 376.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "3LrouR3L5VjfadfLZqkZLZWcfY55P1rBA3Ngc31ePSUs",
+      "count": 1,
+      "sol_received": 375.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "DRKyVLTa5oCxBF7dPepTgbq1kB1quoJ7AyojwLJJPh8y",
+      "count": 1,
+      "sol_received": 372.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "5vYFhfCaDasngLzPuAytnkW4NKLuYgwUXPwR6pD9AbN7",
+      "count": 1,
+      "sol_received": 370.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "9FA6jFxNvzMheytFxWykZ2KxJExEsQmNQL1LFVgsAaJW",
+      "count": 1,
+      "sol_received": 349.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "7NnSr1VjGbsZV1z37orZahrnLUyTJVLHaWWZn5x54iVy",
+      "count": 1,
+      "sol_received": 333.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "2TGKF8WSfCF7vVn27x7nqAcugxrWkXPB5jfrYnstXhAQ",
+      "count": 1,
+      "sol_received": 331.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "EMXXDRMsXLM5SKWXDfvwPVFZwj6iC9cmJE6VXiPCCCqj",
+      "count": 1,
+      "sol_received": 325.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "CE4FopxWMnHVXeNZVExqjTks8kzeB8X9BYwcieFBcTue",
+      "count": 1,
+      "sol_received": 324.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "5UteTXfbEirhLQBK5voyc2g1YSnaRBX7DcdRDUmVQu5a",
+      "count": 1,
+      "sol_received": 307.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "CC5bk7trLeLS3LP8RA5TMsuibgFvmKeGM3Ce6gGtRdw9",
+      "count": 1,
+      "sol_received": 306.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "GR5oCmHzBkNLBLPCAzDzT12ymW5LEsErGHeQr1513B5L",
+      "count": 1,
+      "sol_received": 305.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CbJG5Bm5bWZnVacdnRMTRncv1NLkS9HLXMxoJ2jsgiud",
+      "count": 1,
+      "sol_received": 304.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "6NhwkcXUSBgE78ZGwvemnRbF9dvsqApaKDCm1dUkEEi2",
+      "count": 1,
+      "sol_received": 301.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "6SwsE9vo4AReKVD6cafQqghq3NBydD8JtLM9bYpzq9tM",
+      "count": 1,
+      "sol_received": 300.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "3Ax29SWoX2RQwFeVhbS7JaKJtMc4dQdRCp3EnGCq3ngP",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "5g1gEr6tJSAaV6WGCc3eNvVWsqE49edj9zZRcQczNuny",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "BmQBhCMEqDfm5BSuZiwUWnpau6wXaQvZi5rdkWwyaCJ7",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "3ayqNP1pLSXPYMiTztMM4QVWxsfrT7DAQ1bocFTgEH9T",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "E9Mn69CZGPP3naYmfbVZiLzzWQVaJR6aDMxtKEPbxAFy",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "33F1pJ4sLMVHcPzfpEYeFgGpqYdh5E6az981ijj9puNL",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "7uympahs9sx1F7tzvERZdbft6t4mvTnkwA68JGukC3zm",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "29L2VRacKzTgdbBoxTGKSxp9iCMUySrVM82AUGqXPgfE",
+      "count": 1,
+      "sol_received": 299.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "HB8Psvnqu7VPuBDMDV4JAfa9waydFfomNh4k1vgXsmKt",
+      "count": 1,
+      "sol_received": 297.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "qafTTVdgPncJCum5ieBQXeLWrRjooeuKX7PRxngKNXr",
+      "count": 1,
+      "sol_received": 295.907,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "7TMfaAFhyJ2MMckQC3SR4YHZs9btcuhdgdzZBhReiUtr",
+      "count": 1,
+      "sol_received": 294.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "AqfZkQSaYBPzBqwFAdgNg7qkpapHq9PFjwfxt8JkXS6D",
+      "count": 1,
+      "sol_received": 293.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "5gdHQbJw7VJe6TEDebDuKDVzPn9njTBHren9SE1RSbeq",
+      "count": 1,
+      "sol_received": 288.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "BMVTnDKhTcAorV28GBBt9aP7huE7e1KBypjDbUH6LMVj",
+      "count": 1,
+      "sol_received": 287.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "87CQPEsyouiR1WPCQjQEQfAUVcUCuecR628TKhwZnTYm",
+      "count": 1,
+      "sol_received": 277.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "6bfuFHJwvv9wwzNTytqwgbEGKNCJYjQoavAba6ig23qu",
+      "count": 1,
+      "sol_received": 269.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "6x4EYw7nJ7MWqbkXr7tVxEAzNeZQEnbfTNUJEzX456qa",
+      "count": 1,
+      "sol_received": 269.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "FWyKuRpwykjCGYHE8sH1jYSJWaF1i455XAJoQk59BYb6",
+      "count": 1,
+      "sol_received": 254.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "4tx4Mq4bpg3CJmBLFjLZpfpaRnBcwH2njcaJNswLhcdq",
+      "count": 1,
+      "sol_received": 252.498,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "HBFBTCQG2YGkgf4wwmRfZ4Mj2XUpF9Sc3ap8oYcoKyBn",
+      "count": 1,
+      "sol_received": 252.354,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "FRWwNTxbEKvzxuTS2ZkhsvjRDzk4wmUm3nM9qrp8Yjua",
+      "count": 1,
+      "sol_received": 249.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "GgNVaVJMzfK2XQQSZj54UtinTerC6JnNkwgX3WKafcK5",
+      "count": 1,
+      "sol_received": 249.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "fN3whuvR4R72V37mCN2KVwD9dNtcdyo2iEZ6k8Quzhp",
+      "count": 1,
+      "sol_received": 249.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "BbrsRCGE4JuEfus2sh1EsjHnVMH44Mnxwkjn9R6d9WJp",
+      "count": 1,
+      "sol_received": 240.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "4pcUoCjeFHaFXkF7jVGxqW5dMVMzV6C2nRb5Nxkvi9Pn",
+      "count": 1,
+      "sol_received": 235.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "2bUnj8JKshzhq24t4xvZnZE3M9W4vdWZ8A1JnKzVBV12",
+      "count": 1,
+      "sol_received": 229.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "EB95G1AxFv8VoB7XLWFHZkmdQ8qoaHe4uj1wAyVV48Yq",
+      "count": 1,
+      "sol_received": 222.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "9oRTBCXnBrVT6fSL2zaPdm6cYmer1TFouyZ2AXQb7Qec",
+      "count": 1,
+      "sol_received": 219.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "FKfCAY1MiEHoDWWwusVtjfVm16jyHxsdnRGq9FDW4MNM",
+      "count": 1,
+      "sol_received": 212.034,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "EBki7kxTBpQHZDRp6ADbrNGx4hVzarD9rzCtR9hMFPa1",
+      "count": 1,
+      "sol_received": 206.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "Dr4B6D7CFKv7K7SPWXQ5jxx2a3mSWfuhAFXVV76SQ47x",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "D6ZBW2Kz34cM5Rf8sw9264QK8K4VUwao64daV3xuEQz6",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "HWJr5fqTN2uVHQ3zZuyu4ej7WKWfA7qHs8FmMdxHP92X",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "8pg7k7qAkcDni1gmTPuziG9XX42eizBLBGaZr9YkMSWj",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "59rNgTbDqfhGqXeUxYGriNSRpEBcP66HJSu9uwM2sofV",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "EiGNLRB1ZZ3wYEzrAreiUuf7VJH4yRyykE3euysx1x86",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "8wi9grBhEopRXpjMCee2Vr65bJsTQDTEdY3DxgweMhZj",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "GWyPw3Q3KsjQtvVrNs5Y8SGamg4fp7f7kgBVJbayeeV6",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "FG8BdFe9EEiE6Bi2GufUDdXinfdjjYYK2HyYoGXBbm99",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "HAL7FEUq1YPS32diZKwL81zPR2vrpSgdP6fZDgV6gCej",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "DwuKRYv2CQ3ScgHtM17DJQUAyf3MUTQbDiut9ahVNo1u",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "6PNXHkuKxQEjDzK6pxzMMF7fc2p8VvFBkDxv6cT99Dcj",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "BPk9o4ZQHfWa5NKCnvru1RGViuPRJ12hjeGhzozaUGFC",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "36L5VbXG1ZAyGnYzeHPVYieFiCWAz1bVMJ9JHNshwfqh",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "HKLdrad9YJPB16FMuhDg8embJwH7ozqURmanAjKnrpc9",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "CZiUJrey5DgrDFYqMjeFQDGt1Ux3cB2nuUpQmhXD85ky",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "8bD5yX9xfoWzwV2D9LSp8u3J2nyNnJ7HG6A4hEsHFpe3",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "3gvukJ99Djs6YqEBZT4r8zvqQFkpRUj76SaB42oLwQdi",
+      "count": 1,
+      "sol_received": 199.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "DrpsjJD78KPJECSz9EaAsrshYZS4DccvSX1woSczudMp",
+      "count": 1,
+      "sol_received": 196.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "8WJ7ofjeqvZ9SfPiYY6ubNsddcCCfGonPsm7p1Az5P7h",
+      "count": 1,
+      "sol_received": 195.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "7JH4eNjoezWYFF3juEUFBiP6e4nW5cBSq5GjaH3g3WWY",
+      "count": 1,
+      "sol_received": 194.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "2t9NfwTPiZfxyyNFS1FWA8esWzrnkqtCgL4dReoczSBZ",
+      "count": 1,
+      "sol_received": 193.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "3wtC2zzeFXsoBht4ViLr97c2KFKc5M5gvgTgQuxRFb8u",
+      "count": 1,
+      "sol_received": 190.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "39H4h1HJhXneKYTWRQEaPNxjEFjAXtUWL4WfWapkQk5a",
+      "count": 1,
+      "sol_received": 189.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "7B1oGJcM9vbUWJ8FwptDQHy1gzP6v51qbAy4TpWWv7ah",
+      "count": 1,
+      "sol_received": 189.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "HTgzfiabxbVjwLt7Xkj3fg4a3Li41ogKswN38Fi46NcP",
+      "count": 1,
+      "sol_received": 186.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "686UzDVgHvvCRhYCud52aWK8YXexqSLZcWzeo3zLKWXH",
+      "count": 1,
+      "sol_received": 179.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "dCbg8NnCPwGH4gY8Ha4sk6SwATJFkGQaFnqfaACpMaf",
+      "count": 1,
+      "sol_received": 179.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "GBWnCtHjoSvVVGWaqkv526PvH1F8JFDa7UhKW61Z2vCa",
+      "count": 1,
+      "sol_received": 176.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "9wm7U2RfKbVvh6ERvnG5jZBC78EQh6Gus6GkXfZZrf4m",
+      "count": 1,
+      "sol_received": 171.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "Hnytp1cqskVaFxcHGTvDJo8fk5xiLRZi3LnuUGpZqtR5",
+      "count": 1,
+      "sol_received": 171.944,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "126eLFs7HwEyDDL2zuSGoQUeMm6m7p5CSn5x9CXYQawv",
+      "count": 1,
+      "sol_received": 170.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "FPjgVx5yr3STaseUdEGfH6wPzFXyWSijyht76FsXKio2",
+      "count": 1,
+      "sol_received": 167.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "7yqsm7MkhwGMsMa6nFXRWLdDrmca342yVeSJiDN7ujbB",
+      "count": 1,
+      "sol_received": 167.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "HjB8bj9GS3WwT2Tqt5WwDnkoM5yaSKLEW7JfZGcKxPod",
+      "count": 1,
+      "sol_received": 162.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CZ821t1bgih3aLER9B9gLaDt62NcmbYVyhzNk7yZPKdq",
+      "count": 1,
+      "sol_received": 152.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "DMVGrm6Nk25CaZhhLgTKRss66ceLDJAxYk2D6FiaQaPy",
+      "count": 1,
+      "sol_received": 150.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "3ZpRewqpBDJrNvfGnQwmebBBikmkyTh4PvVe25CLPZZ5",
+      "count": 1,
+      "sol_received": 149.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "GdeVXs7VjqFAfLEHNGoJgsHwBWE1MBnQETgxzNQooFei",
+      "count": 1,
+      "sol_received": 149.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "5RGDTWsnxwJ5BuYnWSBvNdmvF6PzgdKJCF6CAGss2943",
+      "count": 1,
+      "sol_received": 149.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "7Lr4jMfnACy9qQaPYNPUmQcXw3WR2QgZwQXhU59kmDLL",
+      "count": 1,
+      "sol_received": 149.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "9JWvhrdxahdSAsrVfxZZtLMsZRcWAdCoV9EPbSN7ohcC",
+      "count": 1,
+      "sol_received": 144.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "3SexgCABNZqH5a2TuSJamH79j9Vsz8bVEk3XHRUkxmKu",
+      "count": 1,
+      "sol_received": 140.898,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "3mnbyuURVW72GkjzRkBvjc84q2kctrwNTQXkpVnq9R2g",
+      "count": 1,
+      "sol_received": 139.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "C2bQ8R4Hrsy5yMzLckWhwo4kaH32Wwjaf9zvZn8HwKcr",
+      "count": 1,
+      "sol_received": 137.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CFZjkjewm4XiLdda7v4GXYxVyNey9zXTPDedw6vVHJq7",
+      "count": 1,
+      "sol_received": 137.66,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "68xdtgwHAmupSgQAb44SjkhqtxRSvryAH3cQTtTaNWsH",
+      "count": 1,
+      "sol_received": 133.685,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "69p8k38ytJpBBpkFkv87QfJkDGEVu36xLBtGLtjYhrYC",
+      "count": 1,
+      "sol_received": 132.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "A8KxCtTMufaoDkivdMbGrkc4dzFvjEVvBoGaLmuZB8Xh",
+      "count": 1,
+      "sol_received": 131.322,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "TP9HxJ3wPiCN8fZg4XXtUFVzT9uuoDSt7dJ6NPJPQTu",
+      "count": 1,
+      "sol_received": 129.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "H1RDAkwDBc14fEEFt2S1rVBSFz56JuY3waNUVgrXtTmP",
+      "count": 1,
+      "sol_received": 129.862,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "8gRMeaGREtd17ajEikJQm8TZt96BAasHqxepa2eqgopd",
+      "count": 1,
+      "sol_received": 128.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "87tSAYGc9V7Rk24Sj7kjYbG8RSYa7keNUBNywohGnZAL",
+      "count": 1,
+      "sol_received": 123.058,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "DLyQRdC9U6ybDsLsyKkLkWTWeSZu4FYycLiuunzBddUN",
+      "count": 1,
+      "sol_received": 122.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "9pVGZT1iwraRwuhR1tXHGadRt3VqhmcHk1f6E5HAgwAw",
+      "count": 1,
+      "sol_received": 119.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "Did3wumz1Nb1eX6twsyoxxZXp89TwGNkeTiNPHWRAMiE",
+      "count": 1,
+      "sol_received": 119.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "JC5jEJsSUkEeUUBaez8xfyycR2HyLZErAmaxP4TmvtCG",
+      "count": 1,
+      "sol_received": 119.498,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "B7ayaTCB2r23ox3oCJxVyXgwtWcMjzjsLojDdMFPfRHh",
+      "count": 1,
+      "sol_received": 117.355,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "36rCRbCDk4T9GtUybgKKESWrFh9CXbY9aqDbB5wKZo4q",
+      "count": 1,
+      "sol_received": 113.588,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "DEa1tbB3FJzWYqEGNM6SynWgoGj5h3agpJ8iJRDHQo78",
+      "count": 1,
+      "sol_received": 111.498,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "2ZLfRYv5bcSyPF9KQK3PemssqsAwnnRhgakKJ7jhmVHU",
+      "count": 1,
+      "sol_received": 109.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "5FnF2qUTXFy7q7L7sSMNfvbaoUCSUam7UzAP6jWdb1EC",
+      "count": 1,
+      "sol_received": 106.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "3zpeiftuw6SGKbX9J4NkkS9pQeVcntMva8trdw7xZj8y",
+      "count": 1,
+      "sol_received": 100.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "9rWiJ31HkDoDFX8Ff7rVjhkESBteRRJ1ekWgiQg9vt4g",
+      "count": 1,
+      "sol_received": 100.072,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "9RP3awc8QJqi4TB1S2y3HLoq6Ut99dTak999B8hFnJsR",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "G5xKFA5UZzedtVL15K9dXpDSdNuP1BHotj5jafF8vZq2",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "57qbuo821zsNzTApyH3e7raqCWLQa8qpQiDDZ3zc3k46",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "8XDPFZdmFwpFWTQgBJXaRJ7g1P6eSSBmxEzKSw8B8HPw",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "fqmc5jjUcpv6FBnypgGLe29V7dk8dBLbS8JLBbMfGSR",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "FMyHNRxdtiaGr78H8LPEANP5gcQkh1HoZVPa5t3Wx9Me",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "CgMjXkpV4GCYeawJyFUydMCKLdYkfBvqVxXda5RiocLH",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "Cx3FwShSwySXMkAnbwp97ZomfwAjJfUsK4FcshjyUVZM",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "8YPJJsFdxhMBHMsJNYjzUbD2HDhJVekvPVCiaLeEsspp",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "93K7sQzouhCfRPQpFHs4LHYXf6wLLcd8SGmTRaCotwJS",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "AKgTKLGGzZjvqUzYoLQgRRrvb7yZT9FeM9RCy1yZFYSj",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "2bzobemc8nF6FKMjPXWJo5VztaSDZzaJ9rpDGnzojFLU",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "FFjpLKmDv8ucM6jHpiBXDcXUQFPfVMm8ShsHMEyqh8zY",
+      "count": 1,
+      "sol_received": 99.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "FcNdaFGKUE6P9FrsDQQ3qRYMs43KYuSZsebAJ3Kcoyxa",
+      "count": 1,
+      "sol_received": 98.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "8fQSY2yZZiMQZ3u4NLEUah8VHBvzJymw6CfWbLLzcjwu",
+      "count": 1,
+      "sol_received": 95.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CEK2xvKewWzySZxFztjjbXkWMN9T2rKpqF2gzszjhkVd",
+      "count": 1,
+      "sol_received": 94.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FMVqtdXQPdGH5WKZAnpDoo13uusF4DKQyy38yt8hhWUx",
+      "count": 1,
+      "sol_received": 94.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "38tu7NNXkPoawTpQXbBSKFEY4XjyWYNuiLUBDgcCUNSH",
+      "count": 1,
+      "sol_received": 89.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "9khxm1JqVfApdGyAZ1dXT3FSGB5xkHfLAGLD9eaocyMr",
+      "count": 1,
+      "sol_received": 86.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "8DffmQdN7iNprxbqWAed8yyeVYz6mrWG56zuhSaQKg9s",
+      "count": 1,
+      "sol_received": 85.615,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "6VjojdYmBUKNyZjZaePpivhu2xACykUBEMrZtLQUwZMe",
+      "count": 1,
+      "sol_received": 84.262,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "HMtYt7SDh9bBFKATr7mStKF3vPNN8dygfnXNsLi2HJBE",
+      "count": 1,
+      "sol_received": 83.498,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "yq77jSd2tjKyvgBVziars2ufUVgH9vKWMX92NH6mtRu",
+      "count": 1,
+      "sol_received": 78.828,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "4YWYL51VhzUoHe451Mujkbm8p51ViTnUApoVGyEb9Nzi",
+      "count": 1,
+      "sol_received": 77.542,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "C85dGhaWS8JxNhNHgCccFe9pZHKViRBKygkt3oS5LNAC",
+      "count": 1,
+      "sol_received": 77.532,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "DKy5HvQKyFbu1zB9ugQ6oeApS3UM34Feu8SxZ7hJTCgg",
+      "count": 1,
+      "sol_received": 77.053,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "2KgnayJxbgp4bw8Tj5pFZDoqVVmKzbuBNtQTHSnZqnVM",
+      "count": 1,
+      "sol_received": 74.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "BhTPJeagzCx8Pv5QkSCshXy8xvvi9A9ewNyGc7VvD8Kn",
+      "count": 1,
+      "sol_received": 67.418,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "8SF8RKumi6W8HfPFMJtBZQtFabRdRn1sdkXCLbqjZ31V",
+      "count": 1,
+      "sol_received": 54.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "ADtb2LnVd9hjcSmHuw7dcaUG78imNAyoJeXEkM6rqAqo",
+      "count": 1,
+      "sol_received": 52.065,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "6q5zMw6yBKGP9d4n8myr7yDX9CMjVSp3kf8k2u5F47N",
+      "count": 1,
+      "sol_received": 50.498,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "XWo2HiDtDHjBTkQzzJDgpi4TzLQghg8NWTJLXLhzzcr",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "3wbdA6gGavPHBiigoDBHoqbCYnQF9dGwmH9LSbZyWPBA",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "5SBHYyMe2iPP2syGqDCcwBDHbf9Pz96oTgNVPATiCsPG",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "HrHjZCYCgcj3WZBhjb1yYfLBhoBWMdMyTgDzxKTMZA5e",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "FKsZTGFSjk6zk1DtbJdxmDzrMP5tnibCgeec6pvjjE2y",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "DCK6xTEdBGnqMSvtWZRuaX3bTfkRx9XX21pvdxajaetS",
+      "count": 1,
+      "sol_received": 49.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "BpFNioDAJMhMsVeGpAwEwTLNT8xnJ2YTNx7qEzpF7eg4",
+      "count": 1,
+      "sol_received": 48.632,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "74wZ8kB1kABUzCqEipLyisytJfLZvh5XssQUJVfhd6mk",
+      "count": 1,
+      "sol_received": 47.728,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "vyPkY9RTiR5he3SmSdDS68gpncEsL8MQWBLamRtYqok",
+      "count": 1,
+      "sol_received": 42.498,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "AN9NqnGq2VbxpWhisfbTGj9iyj23e71L7o6zM3gmrnrd",
+      "count": 1,
+      "sol_received": 40.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "FDN6WaKbcnXDspx33GkNvP8SppCFibjGTuMsxCK19qn3",
+      "count": 1,
+      "sol_received": 39.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "9qC2cMd7zMYGh8ZQBYE5u1vFx4RR1d7zk1bPUJdRDa4U",
+      "count": 1,
+      "sol_received": 39.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CUYHTvGsrhGbZyyqfBWU7AG44Hpmzy2duS7KugEfHfAx",
+      "count": 1,
+      "sol_received": 39.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "BksFUkRFEtXZRmLZgi6S7vpdGh7rtqA6D5gDRa9tkjcH",
+      "count": 1,
+      "sol_received": 39.173,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "HtWKbMn3UWDUNQ1v7bWiz73prs1mFW1RrAb63G1SzTjh",
+      "count": 1,
+      "sol_received": 34.295,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "4VD67XapvEXg8cAeop1MJFYcRrUrNbBVP9huwPhyoj84",
+      "count": 1,
+      "sol_received": 32.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FnVDYbVf7aXtrLCEX6sKuK3UAH9QVRjj7WkM1fM7RP5p",
+      "count": 1,
+      "sol_received": 29.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "8DABjSLP5xAAjEFJCvL8TQP2wt27vYSuoGi1Pe2shgm9",
+      "count": 1,
+      "sol_received": 29.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "3D47duV6ynDDbx2DT414HMQsTVL2CybJi41NjXEPAaLa",
+      "count": 1,
+      "sol_received": 28.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "E9B3CKHtWmXXuRz8gEoeZro4AvAV3UGiWG9UWCj4z8D4",
+      "count": 1,
+      "sol_received": 24.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "2XpZvzSbmoEUEFvhGL9tJtoGd5CHRJcGju5KGgJYYgM8",
+      "count": 1,
+      "sol_received": 23.498,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "3sFn5yabuttqRSfwepSbNoSCyV5SurET6LkPp4AvqVBm",
+      "count": 1,
+      "sol_received": 22.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "22Bb12HXzG8SQCByT9uN8oj15KEwirq8kCERvpcGnDNG",
+      "count": 1,
+      "sol_received": 20.051,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "85VhtbrVrUgWDYGDgJPcqJYGSXtKH8HTPHZNwzqGbYv1",
+      "count": 1,
+      "sol_received": 19.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "JBw7kD3LVvPQnPz9tRYTkWFkZPvkvWv78569qeLZX9dp",
+      "count": 1,
+      "sol_received": 18.998,
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07"
+    },
+    {
+      "wallet": "2zVeanky7HTkAMVoMqyaVvVqrw11BTFRSUELQ4TLR9Jr",
+      "count": 1,
+      "sol_received": 16.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "GKfd9RrptcXC2RvrqSKs2jfGw2dzQyKxJmyii5Etddd6",
+      "count": 1,
+      "sol_received": 13.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "CBL1gYnv8wunNPLRPFRmK2ScUr7MP4c2XuVkbqXLAN4J",
+      "count": 1,
+      "sol_received": 11.45,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "6ZengvkjJfqKEBUAK3Ne2gunh9qoDokgHdRGWNJ7J71m",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "9tfNvFcNduFUQgyjbKFK83pdGBjPXEznHvcHtyyFjXj3",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "EeUqTof55Y6kHfFEm8wjqAtgvN7CJTCyvfUmr9dGfPxt",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "3RFpdett4SurWZGsTDg4f87eXyw9XkcnycA63UTCb8iM",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "FkxJZpjRmyfvYvspCVpxMHo3kTm2nTTbigNyvU3DG2oX",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "6iVWKnwgMS9HNwSFtvPsdWACucLKfpTM3e9Sakr7RZtU",
+      "count": 1,
+      "sol_received": 9.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "AnwPRuaw1zHJMoxsZFX3djpYMyS2yRHiqNhKydx5NLz9",
+      "count": 1,
+      "sol_received": 7.998,
+      "first_seen": "2026-06-09",
+      "last_seen": "2026-06-09"
+    },
+    {
+      "wallet": "FYQq5AJeUCPxhY3VssgPMago2eheHVU9owEArVb4xJX6",
+      "count": 1,
+      "sol_received": 5.209,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    },
+    {
+      "wallet": "DRWizCCs2aEP1Bi5FpqqsD1p14hzy4ndeswsrqaUairA",
+      "count": 1,
+      "sol_received": 4.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "DJf84cpBEB1kqk61EA9Eu33ztSHc9Sf5DkLDR9rSMm8x",
+      "count": 1,
+      "sol_received": 4.998,
+      "first_seen": "2026-06-10",
+      "last_seen": "2026-06-10"
+    },
+    {
+      "wallet": "6WK8jgvV7oEGF3NuQuX3Kxx2iZa9WVXDcZiGaRD28ghC",
+      "count": 1,
+      "sol_received": 3.998,
+      "first_seen": "2026-06-08",
+      "last_seen": "2026-06-08"
+    },
+    {
+      "wallet": "EsRhHSL7rGuXmsvN4NKR69AuLPybvV6xn5hcqddcHfVj",
+      "count": 1,
+      "sol_received": 2.998,
+      "first_seen": "2026-06-12",
+      "last_seen": "2026-06-12"
+    },
+    {
+      "wallet": "DQD7kj6mJcbfftmkFPMf6MqPxGmhk8o14VraxWR4zH1K",
+      "count": 1,
+      "sol_received": 0.998,
+      "first_seen": "2026-06-11",
+      "last_seen": "2026-06-11"
+    }
+  ]
+}

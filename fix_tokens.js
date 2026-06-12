@@ -1,0 +1,11 @@
+const fs = require('fs'), path = require('path');
+const f = path.join(process.env.HOME, 'Desktop/nexusveritas-api/find_tokens.js');
+let c = fs.readFileSync(f, 'utf8');
+const old = `      const creator = await getCreator(addr);
+      const creatorStr = creator.address ?? 'unknown';
+      const tokensStr = creator.totalTokens ?? 0;
+      console.log(\`\${addr} creator: \${creatorStr} tokens: \${tokensStr}\`);`;
+const rep = "      console.log(`${addr} liq:${Math.round(liq)}`);";
+c = c.replace(old, rep);
+fs.writeFileSync(f, c);
+console.log('done, lines:', c.split('\n').length);

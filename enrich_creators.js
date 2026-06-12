@@ -132,7 +132,13 @@ async function getFundingProfile(creatorAddress) {
 
 async function main() {
   const rl = readline.createInterface({input: process.stdin});
+  let _count = 0; let _start = Date.now();
   for await (const line of rl) {
+    _count++;
+    if (_count % 10 === 0) {
+      const elapsed = Math.round((Date.now()-_start)/1000);
+      console.error(`Progress: ${_count} tokens processed in ${elapsed}s`);
+    }
     const parts = line.trim().split(' ');
     const mint = parts[0];
     const liq = parts[1]?.replace('liq:','') ?? '0';
@@ -141,10 +147,10 @@ async function main() {
     const creator = await getCreator(mint);
     if (!creator) { console.error('no creator: '+mint.slice(0,8)); continue; }
 
-    const [funding, operational] = await Promise.all([
-      getFundingProfile(creator),
-      getOperationalSignals(creator),
-    ]);
+    const [funding, operational] = await Promise.race([
+      Promise.all([getFundingProfile(creator), getOperationalSignals(creator)]),
+      new Promise((_,r) => setTimeout(() => r(new Error("timeout")), 20000))
+    ]).catch(e => { console.error("skip:" + creator.slice(0,8)); return [null, {tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0}]; });
 
     const profile = {
       mint,
