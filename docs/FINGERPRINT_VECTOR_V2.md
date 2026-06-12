@@ -445,3 +445,162 @@ decrease_liquidity / increase_liquidity:
 Variant 2 (Anchor IDL): only if full deserialization needed
 Variant 3 (Rust):       Q4 2026 when pipeline moves to Memgraph
 ```
+
+
+---
+
+## Phase 2: Cross-DEX Actor Aggregation — Open RFC
+
+**Audit date:** 2026-06-12
+**Status:** Specified, BLOCKED on Memgraph (Q4 2026)
+**Audited by:** Technical peer review (CoderLegion)
+
+---
+
+### Architecture: Actor Flow Aggregator
+
+```
+Phase 1 (Q3):  [actor_address + pool] → isolated VTD per pool
+Phase 2 (Q4):  [actor_cluster_id]     → global G_LRI across all pools
+```
+
+Blocker: G_LRI requires Sybil cluster identification.
+Cluster identification requires Memgraph graph traversal.
+Without clustering, sophisticated scammers distribute
+across N clean wallets — each looks clean individually.
+
+**Cycle break strategy:**
+Phase 1 calculates local per-address G_LRI as weak signal.
+Phase 2 upgrades: WHERE actor_address = X → WHERE actor_cluster_id = Y
+No schema changes needed — just argument substitution.
+
+---
+
+### Global Metrics (Phase 2)
+
+**Global Liquidity Reversion Index (G_LRI):**
+```
+G_LRI = sum(L_add across ALL pools) / max(sum(L_remove across ALL pools), 1)
+
+G_LRI → 0:  terminal extraction across multiple DEXes
+G_LRI >= 1: cyclic rebalancing (market maker pattern)
+```
+
+**Pool Diversity Factor (PDF) — Shannon Entropy:**
+```
+PDF = -Σ(p_i × log(p_i))
+where p_i = volume_in_pool_i / total_volume_all_pools
+
+Combined signal rule:
+  high PDF + low G_LRI  = SCAM (locust pattern)
+  high PDF + high G_LRI = Institutional MM / Arbitrageur
+```
+
+**XGBoost V3 Phase 2 features:**
+```
+cross_dex_pool_count      int     Unique pools drained in last 7d
+global_vtd_z_score        float   Max z-score across all pools
+                                  Window: current_slot - 4000 (~27 min)
+aggregated_slope_variance float   Variance of β across all pools
+                                  MM: slopes compensate (hedging)
+                                  Scammer: all slopes negative simultaneously
+pdf_shannon               float   Shannon entropy of capital distribution
+```
+
+---
+
+### Timing Windows — Verified
+
+```
+50,000 slots = ~5.5 hours  ❌ too wide, scammer escapes
+ 4,000 slots = ~27 minutes ✅ covers median rug pull (16 min) + buffer
+```
+
+All slot-based queries use: WHERE slot_number > current_slot - 4000
+
+---
+
+### New Table: dex_logs
+
+```sql
+CREATE TABLE dex_logs (
+    id               BIGSERIAL PRIMARY KEY,
+    actor_address    VARCHAR(44) NOT NULL,
+    pool_address     VARCHAR(44) NOT NULL,
+    dex_type         VARCHAR(10) NOT NULL,    -- 'raydium' | 'orca'
+    action_type      VARCHAR(15) NOT NULL,    -- 'swap' | 'deposit' | 'withdraw'
+    volume_sol       NUMERIC(20, 9) DEFAULT 0,
+    volume_token     NUMERIC(38, 0) DEFAULT 0,
+    slot_number      BIGINT NOT NULL,          -- time coordinate X for regression
+    block_timestamp  TIMESTAMP NOT NULL        -- display only, NOT for calculations
+);
+
+-- Critical indexes for 4000-slot window queries
+CREATE INDEX idx_dex_logs_actor_slot ON dex_logs (actor_address, slot_number DESC);
+CREATE INDEX idx_dex_logs_pool_slot  ON dex_logs (pool_address,  slot_number DESC);
+```
+
+**Note:** slot_number is the authoritative time coordinate.
+block_timestamp has multi-minute variance — never use for regression calculations.
+
+Phase 1: table populated write-only (no heavy reads, minimal overhead)
+Phase 2: window queries activated after Memgraph deployment
+
+---
+
+### New Table: pool_stats
+
+```sql
+CREATE TABLE pool_stats (
+    pool_address    VARCHAR(44) NOT NULL,
+    date            DATE NOT NULL,
+    median_volume   NUMERIC(20, 9),
+    sigma_volume    NUMERIC(20, 9),
+    PRIMARY KEY (pool_address, date)
+);
+```
+
+Updated daily via cron. VTD z-score uses JOIN on this table.
+No Redis needed at current scale.
+
+---
+
+### Phased Roadmap
+
+**Phase 1 — Q3 2026 (isolated single-pool context):**
+```
+[ ] Create pool_stats table (median, sigma per pool per day)
+[ ] Create dex_logs table (write-only mode)
+[ ] Implement dex_filter.js (Orca Whirlpool parser — see above)
+[ ] Single-pool VTD z-score via meta.postTokenBalances delta
+[ ] Add vtd_z_score to vector_v3 as first DEX Flow feature
+```
+
+**Phase 2 — Q4 2026 (global actor-level context, requires Memgraph):**
+```
+[ ] Deploy Memgraph for Sybil cluster identification
+[ ] Upgrade G_LRI: actor_address → actor_cluster_id
+[ ] Activate dex_logs window reads (slot window: 4000)
+[ ] Calculate PDF Shannon entropy per actor
+[ ] Add cross_dex_pool_count, global_vtd_z_score, aggregated_slope_variance
+[ ] Experimental: GNN trajectory embeddings (Variant B)
+```
+
+---
+
+### Implementation Variants
+
+```
+Variant A (Async State-Reducer):
+  Background worker queries dex_logs every N slots
+  SELECT SUM(volume) WHERE actor = X AND slot > current - 4000
+  Pro: no RAM overhead, no persistent graph state
+  Con: slight analytical delay (few slots)
+  → Recommended for Phase 2 start
+
+Variant B (Vector embedding trajectory):
+  Each pool interaction shifts actor embedding in pgvector space
+  Requires: online learning OR batch recalculation
+  Requires: full Q4 stack (temporal vectors + Memgraph + GNN)
+  → Experimental, after Phase 2 stabilization
+```
