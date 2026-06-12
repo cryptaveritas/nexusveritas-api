@@ -150,3 +150,88 @@ Solves the MM/Scam false positive problem.
   Orca Whirlpool transaction parsing
   Pool-specific account state tracking
   This is a significant engineering step beyond SPL transfer tracking
+
+
+---
+
+## DEX Flow Layer — Technical Specification (V3)
+
+**Audit date:** 2026-06-12
+**Status:** Specified, not yet implemented
+**Implementation priority:** Phased (see below)
+
+### Block A: Liquidity Reversion Index (LRI)
+
+```
+LRI = sum(SOL_volume_added_30d) / max(sum(SOL_volume_removed_30d), 1)
+
+LRI → 0:  terminal extraction (scammer pattern)
+LRI >= 1: cyclic rebalancing (market maker pattern)
+```
+
+**Audit note:** Original formula counted transactions, not volumes.
+Fixed: must use SOL volume, not transaction count.
+A scammer can make 1 large withdrawal + 10 small deposits → LRI=10 but funds are gone.
+
+### Block B: Net Pool Exposure Aggregators (NPE)
+
+```
+NPE Slope (β): linear regression coefficient of balance change
+NPE Volatility (σ): standard deviation of position changes
+Max One-Way Drawdown: largest continuous withdrawal without compensating deposit
+```
+
+**Audit note:** Requires time series data (pool_positions table).
+New schema needed: (operator, pool, timestamp, balance)
+Engineering estimate: 2-3 weeks for data collection layer alone.
+
+### Block C: Volume-to-Drain z-score (VTD)
+
+```
+Z_VTD = (V_last - median_30d_pool) / sigma_30d_pool
+
+Z > 4.5 + LRI → 0 = pool drain signal
+```
+
+**Audit note:** Simplest to implement. Uses public pool data via RPC.
+
+### Implementation Phases
+
+```
+Phase 1 (Q3 2026):  VTD z-score
+                     Public pool data, 1-2 days work
+
+Phase 2 (Q3 2026):  LRI with volume (not tx count)
+                     Medium complexity, 3-5 days
+
+Phase 3 (Q4 2026):  NPE slope + volatility
+                     Requires pool_positions time series table
+                     2-3 weeks infrastructure work
+```
+
+### Code Issues Found in Reference Implementation
+
+```javascript
+// ❌ Wrong Raydium address in reference code:
+const RAYDIUM_AMM_V4 = "675kPX9M4SG31gmmvvbiAtnuBZic9mZeChFyCp8CvUtF";
+// ✅ Correct:
+const RAYDIUM_AMM_V4 = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8";
+
+// ❌ Wrong discriminator size:
+const discriminator = data.readUInt8(0); // 1 byte
+// ✅ Raydium/Orca use 8-byte discriminator:
+const discriminator = data.readBigUInt64LE(0);
+
+// ❌ extractVolume() not defined in reference
+// Needs full SPL transfer deserialization from inner instructions
+```
+
+### XGBoost V3 Feature Block
+
+| Feature | Type | Description |
+|---------|------|-------------|
+| lri_30d | float | Liquidity Reversion Index (volume-based) |
+| npe_slope_7d | float | Net position trend slope |
+| npe_volatility_30d | float | Position volatility |
+| vtd_z_score | float | Terminal drain z-score vs pool median |
+| flow_asymmetry | float | Outgoing/incoming DEX flow ratio |
