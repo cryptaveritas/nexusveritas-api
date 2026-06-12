@@ -19,7 +19,7 @@ echo "✅ Запушено в приватный репо"
 
 # 4. Пушим основной репо
 cd ~/Desktop/nexusveritas-api
-git add -A && git commit -m "chore: end of day $DATE" && git push
+git add --ignore-errors -- . ":!nexusveritas-api" && git commit -m "chore: end of day $DATE" && git push
 echo "✅ Основной репо запушен"
 
 echo ""
