@@ -1,7 +1,10 @@
 # NexusVeritas — Strategic Vision 2026
 
 **Ambition:** Complete all 5 phases within 2026.
-**Current:** Phase 2, June 2026.
+**Current:** Phase 2, June 2026 (v0.9.1)
+**Creators in DB:** 565
+**Archetypes:** 8
+**API:** live on :3001
 
 ---
 
@@ -20,14 +23,18 @@ Ranking problem identified. 3 archetypes confirmed.
 ## Phase 2 — Operator Intelligence 🔄 Q2-Q3 2026
 
 Question: "Who is behind this token?"
-NexusVeritas position: Phase 2, v0.8.2
+NexusVeritas position: Phase 2, v0.9.1
 Target: Phase 2 complete by Q3 2026
 
   creator reputation
   operator fingerprints
   launch history
   behavioral clustering
-  operator_class != token_risk (FINDING_003)
+  operator_class != token_risk (FINDING_003) ✅
+  8 archetypes confirmed ✅
+  VALIDATION_001: 8/8 WALLET_FACTORY ✅
+  API v2 live on :3001 ✅
+  Parallel pipeline 5x speed ✅
 
 ## Phase 3 — Network Intelligence 📋 Q3-Q4 2026
 
@@ -70,15 +77,19 @@ Q2 2026 (done)
   Vector V2 behavioral       done
   Candidate discovery        done
 
-Q3 2026
-  1000+ creator profiles
+Q3 2026 (in progress)
+  1000+ creator profiles  ← IN PROGRESS (565 done)
   MILESTONE_003 first unexpected match
   operator_score per archetype
+  Express + HTMX Review UI
+  Active Learning pipeline
+  XGBoost baseline (500+ labels needed)
   GET /risk/creator API
   Telegram alerts
   Network clustering v0
 
 Q4 2026
+  Memgraph migration (at 1000-1500 operators)
   network_graph multi-operator
   risk_trajectory time series
   adversarial signals

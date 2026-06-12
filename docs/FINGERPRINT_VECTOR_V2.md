@@ -115,3 +115,38 @@ V3 fix:
 Zero-zero agreement is not a shared signal.
 Only count feature as "shared" when both values > 0.3.
 (discovered via CASUAL_CREATOR ↔ WALLET_FACTORY false positive)
+
+## V3 Roadmap — DEX Flow Layer (Q3-Q4 2026)
+
+Discovered through technical peer review on CoderLegion (2026-06-12).
+Solves the MM/Scam false positive problem.
+
+### New V3 dimensions (DEX Flow Layer):
+
+```
+[36] liquidity_reversion_index
+     Times address re-added liquidity after removal in 30d
+     Scammer: always 0 (terminal extraction)
+     Market maker: >0 (cyclic rebalancing)
+
+[37] net_pool_exposure_slope
+     Direction of net position over 7d/30d
+     Scammer: steep unidirectional drain
+     Market maker: oscillates around baseline
+
+[38] volume_to_drain_zscore
+     Final large tx vs 30d median volume z-score
+     Scammer: extreme outlier (>3σ)
+     Market maker: within normal range
+
+[39] flow_asymmetry_score
+     Ratio of outgoing vs incoming DEX flows
+     Scammer: highly asymmetric (one-way extraction)
+     Market maker: balanced bidirectional flows
+```
+
+### Implementation requirements:
+  Raydium AMM/CLMM instruction deserialization
+  Orca Whirlpool transaction parsing
+  Pool-specific account state tracking
+  This is a significant engineering step beyond SPL transfer tracking
