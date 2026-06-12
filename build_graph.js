@@ -7,6 +7,7 @@ const agent = new HttpsProxyAgent(process.env.HTTPS_PROXY);
 const HELIUS_KEY = process.env.HELIUS_API_KEY;
 const knownServices = JSON.parse(fs2.readFileSync('./data/knownServices.json','utf8'));
 const KNOWN_SET = new Set(knownServices.addresses.map(a=>a.toLowerCase()));
+const MAX_DEGREE_THRESHOLD = 50; // graph flood protection: wallets with >50 children → HIGH_DENSITY_TRANSIT
 const hubsPath = process.argv[2];
 if (!hubsPath){console.error('Usage: node build_graph.js <hubs.json>');process.exit(1);}
 const hubsData = JSON.parse(fs2.readFileSync(hubsPath,'utf8'));
@@ -56,7 +57,19 @@ async function main(){
       if(!graph.has(parent)) graph.set(parent,{wallet:parent,level:2,parent:null,creator_count:0,hub_score:0});
     }
   }
+  // HIGH_DENSITY_TRANSIT detection — graph flood protection
+  const highDensityNodes = new Set();
+  for(const [parent, children] of parentMap.entries()){
+    if(children.length > MAX_DEGREE_THRESHOLD && !KNOWN_SET.has(parent.toLowerCase())){
+      highDensityNodes.add(parent);
+      const node = graph.get(parent);
+      if(node) node.flag = 'HIGH_DENSITY_TRANSIT';
+      console.error('⚠️  HIGH_DENSITY_TRANSIT: '+parent.slice(0,8)+'... ('+children.length+' children) — skipping deep traversal');
+    }
+  }
+
   for(const node of graph.values()){
+    if(node.flag === 'HIGH_DENSITY_TRANSIT'){ node.hub_score = 0; continue; }
     const childCount=(parentMap.get(node.wallet)??[]).length;
     node.hub_score=hubScore(node.creator_count,childCount,!!node.parent);
   }
@@ -78,6 +91,7 @@ async function main(){
   const hubRanking=[...graph.values()].sort((a,b)=>b.hub_score-a.hub_score).map(n=>({
     wallet:n.wallet,level:n.level,creator_count:n.creator_count,
     child_hub_count:(parentMap.get(n.wallet)??[]).length,hub_score:n.hub_score,parent:n.parent,
+    ...(n.flag ? {flag:n.flag} : {}),
   }));
   const metrics={
     date:new Date().toISOString().split('T')[0],
@@ -87,6 +101,8 @@ async function main(){
     clusters_l1:hubsData.cluster_candidates??0,
     clusters_l2:clusters.length,
     largest_cluster_creators:clusters.length?Math.max(...clusters.map(c=>c.total_creators)):0,
+    high_density_nodes:highDensityNodes.size,
+    max_degree_threshold:MAX_DEGREE_THRESHOLD,
   };
   const output={generated_at:new Date().toISOString(),wallets_analyzed:graph.size,clusters_found:clusters.length,hub_ranking:hubRanking,clusters,metrics};
   const outPath=hubsPath.replace('hubs','graph');
