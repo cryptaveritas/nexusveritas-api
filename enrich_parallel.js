@@ -38,24 +38,34 @@ async function getFunding(addr) {
     const txs = await (await fetch(url,{agent})).json();
     if (!Array.isArray(txs)) return null;
     const inc = new Map();
+    const out = new Set(); // addresses that received SOL from addr
     let first_seen=null;
     for (const tx of txs) {
       const date = tx.timestamp ? new Date(tx.timestamp*1000).toISOString().split('T')[0] : null;
       if (date && (!first_seen||date<first_seen)) first_seen=date;
       for (const t of (tx.nativeTransfers||[])) {
-        if (t.toUserAccount!==addr||t.amount<500000) continue;
-        const f=t.fromUserAccount;
-        if (!f||f===addr||KNOWN_SET.has(f.toLowerCase())) continue;
-        const e=inc.get(f)??{count:0,sol:0};
-        e.count++;e.sol+=t.amount/1e9;inc.set(f,e);
+        // incoming: someone → addr
+        if (t.toUserAccount===addr && t.amount>=500000) {
+          const f=t.fromUserAccount;
+          if (!f||f===addr||KNOWN_SET.has(f.toLowerCase())) continue;
+          const e=inc.get(f)??{count:0,sol:0};
+          e.count++;e.sol+=t.amount/1e9;inc.set(f,e);
+        }
+        // outgoing: addr → someone
+        if (t.fromUserAccount===addr && t.amount>=500000) {
+          const to=t.toUserAccount;
+          if (to && to!==addr && !KNOWN_SET.has(to.toLowerCase())) out.add(to);
+        }
       }
     }
+    // recycling_loop: addr received from X and also sent back to X
+    const recycling_loop = [...inc.keys()].some(f => out.has(f));
     const total=[...inc.values()].reduce((s,e)=>s+e.sol,0);
     const sorted=[...inc.entries()].sort((a,b)=>b[1].count-a[1].count);
     const top=sorted[0];
     const conc=top&&total>0?Math.round((top[1].sol/total)*100)/100:0;
     const wallet_age=first_seen?Math.round((new Date()-new Date(first_seen))/86400000):0;
-    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop:false,split_init_pattern:false};
+    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop,split_init_pattern:false};
   } catch { return null; }
 }
 
