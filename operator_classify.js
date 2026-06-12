@@ -53,6 +53,7 @@ const ARCHETYPES = [
     baseline_risk: 'unknown',
     rules: [
       { signal: 'high_incoming_sol',          check: p => p.behavioral.total_incoming_sol >= 50,               weight: 0.40 },
+      { signal: 'not_exchange_funded',       check: (p, meta) => !meta || !_knownSet.has((meta.top_funder||'').toLowerCase()), weight: 0.00 },
       { signal: 'many_funding_sources',       check: p => p.structural.funding_sources_count >= 5,             weight: 0.35 },
       { signal: 'high_avg_transfer',          check: p => p.behavioral.avg_transfer_sol >= 5,                  weight: 0.25 },
     ],
@@ -100,7 +101,18 @@ function classify(profile) {
   }
 
   results.sort((a, b) => b.confidence - a.confidence);
-  const best = results[0] ?? { class: 'UNKNOWN', confidence: 0, baseline_risk: 'unknown', matched_signals: [] };
+  let best = results[0] ?? { class: 'UNKNOWN', confidence: 0, baseline_risk: 'unknown', matched_signals: [] };
+  // FINDING_005 fix: reclassify INFRASTRUCTURE_HUB if pattern matches exchange funding
+  if (best.class === 'INFRASTRUCTURE_HUB') {
+    const sol = p.behavioral.total_incoming_sol;
+    const sources = p.structural.funding_sources_count;
+    const conc = p.structural.funding_concentration;
+    const tokens = p.operational.tokens_created;
+    // Exchange pattern: high SOL + multiple sources + high token count
+    if (sol >= 100 && sources >= 3 && conc <= 0.8 && tokens >= 500) {
+      best = { ...best, class: 'EXCHANGE_FUNDED_DEPLOYER', matched_signals: [...best.matched_signals, 'exchange_funding_pattern'] };
+    }
+  }
 
   return {
     mint: profile.mint,
