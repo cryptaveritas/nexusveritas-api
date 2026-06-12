@@ -99,6 +99,8 @@ async function main() {
           bp.operational.total_signatures,
         ]
       );
+      const sim = v2.reduce((s,x,i)=>s+x*x,0);
+      if (sim > 0.999 * v2.length) console.error('⚠️ COLLAPSE_RISK: ' + r.creator.slice(0,8));
       console.error('inserted: ' + r.creator.slice(0,8) + '... ' + r.operator_class);
     } catch(e) { console.error('error:', e.message); }
   }

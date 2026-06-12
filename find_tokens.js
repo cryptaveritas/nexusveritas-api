@@ -58,12 +58,22 @@ async function getCreator(mintAddress) {
 
 async function getHeliusTokens(programAddress, label) {
   try {
+    const cursorFile = `./cursors/${label.replace(/\s/g,'_')}.txt`;
+    require('fs').mkdirSync('./cursors', {recursive:true});
+    let beforeParam = '';
+    if (require('fs').existsSync(cursorFile)) {
+      const saved = require('fs').readFileSync(cursorFile,'utf8').trim();
+      if (saved) beforeParam = `&before=${saved}`;
+    }
     const res = await fetch(
-      `https://api.helius.xyz/v0/addresses/${programAddress}/transactions?api-key=${HELIUS_KEY}&limit=100`,
+      `https://api.helius.xyz/v0/addresses/${programAddress}/transactions?api-key=${HELIUS_KEY}&limit=100${beforeParam}`,
       { agent }
     );
     const data = await res.json();
     if (!Array.isArray(data)) return [];
+    if (data.length > 0) {
+      require('fs').writeFileSync(cursorFile, data[data.length-1].signature || '');
+    }
     const mints = new Set();
     for (const tx of data) {
       for (const transfer of tx.tokenTransfers || []) {
