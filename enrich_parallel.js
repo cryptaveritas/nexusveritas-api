@@ -7,7 +7,7 @@ const agent = new HttpsProxyAgent(process.env.HTTPS_PROXY);
 const HELIUS_KEY = process.env.HELIUS_API_KEY;
 const knownServices = JSON.parse(fs.readFileSync('./data/knownServices.json','utf8'));
 const KNOWN_SET = new Set(knownServices.addresses.map(a => a.address?.toLowerCase()).filter(Boolean));
-const CONCURRENCY = 5;
+const CONCURRENCY = 15;
 
 async function rpc(method, params) {
   try {
