@@ -8,6 +8,9 @@ echo "✍️  Не забудь создать отчёт: docs/plan/$DATE.md"
 echo "    Что сделано? Что в прогрессе? Что завтра?"
 echo ""
 
+# 2. Sync internal docs
+bash ~/Desktop/nexusveritas-api/sync_docs.sh
+
 # 2. Копировать на рабочий стол
 cp ~/Desktop/nexusveritas-api/docs/plan/*.md ~/Desktop/Nexus-Internal-Docs/ 2>/dev/null
 echo "✅ Скопировано на рабочий стол"
