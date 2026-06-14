@@ -39,6 +39,7 @@ async function getFunding(addr) {
     if (!Array.isArray(txs)) return null;
     const inc = new Map();
     const out = new Set(); // addresses that received SOL from addr
+    const incEvents = []; // {ts, sol, from} per incoming transfer — for split_init_pattern window
     let first_seen=null;
     for (const tx of txs) {
       const date = tx.timestamp ? new Date(tx.timestamp*1000).toISOString().split('T')[0] : null;
@@ -50,6 +51,7 @@ async function getFunding(addr) {
           if (!f||f===addr||KNOWN_SET.has(f.toLowerCase())) continue;
           const e=inc.get(f)??{count:0,sol:0};
           e.count++;e.sol+=t.amount/1e9;inc.set(f,e);
+          if (tx.timestamp) incEvents.push({ts:tx.timestamp, sol:t.amount/1e9, from:f});
         }
         // outgoing: addr → someone
         if (t.fromUserAccount===addr && t.amount>=500000) {
@@ -60,12 +62,27 @@ async function getFunding(addr) {
     }
     // recycling_loop: addr received from X and also sent back to X
     const recycling_loop = [...inc.keys()].some(f => out.has(f));
+    // split_init_pattern (FINDING_002): many distinct sources, small amounts, narrow time window
+    // — fragmented funding to avoid concentration before first deploy
+    const SPLIT_MIN_SOURCES = 3;       // distinct funders
+    const SPLIT_MAX_AVG_SOL = 0.5;     // small per-transfer amount
+    const SPLIT_WINDOW_DAYS = 3;       // narrow window
+    let split_init_pattern = false;
+    if (inc.size >= SPLIT_MIN_SOURCES && incEvents.length >= SPLIT_MIN_SOURCES) {
+      const tsList = incEvents.map(e=>e.ts).sort((a,b)=>a-b);
+      const windowDays = (tsList[tsList.length-1] - tsList[0]) / 86400;
+      const avgSol = incEvents.reduce((s,e)=>s+e.sol,0) / incEvents.length;
+      const distinctSources = new Set(incEvents.map(e=>e.from)).size;
+      split_init_pattern = distinctSources >= SPLIT_MIN_SOURCES
+        && avgSol < SPLIT_MAX_AVG_SOL
+        && windowDays <= SPLIT_WINDOW_DAYS;
+    }
     const total=[...inc.values()].reduce((s,e)=>s+e.sol,0);
     const sorted=[...inc.entries()].sort((a,b)=>b[1].count-a[1].count);
     const top=sorted[0];
     const conc=top&&total>0?Math.round((top[1].sol/total)*100)/100:0;
     const wallet_age=first_seen?Math.round((new Date()-new Date(first_seen))/86400000):0;
-    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop,split_init_pattern:false};
+    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop,split_init_pattern};
   } catch { return null; }
 }
 
