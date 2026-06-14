@@ -21,7 +21,6 @@ function toV1(bp) {
 function toV2(bp) {
   const s = bp.structural, b = bp.behavioral, o = bp.operational;
   const sigDensity = o.total_signatures / Math.max(o.days_active, 1);
-  const tokPerSig  = o.tokens_created / Math.max(o.total_signatures, 1);
   const initProx   = b.avg_transfer_sol > 0
     ? Math.max(0, 1 - Math.abs(b.avg_transfer_sol - 0.002) / 0.002)
     : 0;
@@ -42,9 +41,11 @@ function toV2(bp) {
     o.total_signatures <= 20 ? 1 : 0,                      // [9] minimal activity
 
     // Launch Layer (5)
-    Math.min(tokPerSig, 1.0),                              // [10] tokens per sig
+    // [10] was tokens_per_sig = tokens/sigs ≈ const 0.25 (tokens=floor(sigs/4)) — collapsed, replaced
+    Math.min(Math.log1p(o.total_signatures) / Math.log1p(20000), 1.0), // [10] activity magnitude (log-scaled total sigs)
     o.tokens_created <= 2 ? 1 : 0,                        // [11] single purpose
-    Math.min(o.tokens_created / 500, 1.0),                 // [12] mass deployer
+    // [12] was min(tokens/500,1) — saturated 1.0 for ~95% of mass-deployer population, replaced
+    Math.min(Math.log1p(o.days_active) / Math.log1p(365), 1.0), // [12] sustained activity span (log-scaled days_active)
     Math.min(o.launch_frequency / 10, 1.0),                // [13] launch frequency
     (o.tokens_created <= 2 && o.total_signatures <= 15) ? 1 : 0, // [14] factory pattern
 
@@ -85,7 +86,7 @@ async function main() {
           behavior=EXCLUDED.behavior,
           vector_v1=EXCLUDED.vector_v1,
           vector_v2=EXCLUDED.vector_v2,
-          updated_at=NOW(), vector_version='v2'`,
+          updated_at=NOW(), vector_version='v2.1'`,
         [
           r.creator,
           bp.structural.first_seen,
