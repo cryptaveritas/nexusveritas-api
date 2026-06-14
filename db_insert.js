@@ -86,6 +86,9 @@ async function main() {
           behavior=EXCLUDED.behavior,
           vector_v1=EXCLUDED.vector_v1,
           vector_v2=EXCLUDED.vector_v2,
+          tokens_created=EXCLUDED.tokens_created,
+          days_active=EXCLUDED.days_active,
+          total_signatures=EXCLUDED.total_signatures,
           updated_at=NOW(), vector_version='v2.1'`,
         [
           r.creator,
