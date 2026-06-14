@@ -82,7 +82,7 @@ async function getFunding(addr) {
     const top=sorted[0];
     const conc=top&&total>0?Math.round((top[1].sol/total)*100)/100:0;
     const wallet_age=first_seen?Math.round((new Date()-new Date(first_seen))/86400000):0;
-    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop,split_init_pattern};
+    return {transfer_count:sorted.reduce((s,[,v])=>s+v.count,0),total_incoming_sol:Math.round(total*10000)/10000,avg_transfer_sol:inc.size>0?Math.round((total/sorted.reduce((s,[,v])=>s+v.count,0))*10000)/10000:0,funding_sources_count:inc.size,funding_concentration:conc,wallet_age_days:wallet_age,first_seen,recycling_loop,split_init_pattern,top_funder:top?top[0]:null};
   } catch { return null; }
 }
 
@@ -121,11 +121,35 @@ async function processLine(line) {
       Promise.all([getFunding(creator), getOps(creator)]),
       new Promise((_,r)=>setTimeout(()=>r(new Error('t')),20000))
     ]).catch(()=>[null,{tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0}]);
-    return JSON.stringify({mint,liq_usd:liq,creator,behavior_profile:{structural:{wallet_age_days:funding?.wallet_age_days??0,funding_sources_count:funding?.funding_sources_count??0,funding_concentration:funding?.funding_concentration??0,first_seen:funding?.first_seen??null},behavioral:{transfer_count:funding?.transfer_count??0,avg_transfer_sol:funding?.avg_transfer_sol??0,total_incoming_sol:funding?.total_incoming_sol??0,recycling_loop:funding?.recycling_loop??false,split_init_pattern:funding?.split_init_pattern??false},operational:{tokens_created:ops.tokens_created,days_active:ops.days_active,total_signatures:ops.total_signatures,launch_frequency:ops.launch_frequency}}});
+    return JSON.stringify({mint,liq_usd:liq,creator,behavior_profile:{structural:{wallet_age_days:funding?.wallet_age_days??0,funding_sources_count:funding?.funding_sources_count??0,funding_concentration:funding?.funding_concentration??0,first_seen:funding?.first_seen??null,top_funder:funding?.top_funder??null},behavioral:{transfer_count:funding?.transfer_count??0,avg_transfer_sol:funding?.avg_transfer_sol??0,total_incoming_sol:funding?.total_incoming_sol??0,recycling_loop:funding?.recycling_loop??false,split_init_pattern:funding?.split_init_pattern??false},operational:{tokens_created:ops.tokens_created,days_active:ops.days_active,total_signatures:ops.total_signatures,launch_frequency:ops.launch_frequency}}});
+  } catch { return null; }
+}
+
+async function reenrichCreator(creator) {
+  try {
+    if (!creator || creator.length < 32) return null;
+    const [funding, ops] = await Promise.race([
+      Promise.all([getFunding(creator), getOps(creator)]),
+      new Promise((_,r)=>setTimeout(()=>r(new Error('t')),60000))
+    ]).catch(()=>[null,{tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false}]);
+    return JSON.stringify({mint:null,liq_usd:0,creator,behavior_profile:{structural:{wallet_age_days:funding?.wallet_age_days??0,funding_sources_count:funding?.funding_sources_count??0,funding_concentration:funding?.funding_concentration??0,first_seen:funding?.first_seen??null,top_funder:funding?.top_funder??null},behavioral:{transfer_count:funding?.transfer_count??0,avg_transfer_sol:funding?.avg_transfer_sol??0,total_incoming_sol:funding?.total_incoming_sol??0,recycling_loop:funding?.recycling_loop??false,split_init_pattern:funding?.split_init_pattern??false},operational:{tokens_created:ops.tokens_created,days_active:ops.days_active,total_signatures:ops.total_signatures,launch_frequency:ops.launch_frequency}}});
   } catch { return null; }
 }
 
 async function main() {
+  const REENRICH = process.env.REENRICH_FILE;
+  if (REENRICH) {
+    const addrs = fs.readFileSync(REENRICH,'utf8').trim().split('\n').map(s=>s.trim()).filter(Boolean);
+    let i=0, done=0, start=Date.now();
+    while(i<addrs.length) {
+      const batch=addrs.slice(i,i+CONCURRENCY);
+      const results=await Promise.all(batch.map(a=>reenrichCreator(a)));
+      for (const r of results) if(r) console.log(r);
+      i+=CONCURRENCY; done+=batch.length;
+      console.error(`Progress: ${done}/${addrs.length} in ${Math.round((Date.now()-start)/1000)}s`);
+    }
+    return;
+  }
   const tokens = fs.readFileSync('./tokens_clean.txt','utf8').trim().split('\n').filter(Boolean);
   let i=0, done=0, start=Date.now();
   while(i<tokens.length) {
