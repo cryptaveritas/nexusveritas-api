@@ -78,8 +78,8 @@ async function main() {
         INSERT INTO creators
           (address, first_seen, archetype, confidence, behavior,
            vector_v1, vector_v2,
-           tokens_created, days_active, total_signatures, updated_at)
-        VALUES ($1,$2,$3,$4,$5,$6::vector,$7::vector,$8,$9,$10,NOW())
+           tokens_created, days_active, total_signatures, matched_signals, baseline_risk, updated_at)
+        VALUES ($1,$2,$3,$4,$5,$6::vector,$7::vector,$8,$9,$10,$11,$12,NOW())
         ON CONFLICT (address) DO UPDATE SET
           archetype=EXCLUDED.archetype,
           confidence=EXCLUDED.confidence,
@@ -89,6 +89,8 @@ async function main() {
           tokens_created=EXCLUDED.tokens_created,
           days_active=EXCLUDED.days_active,
           total_signatures=EXCLUDED.total_signatures,
+          matched_signals=EXCLUDED.matched_signals,
+          baseline_risk=EXCLUDED.baseline_risk,
           updated_at=NOW(), vector_version='v2.1'`,
         [
           r.creator,
@@ -101,6 +103,8 @@ async function main() {
           bp.operational.tokens_created,
           bp.operational.days_active,
           bp.operational.total_signatures,
+          r.matched_signals,
+          r.baseline_risk,
         ]
       );
       const sim = v2.reduce((s,x,i)=>s+x*x,0);
