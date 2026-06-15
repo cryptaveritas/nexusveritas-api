@@ -22,7 +22,7 @@ function cos(a,b){let d=0,na=0,nb=0;for(let i=0;i<a.length;i++){d+=a[i]*b[i];na+
 
 (async()=>{
   const c=new Client({connectionString:process.env.DATABASE_URL});await c.connect();
-  const {rows}=await c.query("SELECT address,behavior FROM creators WHERE vector_version='v2.1'");await c.end();
+  const {rows}=await c.query("SELECT address,behavior FROM creators ");await c.end();
 
   // funder_degree map
   const fcount=new Map();
