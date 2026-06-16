@@ -113,7 +113,7 @@ async function getTokenAgeHours(mintAddress) {
     try {
         let oldestBlockTime = null;
         let lastSignature = undefined;
-        const MAX_BATCHES = 50;
+        const MAX_BATCHES = 10; // covers up to 10,000 tx
         for (let i = 0; i < MAX_BATCHES; i++) {
             const params = { limit: 1000 };
             if (lastSignature)
@@ -140,7 +140,7 @@ async function getCreatorAnalysis(mintAddress) {
     try {
         let lastSignature = undefined;
         let oldestSig = null;
-        const MAX_BATCHES = 50; // covers up to 50,000 tx -- enough for any memecoin
+        const MAX_BATCHES = 10; // covers up to 10,000 tx -- sufficient for pump.fun memecoins
         for (let i = 0; i < MAX_BATCHES; i++) {
             const params = { limit: 1000 };
             if (lastSignature)
@@ -165,7 +165,7 @@ async function getCreatorAnalysis(mintAddress) {
         const creatorAddress = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey;
         if (!creatorAddress)
             return { address: null, totalTokens: 0, reliable: false };
-        const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 1000 }]);
+        const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 50 }]);
         const totalTokens = creatorSigs ? Math.floor(creatorSigs.length / 4) : 0;
         return { address: creatorAddress, totalTokens, reliable: true };
     }
@@ -202,7 +202,8 @@ async function getLiquidityAnalysis(mintAddress) {
 }
 async function getWalletFunder(walletAddress) {
     try {
-        const sigs = await rpc('getSignaturesForAddress', [walletAddress, { limit: 1000 }]);
+        // Use limit=1 to only get oldest sig -- much faster than fetching 1000
+        const sigs = await rpc('getSignaturesForAddress', [walletAddress, { limit: 10 }]);
         if (!sigs || sigs.length === 0)
             return null;
         const oldestSig = sigs[sigs.length - 1].signature;
@@ -227,7 +228,7 @@ async function getInsiderNetworkAnalysis(topHolders, holderAmounts, totalSupply)
         if (topHolders.length < 3) {
             return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: false };
         }
-        const holdersToCheck = topHolders.slice(0, 8);
+        const holdersToCheck = topHolders.slice(0, 5); // balance: catches 3+ clusters, faster
         const funderPromises = holdersToCheck.map(h => getWalletFunder(h));
         const funders = await Promise.all(funderPromises);
         // Map funder → {count, indices}

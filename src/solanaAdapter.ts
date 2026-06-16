@@ -147,7 +147,7 @@ async function getTokenAgeHours(mintAddress: string): Promise<TokenAgeResult> {
   try {
     let oldestBlockTime: number | null = null;
     let lastSignature: string | undefined = undefined;
-    const MAX_BATCHES = 50;
+    const MAX_BATCHES = 10; // covers up to 10,000 tx
     for (let i = 0; i < MAX_BATCHES; i++) {
       const params: Record<string, unknown> = { limit: 1000 };
       if (lastSignature) params.before = lastSignature;
@@ -169,7 +169,7 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
   try {
     let lastSignature: string | undefined = undefined;
     let oldestSig: string | null = null;
-    const MAX_BATCHES = 50; // covers up to 50,000 tx -- enough for any memecoin
+    const MAX_BATCHES = 10; // covers up to 10,000 tx -- sufficient for pump.fun memecoins
     for (let i = 0; i < MAX_BATCHES; i++) {
       const params: Record<string, unknown> = { limit: 1000 };
       if (lastSignature) params.before = lastSignature;
@@ -188,7 +188,7 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
     const firstKey = tx.transaction.message.accountKeys[0];
     const creatorAddress = typeof firstKey === 'string' ? firstKey : firstKey?.pubkey;
     if (!creatorAddress) return { address: null, totalTokens: 0, reliable: false };
-    const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 1000 }]) as SignatureInfo[];
+    const creatorSigs = await rpc('getSignaturesForAddress', [creatorAddress, { limit: 50 }]) as SignatureInfo[];
     const totalTokens = creatorSigs ? Math.floor(creatorSigs.length / 4) : 0;
     return { address: creatorAddress, totalTokens, reliable: true };
   } catch { return { address: null, totalTokens: 0, reliable: false }; }
@@ -225,7 +225,8 @@ async function getLiquidityAnalysis(mintAddress: string): Promise<LiquidityAnaly
 
 async function getWalletFunder(walletAddress: string): Promise<string | null> {
   try {
-    const sigs = await rpc('getSignaturesForAddress', [walletAddress, { limit: 1000 }]) as SignatureInfo[];
+    // Use limit=1 to only get oldest sig -- much faster than fetching 1000
+    const sigs = await rpc('getSignaturesForAddress', [walletAddress, { limit: 10 }]) as SignatureInfo[];
     if (!sigs || sigs.length === 0) return null;
     const oldestSig = sigs[sigs.length - 1].signature;
     const tx = await rpc('getTransaction', [
@@ -250,7 +251,7 @@ async function getInsiderNetworkAnalysis(
       return { insiderNetworkDetected: false, clusterSize: 0, clusterType: null, topHolderCoverage: 0, fundingWallet: null, reliable: false };
     }
 
-    const holdersToCheck = topHolders.slice(0, 8);
+    const holdersToCheck = topHolders.slice(0, 5); // balance: catches 3+ clusters, faster
     const funderPromises = holdersToCheck.map(h => getWalletFunder(h));
     const funders = await Promise.all(funderPromises);
 
