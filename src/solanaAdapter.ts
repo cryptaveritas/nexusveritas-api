@@ -68,16 +68,28 @@ export interface TokenMeta {
 
 export interface TokenSnapshot { meta: TokenMeta; }
 
-async function rpc(method: string, params: unknown[]): Promise<unknown> {
+async function rpc(method: string, params: unknown[], retries = 3): Promise<unknown> {
   const options: RequestInit = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
   };
   if (agent) (options as Record<string, unknown>).agent = agent;
-  const res = await fetch(RPC_URL, options);
-  const data = await res.json() as { result: unknown };
-  return data.result;
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const res = await fetch(RPC_URL, options);
+      if (res.status === 429) {
+        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+        continue;
+      }
+      const data = await res.json() as { result: unknown };
+      return data.result;
+    } catch (e) {
+      if (attempt === retries - 1) throw e;
+      await new Promise(r => setTimeout(r, 500 * (attempt + 1)));
+    }
+  }
+  throw new Error('RPC failed after ' + retries + ' retries');
 }
 
 interface MintInfo {
@@ -135,7 +147,7 @@ async function getTokenAgeHours(mintAddress: string): Promise<TokenAgeResult> {
   try {
     let oldestBlockTime: number | null = null;
     let lastSignature: string | undefined = undefined;
-    const MAX_BATCHES = 3;
+    const MAX_BATCHES = 50;
     for (let i = 0; i < MAX_BATCHES; i++) {
       const params: Record<string, unknown> = { limit: 1000 };
       if (lastSignature) params.before = lastSignature;
@@ -157,14 +169,14 @@ async function getCreatorAnalysis(mintAddress: string): Promise<CreatorAnalysis>
   try {
     let lastSignature: string | undefined = undefined;
     let oldestSig: string | null = null;
-    const MAX_BATCHES = 3;
+    const MAX_BATCHES = 50; // covers up to 50,000 tx -- enough for any memecoin
     for (let i = 0; i < MAX_BATCHES; i++) {
       const params: Record<string, unknown> = { limit: 1000 };
       if (lastSignature) params.before = lastSignature;
       const sigs = await rpc('getSignaturesForAddress', [mintAddress, params]) as SignatureInfo[];
       if (!sigs || sigs.length === 0) break;
       oldestSig = sigs[sigs.length - 1].signature;
-      if (sigs.length < 1000) break;
+      if (sigs.length < 1000) break; // reached genesis batch
       lastSignature = oldestSig;
     }
     if (!oldestSig) return { address: null, totalTokens: 0, reliable: false };

@@ -53,7 +53,7 @@ const BURNER_SET = new Set(burnerRegistry.addresses.map(a => a.toLowerCase()));
 const servicesPath = path.join(__dirname, '../data/knownServices.json');
 const knownServices = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
 const KNOWN_SERVICES_SET = new Set(knownServices.addresses.map(a => a.toLowerCase()));
-async function rpc(method, params) {
+async function rpc(method, params, retries = 3) {
     const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -61,9 +61,23 @@ async function rpc(method, params) {
     };
     if (agent)
         options.agent = agent;
-    const res = await (0, node_fetch_1.default)(RPC_URL, options);
-    const data = await res.json();
-    return data.result;
+    for (let attempt = 0; attempt < retries; attempt++) {
+        try {
+            const res = await (0, node_fetch_1.default)(RPC_URL, options);
+            if (res.status === 429) {
+                await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                continue;
+            }
+            const data = await res.json();
+            return data.result;
+        }
+        catch (e) {
+            if (attempt === retries - 1)
+                throw e;
+            await new Promise(r => setTimeout(r, 500 * (attempt + 1)));
+        }
+    }
+    throw new Error('RPC failed after ' + retries + ' retries');
 }
 async function getHolderAnalysis(mintAddress, totalSupply) {
     try {
@@ -99,7 +113,7 @@ async function getTokenAgeHours(mintAddress) {
     try {
         let oldestBlockTime = null;
         let lastSignature = undefined;
-        const MAX_BATCHES = 3;
+        const MAX_BATCHES = 50;
         for (let i = 0; i < MAX_BATCHES; i++) {
             const params = { limit: 1000 };
             if (lastSignature)
@@ -126,7 +140,7 @@ async function getCreatorAnalysis(mintAddress) {
     try {
         let lastSignature = undefined;
         let oldestSig = null;
-        const MAX_BATCHES = 3;
+        const MAX_BATCHES = 50; // covers up to 50,000 tx -- enough for any memecoin
         for (let i = 0; i < MAX_BATCHES; i++) {
             const params = { limit: 1000 };
             if (lastSignature)
@@ -136,7 +150,7 @@ async function getCreatorAnalysis(mintAddress) {
                 break;
             oldestSig = sigs[sigs.length - 1].signature;
             if (sigs.length < 1000)
-                break;
+                break; // reached genesis batch
             lastSignature = oldestSig;
         }
         if (!oldestSig)
