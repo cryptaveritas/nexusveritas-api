@@ -32,7 +32,7 @@ async function getCreator(mint) {
   } catch { return null; }
 }
 
-async function getFunding(addr) {
+async function getFunding(addr, firstTokenTs) {
   try {
     const url = `https://api.helius.xyz/v0/addresses/${addr}/transactions?api-key=${HELIUS_KEY}&limit=50&type=TRANSFER`;
     const txs = await (await fetch(url,{agent})).json();
@@ -69,13 +69,14 @@ async function getFunding(addr) {
     const SPLIT_WINDOW_DAYS = 3;       // narrow window
     let split_init_pattern = false;
     if (inc.size >= SPLIT_MIN_SOURCES && incEvents.length >= SPLIT_MIN_SOURCES) {
-      const tsList = incEvents.map(e=>e.ts).sort((a,b)=>a-b);
-      const windowDays = (tsList[tsList.length-1] - tsList[0]) / 86400;
-      const avgSol = incEvents.reduce((s,e)=>s+e.sol,0) / incEvents.length;
-      const distinctSources = new Set(incEvents.map(e=>e.from)).size;
-      split_init_pattern = distinctSources >= SPLIT_MIN_SOURCES
-        && avgSol < SPLIT_MAX_AVG_SOL
-        && windowDays <= SPLIT_WINDOW_DAYS;
+      const relevantEvents = firstTokenTs
+        ? incEvents.filter(e => e.ts <= firstTokenTs && e.ts >= firstTokenTs - SPLIT_WINDOW_DAYS*86400)
+        : incEvents;
+      if (relevantEvents.length >= SPLIT_MIN_SOURCES) {
+        const distinctSources = new Set(relevantEvents.map(e=>e.from)).size;
+        const avgSol = relevantEvents.reduce((s,e)=>s+e.sol,0) / relevantEvents.length;
+        split_init_pattern = distinctSources >= SPLIT_MIN_SOURCES && avgSol < SPLIT_MAX_AVG_SOL;
+      }
     }
     const total=[...inc.values()].reduce((s,e)=>s+e.sol,0);
     const sorted=[...inc.entries()].sort((a,b)=>b[1].count-a[1].count);
@@ -106,7 +107,7 @@ async function getOps(addr) {
     const n=sigs[0].blockTime, o=sigs[sigs.length-1].blockTime;
     const days=n&&o?Math.round((n-o)/86400):0;
     const sigs_truncated = pages >= MAX_PAGES;  // упёрлись в потолок — флаг для honesty
-    return {tokens_created:Math.floor(sigs.length/4),days_active:days,total_signatures:sigs.length,launch_frequency:days>0?Math.round((Math.floor(sigs.length/4)/days)*10)/10:0,sigs_truncated};
+    return {tokens_created:Math.floor(sigs.length/4),days_active:days,total_signatures:sigs.length,launch_frequency:days>0?Math.round((Math.floor(sigs.length/4)/days)*10)/10:0,sigs_truncated,first_tx_ts:o??null};
   } catch { return {tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false}; }
 }
 
@@ -117,10 +118,14 @@ async function processLine(line) {
     if (!mint||mint.length<32) return null;
     const creator = await Promise.race([getCreator(mint), new Promise((_,r)=>setTimeout(()=>r(new Error('t')),15000))]).catch(()=>null);
     if (!creator) return null;
-    const [funding, ops] = await Promise.race([
-      Promise.all([getFunding(creator), getOps(creator)]),
+    const ops = await Promise.race([
+      getOps(creator),
+      new Promise((_,r)=>setTimeout(()=>r(new Error('t')),10000))
+    ]).catch(()=>({tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,first_tx_ts:null}));
+    const funding = await Promise.race([
+      getFunding(creator, ops.first_tx_ts),
       new Promise((_,r)=>setTimeout(()=>r(new Error('t')),20000))
-    ]).catch(()=>[null,{tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0}]);
+    ]).catch(()=>null);
     return JSON.stringify({mint,liq_usd:liq,creator,behavior_profile:{structural:{wallet_age_days:funding?.wallet_age_days??0,funding_sources_count:funding?.funding_sources_count??0,funding_concentration:funding?.funding_concentration??0,first_seen:funding?.first_seen??null,top_funder:funding?.top_funder??null},behavioral:{transfer_count:funding?.transfer_count??0,avg_transfer_sol:funding?.avg_transfer_sol??0,total_incoming_sol:funding?.total_incoming_sol??0,recycling_loop:funding?.recycling_loop??false,split_init_pattern:funding?.split_init_pattern??false},operational:{tokens_created:ops.tokens_created,days_active:ops.days_active,total_signatures:ops.total_signatures,launch_frequency:ops.launch_frequency}}});
   } catch { return null; }
 }
@@ -128,10 +133,14 @@ async function processLine(line) {
 async function reenrichCreator(creator) {
   try {
     if (!creator || creator.length < 32) return null;
-    const [funding, ops] = await Promise.race([
-      Promise.all([getFunding(creator), getOps(creator)]),
-      new Promise((_,r)=>setTimeout(()=>r(new Error('t')),60000))
-    ]).catch(()=>[null,{tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false}]);
+    const ops = await Promise.race([
+      getOps(creator),
+      new Promise((_,r)=>setTimeout(()=>r(new Error('t')),30000))
+    ]).catch(()=>({tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false,first_tx_ts:null}));
+    const funding = await Promise.race([
+      getFunding(creator, ops.first_tx_ts),
+      new Promise((_,r)=>setTimeout(()=>r(new Error('t')),30000))
+    ]).catch(()=>null);
     return JSON.stringify({mint:null,liq_usd:0,creator,behavior_profile:{structural:{wallet_age_days:funding?.wallet_age_days??0,funding_sources_count:funding?.funding_sources_count??0,funding_concentration:funding?.funding_concentration??0,first_seen:funding?.first_seen??null,top_funder:funding?.top_funder??null},behavioral:{transfer_count:funding?.transfer_count??0,avg_transfer_sol:funding?.avg_transfer_sol??0,total_incoming_sol:funding?.total_incoming_sol??0,recycling_loop:funding?.recycling_loop??false,split_init_pattern:funding?.split_init_pattern??false},operational:{tokens_created:ops.tokens_created,days_active:ops.days_active,total_signatures:ops.total_signatures,launch_frequency:ops.launch_frequency}}});
   } catch { return null; }
 }
