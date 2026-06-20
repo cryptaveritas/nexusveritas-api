@@ -55,6 +55,8 @@ export interface InsiderNetworkAnalysis {
 export interface TokenMeta {
   mintAuthorityEnabled: boolean;
   freezeAuthorityEnabled: boolean;
+  mintAuthorityAddress: string | null;
+  freezeAuthorityAddress: string | null;
   lpLockedOrBurned: boolean;
   topHoldersConcentration: number;
   tokenAgeHours: number;
@@ -340,6 +342,8 @@ export async function fetchUnifiedSnapshot(mintAddress: string): Promise<TokenSn
     meta: {
       mintAuthorityEnabled: parsed.mintAuthority !== null,
       freezeAuthorityEnabled: parsed.freezeAuthority !== null,
+      mintAuthorityAddress: parsed.mintAuthority,
+      freezeAuthorityAddress: parsed.freezeAuthority,
       lpLockedOrBurned: liquidity.lpBurned || liquidity.lpLocked,
       topHoldersConcentration: holderAnalysis.top10Percent,
       tokenAgeHours: ageResult.ageHours,

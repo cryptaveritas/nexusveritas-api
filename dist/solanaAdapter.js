@@ -304,6 +304,8 @@ async function fetchUnifiedSnapshot(mintAddress) {
         meta: {
             mintAuthorityEnabled: parsed.mintAuthority !== null,
             freezeAuthorityEnabled: parsed.freezeAuthority !== null,
+            mintAuthorityAddress: parsed.mintAuthority,
+            freezeAuthorityAddress: parsed.freezeAuthority,
             lpLockedOrBurned: liquidity.lpBurned || liquidity.lpLocked,
             topHoldersConcentration: holderAnalysis.top10Percent,
             tokenAgeHours: ageResult.ageHours,
