@@ -4,8 +4,17 @@ echo "=== END OF DAY: $DATE ==="
 
 # 1. Напоминание создать отчёт
 echo ""
-echo "✍️  Не забудь создать отчёт: docs/plan/$DATE.md"
-echo "    Что сделано? Что в прогрессе? Что завтра?"
+REPORT_FILE="docs/plan/$DATE.md"
+if [ ! -f "$REPORT_FILE" ]; then
+  echo "⚠️  Отчёт за сегодня не найден: $REPORT_FILE"
+  read -p "Продолжить без отчёта? (y/N) " confirm
+  if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ]; then
+    echo "Прервано. Создай $REPORT_FILE и запусти end_of_day.sh снова."
+    exit 1
+  fi
+else
+  echo "✅ Отчёт найден: $REPORT_FILE"
+fi
 echo ""
 
 # 2. Sync internal docs
