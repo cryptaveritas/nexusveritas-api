@@ -17,8 +17,9 @@ else
 fi
 echo ""
 
-# 2. Sync internal docs
-bash ~/Desktop/nexusveritas-api/sync_docs.sh
+# 2. Sync internal docs -- DISABLED 2026-06-20, see nexusveritas-internal/docs/00_INDEX.md
+# docs/plan/ is deprecated; nexusveritas-internal/docs/ is now the sole source of truth.
+# bash ~/Desktop/nexusveritas-api/sync_docs.sh
 
 # 2. Копировать на рабочий стол
 cp ~/Desktop/nexusveritas-api/docs/plan/*.md ~/Desktop/Nexus-Internal-Docs/ 2>/dev/null
