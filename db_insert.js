@@ -1,5 +1,11 @@
 
 const { Client } = require('pg');
+
+// Three-value logic helpers (DECISION_009) -- mirrors operator_classify.js
+// null/undefined = UNKNOWN, not false
+const isTrue = v => v === true;
+const isFalse = v => v === false;
+const isUnknown = v => v === null || v === undefined;
 const readline = require('readline');
 require('dotenv').config();
 
@@ -30,12 +36,12 @@ function toV2(bp) {
     Math.min(s.funding_sources_count / 10, 1.0),          // [0] sources count
     s.funding_concentration,                               // [1] concentration
     1 / (1 + b.avg_transfer_sol),                          // [2] small transfer score
-    b.split_init_pattern ? 1 : 0,                          // [3] split init
-    s.funding_sources_count === 0 ? 1 : 0,                 // [4] invisible funding
+    isTrue(b.split_init_pattern) ? 1 : 0,                  // [3] split init (null=UNKNOWN=0)
+    (!isUnknown(s.funding_sources_count) && s.funding_sources_count === 0) ? 1 : 0, // [4] invisible funding (null=UNKNOWN=0)
 
     // Activity Layer (5)
     Math.min(sigDensity / 100, 1.0),                       // [5] signature density
-    b.recycling_loop ? 1 : 0,                              // [6] recycling loop
+    isTrue(b.recycling_loop) ? 1 : 0,                      // [6] recycling loop (null=UNKNOWN=0)
     1 / (1 + s.wallet_age_days / 30),                      // [7] recency score
     sigDensity > 50 ? 1 : sigDensity / 50,                 // [8] high frequency
     o.total_signatures <= 20 ? 1 : 0,                      // [9] minimal activity
@@ -53,7 +59,7 @@ function toV2(bp) {
     Math.min(Math.max(initProx, 0), 1.0),                  // [15] init amount proximity
     b.total_incoming_sol <= 0.005 ? 1 : 0,                 // [16] micro funding
     (s.wallet_age_days <= 1 && o.tokens_created >= 100) ? 1 : 0, // [17] wallet rotation
-    (b.recycling_loop ? 0.5 : 0) + (b.split_init_pattern ? 0.5 : 0), // [18] automation score
+    (isTrue(b.recycling_loop) ? 0.5 : 0) + (isTrue(b.split_init_pattern) ? 0.5 : 0), // [18] automation score
     Math.max(0, 1 - s.wallet_age_days / 30),               // [19] fresh infrastructure
 
     // Structural Layer (5)
