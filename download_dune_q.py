@@ -10,7 +10,7 @@ OUTPUT = sys.argv[2]
 TOTAL = int(sys.argv[3]) if len(sys.argv) > 3 else 100000
 
 offset = 0
-limit = 100
+limit = 1000  # increased from 100 for faster download
 total = 0
 
 with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
