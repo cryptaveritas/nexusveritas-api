@@ -92,7 +92,7 @@ const ARCHETYPES = [
     class: 'HIGH_FREQ_LOW_CONTEXT',
     baseline_risk: 'elevated',
     rules: [
-      { signal: 'tokens_5_to_19',             check: p => p.operational.tokens_created >= 5 && p.operational.tokens_created < 20, weight: 0.50 },
+      { signal: 'tokens_5_plus_low_context',  check: p => p.operational.tokens_created >= 5, weight: 0.50 },
       { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0 && !isUnknown(p.structural.funding_sources_count), weight: 0.30 },
       { signal: 'fresh_or_short_active',      check: p => p.structural.wallet_age_days <= 14,                  weight: 0.20 },
     ],
