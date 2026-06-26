@@ -14,7 +14,7 @@ const ARCHETYPES = [
     class: 'WALLET_FACTORY_HUB',
     baseline_risk: 'elevated',
     rules: [
-      { signal: 'recycling_loop_true',        check: p => p.behavioral.recycling_loop,                         weight: 0.40 },
+      { signal: 'recycling_loop_true',        check: p => isTrue(p.behavioral.recycling_loop),                 weight: 0.40 },
       { signal: 'init_amount_0002',           check: p => p.behavioral.total_incoming_sol <= 0.005 && p.behavioral.total_incoming_sol > 0, weight: 0.25 },
       { signal: 'single_purpose_wallet',      check: p => p.operational.tokens_created <= 2 && p.operational.total_signatures < 20, weight: 0.20 },
       { signal: 'fresh_wallet',               check: p => p.structural.wallet_age_days <= 1,                   weight: 0.15 },
@@ -37,10 +37,10 @@ const ARCHETYPES = [
     class: 'ROTATION_OPERATOR',
     baseline_risk: 'high',
     rules: [
-      { signal: 'split_init_pattern',         check: p => p.behavioral.split_init_pattern,                     weight: 0.35 },
+      { signal: 'split_init_pattern',         check: p => isTrue(p.behavioral.split_init_pattern),             weight: 0.35 },
       { signal: 'fresh_wallet',               check: p => p.structural.wallet_age_days <= 1,                   weight: 0.25 },
       { signal: 'tokens_created_500_plus',    check: p => p.operational.tokens_created >= 500,                 weight: 0.25 },
-      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0,            weight: 0.15 },
+      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0 && !isUnknown(p.structural.funding_sources_count), weight: 0.15 },
     ],
     min_confidence: 0.35,
   },
@@ -50,8 +50,8 @@ const ARCHETYPES = [
     rules: [
       { signal: 'tokens_created_500_plus',    check: p => p.operational.tokens_created >= 500,                 weight: 0.35 },
       { signal: 'signatures_3000_plus',       check: p => p.operational.total_signatures >= 3000,              weight: 0.30 },
-      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0,            weight: 0.20 },
-      { signal: 'no_recycling_loop',          check: p => !p.behavioral.recycling_loop,                        weight: 0.15 },
+      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0 && !isUnknown(p.structural.funding_sources_count), weight: 0.20 },
+      { signal: 'no_recycling_loop',          check: p => isFalse(p.behavioral.recycling_loop),                weight: 0.15 },
     ],
     min_confidence: 0.50,
   },
@@ -93,7 +93,7 @@ const ARCHETYPES = [
     baseline_risk: 'elevated',
     rules: [
       { signal: 'tokens_5_to_19',             check: p => p.operational.tokens_created >= 5 && p.operational.tokens_created < 20, weight: 0.50 },
-      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0,            weight: 0.30 },
+      { signal: 'no_visible_funding',         check: p => p.structural.funding_sources_count === 0 && !isUnknown(p.structural.funding_sources_count), weight: 0.30 },
       { signal: 'fresh_or_short_active',      check: p => p.structural.wallet_age_days <= 14,                  weight: 0.20 },
     ],
     min_confidence: 0.50,
