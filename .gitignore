@@ -1,6 +1,24 @@
+# Dependencies
 node_modules/
+
+# Secrets
 .env
-docs/plan/
+.env.local
+
+# Data files (large, internal)
+pump_deployers*.csv
+pump_deployers*.json
+pump_Q*.csv
+existing_addresses.txt
+*.dump
+
+# Internal scripts (not for public)
+scripts/
 backups/
-pump_deployers.csv
-pump_deployers_test.json
+
+# Internal docs
+docs/plan/
+
+# Logs
+*.log
+/tmp/
