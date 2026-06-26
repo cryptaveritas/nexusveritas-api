@@ -1,6 +1,5 @@
 # NexusVeritas
-
-**Solana Behavioral Intelligence Platform**
+**Solana Operator Intelligence Platform**
 
 Most tools ask: *Is this token safe?*
 NexusVeritas asks: *Who is behind this token, and what is their behavioral history?*
@@ -9,52 +8,85 @@ NexusVeritas asks: *Who is behind this token, and what is their behavioral histo
 
 ## What It Does
 
-NexusVeritas profiles operators using behavioral fingerprinting.
+NexusVeritas profiles operators (deployers) using behavioral fingerprinting.
 
 Key insight (FINDING_003): Operator class and token risk are independent dimensions.
+Operators adapt — they change wallets, tokens, strategies.
+NexusVeritas tracks the operator, not the wallet.
 
 ---
 
-## Status v0.9.1 (June 2026)
+## Status v0.9.2 (June 2026)
 
-- 565 operator profiles
-- 8 archetypes
-- API live: GET /api/v2/scan/solana/:mint
-- pgvector similarity search
-- Parallel pipeline 5x speed
+- **347,000+** operator profiles
+- **10 behavioral archetypes**
+- API: `GET /api/v2/scan/solana/:mint`
+- pgvector similarity search (25-dimensional behavioral vectors)
+- signal_coverage + data_source_quality per operator
+- 46+ documented case studies
 
 ---
 
 ## Archetypes
 
-| Archetype | Description |
-|-----------|-------------|
-| INDUSTRIAL_DEPLOYER | 500+ tokens, no visible funding |
-| PROFESSIONAL_CREATOR | 20-500 tokens, sustained activity |
-| EXCHANGE_FUNDED_DEPLOYER | Industrial + verified exchange funding |
-| INFRASTRUCTURE_HUB | High SOL inflow, distribution node |
-| WALLET_FACTORY | Single-use wallets, 0.002 SOL init |
-| ROTATION_OPERATOR | Burst deployment, 0 days active |
-| CASUAL_CREATOR | <20 tokens, organic activity |
-| WALLET_FACTORY_HUB | Factory hub with recycling |
+| Archetype | Risk | Description |
+|---|---|---|
+| WALLET_FACTORY_HUB | elevated | Recycling loop, mass wallet creation hub |
+| WALLET_FACTORY | elevated | Single-use wallets, minimal init funding |
+| ROTATION_OPERATOR | high | Burst deployment, wallet rotation pattern |
+| EXCHANGE_FUNDED_DEPLOYER | high | CEX-funded, high-volume aggressive pattern |
+| INDUSTRIAL_DEPLOYER | neutral | 500+ tokens, automated cadence |
+| INFRASTRUCTURE_HUB | unknown | High SOL distribution node |
+| PROFESSIONAL_CREATOR | low_medium | 20+ tokens, 30+ days, verified funding |
+| HIGH_FREQ_LOW_CONTEXT | elevated | Active but insufficient behavioral context |
+| CASUAL_CREATOR | low | 2-4 tokens, organic activity |
+| NEW_CREATOR | low | First token, minimal history |
 
 ---
 
 ## API
-
 GET /api/v2/scan/solana/:mint
 
-Returns: score, reasons, isHardRefuse
+Response includes:
+- `score` (0-100), `risk_class` (LOW/MEDIUM/HIGH/CRITICAL)
+- `reasons` — explainable signals with severity
+- `deployer_profile` — archetype, confidence, data_source_quality
+- `signals` — mint/freeze authority, liquidity, whale concentration
+
+---
+
+## Data Quality
+
+Every operator profile includes:
+- `data_source_quality`: `full` | `partial` | `synthetic`
+- `signal_coverage`: 0.0–1.0
+
+Profiles from Helius RPC enrichment have full behavioral signals.
+Profiles from Dune Analytics backfill are marked synthetic.
 
 ---
 
 ## Research
 
-- FINDING_003: operator_class != token_risk
-- FINDING_005: INFRASTRUCTURE_HUB false positives
-- VALIDATION_001: 8/8 CLUSTER_001 confirmed WALLET_FACTORY
+- **FINDING_003:** operator_class ≠ token_risk
+- **FINDING_005:** INFRASTRUCTURE_HUB reclassification
+- **CLUSTER_001:** First confirmed coordinated wallet cluster
+- 46+ case studies in `docs/case-studies/`
 
-Full docs: docs/VISION_2026.md
+---
+
+## Architecture
+Token Address
+
+→ Helius RPC (on-chain metrics)
+
+→ GoPlus + RugCheck (contract signals)
+
+→ Operator lookup (347k behavioral profiles)
+
+→ Risk Engine v1 (deterministic scoring)
+
+→ API Response (score + explanation)
 
 ---
 
