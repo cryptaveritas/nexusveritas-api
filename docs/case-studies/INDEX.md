@@ -6,8 +6,8 @@ Real-world Solana token investigations using NexusVeritas behavioral risk engine
 
 | Metric | Count |
 |--------|-------|
-| Cases Analyzed | 43 |
-| Operators Identified | 7 |
+| Cases Analyzed | 46 |
+| Operators Identified | 10+ |
 | Recurring Operators | 1 |
 | Insider Networks Detected | 22+ |
 | Serial Deployers Found | 10+ |
