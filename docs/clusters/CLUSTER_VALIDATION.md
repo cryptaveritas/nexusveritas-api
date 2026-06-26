@@ -111,3 +111,48 @@ because tokens_created=2500 exceeds WALLET_FACTORY threshold.
 
 This highlights the need for cluster identity to be stable regardless of
 archetype changes. cluster_id (CL-003) remains valid even if archetype changes.
+
+---
+
+## CL-002 — VALIDATED (MEDIUM confidence)
+
+**Funder:** 3DDmb2kPULsq...
+**Wallets:** 8 | **Unique days:** 3
+
+**Distribution:**
+| Archetype | Count | tokens | days_active | first_seen |
+|---|---|---|---|---|
+| WALLET_FACTORY | 3 | 0-2 | 0-1 | 2026-06-08/10 |
+| NEW_CREATOR | 4 | 1 | 0-1 | 2026-06-09/10 |
+
+**Verdict: CONFIRMED -- Wallet Factory + First Launch Pattern**
+- WALLET_FACTORY wallets with 0 tokens = prepared wallets (not yet used)
+- NEW_CREATOR wallets = same operator's first token launches
+- All created within 3 days by same funder
+- Classic staged deployment: fund wallets -> prepare -> launch
+
+**Confidence: MEDIUM-HIGH**
+This is a multi-stage operator: preparation wallets + active launch wallets.
+
+---
+
+## CL-009 — VALIDATED (MEDIUM confidence)
+
+**Funder:** 33ccadALKuT8...
+**Wallets:** 6 | **Unique days:** 3
+
+**Distribution:**
+| Archetype | Count | tokens | days_active | first_seen |
+|---|---|---|---|---|
+| HIGH_FREQ_LOW_CONTEXT | 6 | 1195-2500 | 191-298 | 2026-06-09/11 |
+
+**Verdict: CONFIRMED -- Professional Multi-Wallet Operator**
+- 6 wallets, all HIGH_FREQ_LOW_CONTEXT with 191-298 days_active
+- All funded by same source over 3 days
+- tokens_created 1195-2500 (Dune cap -- real values likely higher)
+- days_active 191-298 = mature, professional operator
+- This is large-scale infrastructure: 6 active wallets running in parallel
+
+**Confidence: HIGH**
+Most consistent MEDIUM cluster found. Likely professional market maker or
+automated token launch infrastructure.
