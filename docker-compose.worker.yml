@@ -1,0 +1,15 @@
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: nexusveritas-worker
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - DUNE_API_KEY=l5ROLaqAlHZ3DBnxZ8yyEoOLLXogcx3C
+    volumes:
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
+    network_mode: host
+    restart: unless-stopped

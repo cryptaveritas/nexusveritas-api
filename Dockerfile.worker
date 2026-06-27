@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    psycopg2-binary \
+    requests \
+    python-dotenv \
+    pytest \
+    pytest-asyncio
+
+COPY scripts/ ./scripts/
+
+CMD ["tail", "-f", "/dev/null"]
