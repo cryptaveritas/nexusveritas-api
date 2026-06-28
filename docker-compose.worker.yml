@@ -11,5 +11,8 @@ services:
     volumes:
       - ./scripts:/app/scripts
       - ./.env:/app/.env
+      - ./operator_classify.js:/app/operator_classify.js
+      - ./db_insert.js:/app/db_insert.js
+      - ./node_modules:/app/node_modules
     network_mode: host
     restart: unless-stopped
