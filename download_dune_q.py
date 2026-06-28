@@ -10,7 +10,7 @@ OUTPUT = sys.argv[2]
 TOTAL = int(sys.argv[3]) if len(sys.argv) > 3 else 100000
 
 offset = 0
-limit = 1000  # increased from 100 for faster download
+limit = 100  # increased from 100 for faster download
 total = 0
 
 with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
@@ -20,7 +20,7 @@ with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
         url = f"https://api.dune.com/api/v1/execution/{EXECUTION_ID}/results?limit={limit}&offset={offset}"
         req = urllib.request.Request(url, headers={"x-dune-api-key": API_KEY})
         try:
-            with urllib.request.urlopen(req, timeout=20) as resp:
+            with urllib.request.urlopen(req, timeout=120) as resp:
                 data = json.loads(resp.read())
                 rows = data.get("result", {}).get("rows", [])
                 if not rows: break
