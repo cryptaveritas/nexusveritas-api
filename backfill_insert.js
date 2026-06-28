@@ -40,7 +40,7 @@ async function main() {
     const behavior_profile = {
       // DECISION_009: null = UNKNOWN (we have no data from Dune backfill)
       // false/0 would mean "we checked and it's absent" -- wrong for synthetic data
-      structural: { wallet_age_days: days_active, funding_sources_count: null, funding_concentration: null, first_seen: first_seen || null, top_funder: null },
+      structural: { wallet_age_days: days_active, funding_sources_count: null, funding_concentration: null, first_seen: first_seen || null, last_seen: last_seen || null, top_funder: null },
       behavioral: { transfer_count: null, avg_transfer_sol: null, total_incoming_sol: null, recycling_loop: null, split_init_pattern: null },
       operational: { tokens_created, days_active, total_signatures, launch_frequency: days_active > 0 ? tokens_created / days_active : 0 }
     };
