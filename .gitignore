@@ -21,3 +21,4 @@ backups/
 dist/
 __pycache__/
 *.pyc
+docs/plan
