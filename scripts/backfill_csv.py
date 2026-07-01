@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import csv, os, sys, psycopg2
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 CSV = sys.argv[1] if len(sys.argv) > 1 else 'pump_deployers.csv'
 conn = psycopg2.connect(os.environ['DATABASE_URL'])
