@@ -1,6 +1,6 @@
 ﻿"""
 enrich_operators.py -- Universal RPC Enrichment (TD-001)
-Usage: python scripts/enrich_operators.py --limit 100 --provider alchemy
+Usage: python scripts/pipeline/enrich_operators.py --limit 100 --provider alchemy
 
 Supported providers: helius, alchemy, custom
 Configure via .env:

@@ -13,13 +13,13 @@ Example:
   python pipeline/backfill.py data/raw/pump_2025_02.csv
 
 ## Step 3: Enrich operators
-docker exec nexusveritas-worker python -u scripts/enrich_operators.py --limit 5000 --provider alchemy
+docker exec nexusveritas-worker python -u scripts/pipeline/enrich_operators.py --limit 5000 --provider alchemy
 
 ## Step 4: Reclassify all
-docker exec nexusveritas-worker python -u scripts/reclassify_all.py
+docker exec nexusveritas-worker python -u scripts/pipeline/reclassify_all.py
 
 ## Step 5: Rebuild fingerprints
-docker exec nexusveritas-worker node scripts/build_fingerprints.js
+docker exec nexusveritas-worker node scripts/pipeline/build_fingerprints.js
 
 ## Notes
 - CSV files always go in data/raw/
