@@ -1,0 +1,32 @@
+#!/bin/bash
+# pre-commit hook: block commits containing internal-marked content
+# Prevents accidental leaks of internal-only docs into public repo
+
+BLOCKED_PATTERN='Status:\s*Internal only|CONFIDENTIAL|приватн|НЕ ПУБЛИКОВАТЬ|DO NOT PUBLISH'
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+FOUND=0
+for FILE in $STAGED_FILES; do
+  case "$FILE" in
+    scripts/hooks/pre-commit|.git/hooks/pre-commit) continue ;;
+  esac
+  if [ -f "$FILE" ]; then
+    MATCH=$(grep -lE "$BLOCKED_PATTERN" "$FILE" 2>/dev/null)
+    if [ -n "$MATCH" ]; then
+      echo "BLOCKED: $FILE contains an internal-only marker"
+      FOUND=1
+    fi
+  fi
+done
+
+if [ "$FOUND" -eq 1 ]; then
+  echo ""
+  echo "Commit blocked by pre-commit hook (security check)."
+  echo "This file appears to be marked as internal/confidential but is being"
+  echo "committed to a repository. If this is intentional, remove the marker"
+  echo "text or use 'git commit --no-verify' to bypass (NOT RECOMMENDED)."
+  exit 1
+fi
+
+exit 0
