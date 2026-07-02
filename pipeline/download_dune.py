@@ -10,7 +10,7 @@ OUTPUT = sys.argv[2]
 TOTAL = int(sys.argv[3]) if len(sys.argv) > 3 else 100000
 
 offset = 0
-limit = 100  # increased from 100 for faster download
+limit = 1000  # fixed 2026-07-02, was reverted to 100 during cleanup (TD regression), correct value confirmed via git log 35a57d6
 total = 0
 
 with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
