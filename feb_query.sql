@@ -1,0 +1,1 @@
+SELECT call_tx_signer as deployer, COUNT(*) as tokens_created, MIN(call_block_time) as first_seen, MAX(call_block_time) as last_seen FROM pumpdotfun_solana.pump_call_create WHERE call_block_time >= TIMESTAMP '2025-02-01' AND call_block_time < TIMESTAMP '2025-03-01' GROUP BY call_tx_signer ORDER BY tokens_created DESC
