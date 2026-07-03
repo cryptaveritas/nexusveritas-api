@@ -10,7 +10,7 @@ OUTPUT = sys.argv[2]
 TOTAL = int(sys.argv[3]) if len(sys.argv) > 3 else 100000
 
 offset = 0
-limit = 1000  # fixed 2026-07-02, was reverted to 100 during cleanup (TD regression), correct value confirmed via git log 35a57d6
+limit = 1000  # CONFIRMED STABLE 2026-07-02 -- tested 2000 twice (same 4m11s timeout both times) and 5000 once, all failed. 1000 is the safe ceiling (IDEA-026 resolved).
 total = 0
 
 with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
