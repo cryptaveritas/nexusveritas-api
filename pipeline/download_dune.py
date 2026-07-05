@@ -10,7 +10,7 @@ OUTPUT = sys.argv[2]
 TOTAL = int(sys.argv[3]) if len(sys.argv) > 3 else 100000
 
 offset = 0
-limit = 1000  # CONFIRMED STABLE 2026-07-02 -- tested 2000 twice (same 4m11s timeout both times) and 5000 once, all failed. 1000 is the safe ceiling (IDEA-026 resolved).
+limit = 150  # TESTED 2026-07-03 -- 200 timed out on actual download despite single-request test working, 150 as middle ground
 total = 0
 
 with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
@@ -20,7 +20,7 @@ with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
         url = f"https://api.dune.com/api/v1/execution/{EXECUTION_ID}/results?limit={limit}&offset={offset}"
         req = urllib.request.Request(url, headers={"x-dune-api-key": API_KEY})
         try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
+            with urllib.request.urlopen(req, timeout=300) as resp:
                 data = json.loads(resp.read())
                 rows = data.get("result", {}).get("rows", [])
                 if not rows: break

@@ -26,32 +26,43 @@ docker exec nexusveritas-worker node scripts/pipeline/build_fingerprints.js
 - Never run backfill_insert.js -- use pipeline/backfill.py instead (TD-042)
 - All steps are idempotent -- safe to re-run
 
+## Monthly Dune Query Process (UPDATED 2026-07-03)
 
-## Monthly Dune Query Process (IMPORTANT)
+### IMPORTANT: Dune API limitation discovered 2026-07-03
+Creating a NEW query via API (POST /v1/query) returns HTTP 402 Payment
+Required on our current Dune plan -- this endpoint requires a paid tier.
+A NEW query for each month MUST be created manually via the Dune web UI.
+Everything else (execute, check status, download results) works via API.
 
-We use a SINGLE Dune query_id (7837229) for all monthly deployer backfills.
-Each month, the SQL inside that same query is OVERWRITTEN via PATCH before
-executing -- we do NOT create a new query_id per month.
+### Correct process for each new month
+1. MANUAL (dune.com web UI): create a new query, one per month
+   SQL: SELECT call_tx_signer as deployer, COUNT(*) as tokens_created,
+   MIN(call_block_time) as first_seen, MAX(call_block_time) as last_seen
+   FROM pumpdotfun_solana.pump_call_create
+   WHERE call_block_time >= TIMESTAMP YYYY-MM-01
+   AND call_block_time < TIMESTAMP YYYY-(MM+1)-01
+   GROUP BY call_tx_signer ORDER BY tokens_created DESC
+   Name: NexusVeritas - pump.fun <Month> <Year>, Privacy: Private
+   Save + Run, note query_id from URL (dune.com/queries/query_id)
+2. API: get execution_id from the query results endpoint
+3. API: python pipeline/download_dune.py <execution_id> data/raw/pump_YYYY_MM.csv <row_count>
+4. API: python pipeline/backfill.py data/raw/pump_YYYY_MM.csv
 
-### Why
-- Saves Dune query quota/credits (one saved query, reused)
-- Simple to remember: always query_id=7837229
+### Deprecated approach (do NOT use)
+Earlier process (2026-07-02) reused a single query_id (7837229) via PATCH
+of query_sql before each execute. Abandoned 2026-07-03 after persistent
+timeouts on large-batch downloads for that query_id -- switching to a fresh
+query per month resolved the issue. Root cause not fully confirmed.
 
-### Consequence
-- The SQL text for a given query_id changes over time -- if you need to see
-  what SQL was used for a PAST month, check pipeline download logs or the CSV
-  filename/date, NOT the live Dune query (it now shows whatever month was
-  queried most recently)
-- Already-downloaded CSVs (data/raw/pump_YYYY_MM*.csv) are the permanent
-  record -- the Dune query itself is just a reusable execution mechanism
-
-### Process for each new month
-1. PATCH query_sql on query_id=7837229 with new date range:
-   WHERE call_block_time >= TIMESTAMP 'YYYY-MM-01' AND call_block_time < TIMESTAMP 'YYYY-MM+1-01'
-2. Execute the query, get execution_id
-3. Poll status until QUERY_STATE_COMPLETED
-4. python pipeline/download_dune.py <execution_id> data/raw/pump_YYYY_MM.csv <row_count>
-5. python pipeline/backfill.py data/raw/pump_YYYY_MM.csv
+### download_dune.py limit setting
+Tested 2026-07-02: limit=1000 confirmed stable for query_id 7837229 (Jan/Feb).
+Tested 2026-07-03: limit=1000 and even 500/200 timed out on March 2025 data
+(both the reused query and a fresh one) -- root cause unclear, possibly
+Dune-side instability that day. limit=100 worked. Currently set conservatively
+to limit=100 in download_dune.py. Re-test higher limits on future months once
+Dune API is confirmed stable -- do not assume any fixed value is always safe.
 
 ### History
-- 2026-07-02: query_sql updated from January 2025 range to February 2025 range
+- 2026-07-02: PATCH-based single query_id approach used for Jan/Feb 2025
+- 2026-07-03: switched to per-month fresh query (manual creation) after
+  PATCH-reuse query started timing out consistently on large batches
