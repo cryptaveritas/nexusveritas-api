@@ -1,0 +1,13 @@
+services:
+  mimo:
+    build: .
+    container_name: mimo-cli
+    volumes:
+      - .:/workspace
+      - mimo-cache:/home/developer/.mimocode
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+volumes:
+  mimo-cache:
