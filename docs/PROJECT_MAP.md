@@ -88,7 +88,7 @@ data/                   Registry files
   snapshots/            Daily pipeline snapshots
 
 pipeline scripts        Operator discovery automation
-  find_tokens.js        Collect tokens by liquidity
+  scripts/tools/find_tokens.js        Collect tokens by liquidity
   enrich_creators.js    Get creator per token
   find_hubs.js          L1+L2 funding hub analysis
   build_graph.js        Funding graph construction

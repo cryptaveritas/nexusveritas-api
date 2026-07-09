@@ -2,7 +2,7 @@ const fs = require('fs'), path = require('path');
 const f = path.join(process.env.HOME, 'Desktop/nexusveritas-api/enrich_creators.js');
 let c = fs.readFileSync(f, 'utf8');
 
-// 1. Добавить timeout на каждый токен
+// 1. Add timeout per token
 c = c.replace(
   'async function getFundingProfile(addr) {',
   `async function withTimeout(promise, ms=15000) {
@@ -12,7 +12,7 @@ c = c.replace(
 async function getFundingProfile(addr) {`
 );
 
-// 2. Добавить счётчик прогресса
+// 2. Add progress counter
 c = c.replace(
   'for await (const line of rl) {',
   `let _count = 0; let _start = Date.now();

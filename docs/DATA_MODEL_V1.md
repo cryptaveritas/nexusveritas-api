@@ -75,7 +75,7 @@ Cluster    → Network      (many-to-one)
 ## Pipeline
 
 ```
-find_tokens.js
+scripts/tools/find_tokens.js
   ↓
 enrich_creators.js      → behavior_profile
   ↓
@@ -83,7 +83,7 @@ operator_classify.js    → archetype + confidence
   ↓
 db_insert.js            → creators table + vector
   ↓
-find_similar.js         → CandidateMatch queue
+scripts/tools/find_similar.js         → CandidateMatch queue
   ↓
 Human review            → confirm/reject
   ↓

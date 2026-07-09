@@ -3,7 +3,7 @@
 const { Client } = require('pg');
 require('dotenv').config();
 
-// ---- КАНДИДАТ-ВЕКТОР: правим здесь, гоним, смотрим P50 ----
+// ---- CANDIDATE VECTOR: edit here, run, check P50 ----
 const { toV2 } = require('../../lib/vector');
 const { cos } = require('../../lib/math');
 const FLAG_W = 0.4;

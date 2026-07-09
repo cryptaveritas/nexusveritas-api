@@ -89,8 +89,8 @@ async function getFunding(addr, firstTokenTs) {
 
 async function getOps(addr) {
   try {
-    // cursor pagination — снимаем потолок 3000 sigs, разводим коллапс дублей
-    const MAX_PAGES = 10;       // до 10k сигнатур; гипер-активные упрутся честно, не в общую константу
+    // cursor pagination -- removes 3000 sig ceiling, eliminates duplicate collapse
+    const MAX_PAGES = 10;       // up to 10k signatures; hyperactive wallets hit this limit honestly
     const PAGE = 1000;
     let all = [], before = undefined, pages = 0;
     while (pages < MAX_PAGES) {
@@ -98,7 +98,7 @@ async function getOps(addr) {
       const page = await rpc('getSignaturesForAddress', params);
       if (!page?.length) break;
       all = all.concat(page);
-      if (page.length < PAGE) break;   // последняя страница
+      if (page.length < PAGE) break;   // last page
       before = page[page.length-1].signature;
       pages++;
     }
@@ -106,7 +106,7 @@ async function getOps(addr) {
     if (!sigs.length) return {tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false};
     const n=sigs[0].blockTime, o=sigs[sigs.length-1].blockTime;
     const days=n&&o?Math.round((n-o)/86400):0;
-    const sigs_truncated = pages >= MAX_PAGES;  // упёрлись в потолок — флаг для honesty
+    const sigs_truncated = pages >= MAX_PAGES;  // hit ceiling -- flag for honesty
     return {tokens_created:Math.floor(sigs.length/4),days_active:days,total_signatures:sigs.length,launch_frequency:days>0?Math.round((Math.floor(sigs.length/4)/days)*10)/10:0,sigs_truncated,first_tx_ts:o??null};
   } catch { return {tokens_created:0,days_active:0,total_signatures:0,launch_frequency:0,sigs_truncated:false}; }
 }
