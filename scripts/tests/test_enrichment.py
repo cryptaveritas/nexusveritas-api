@@ -47,7 +47,7 @@ class TestEnrichmentQuality:
 
     def test_helius_api_accessible(self):
         import requests
-        key = os.environ.get('HELIUS_API_KEY', 'db0f7949-5202-450b-a7b9-64f7803a4bea')
+        key = os.environ.get('HELIUS_API_KEY')
         resp = requests.post(f'https://mainnet.helius-rpc.com/?api-key={key}', json={'jsonrpc': '2.0', 'id': 1, 'method': 'getSlot', 'params': []}, timeout=10)
         assert resp.status_code == 200
         data = resp.json()
