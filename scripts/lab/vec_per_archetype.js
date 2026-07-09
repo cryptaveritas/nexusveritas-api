@@ -1,6 +1,5 @@
 const { Client } = require('pg');
 require('dotenv').config();
-const { /* reuse */ } = {};
 
 function toV(bp){const s=bp.structural,b=bp.behavioral,o=bp.operational;
   const sigDensity=o.total_signatures/Math.max(o.days_active,1);
