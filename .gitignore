@@ -22,3 +22,5 @@ dist/
 __pycache__/
 *.pyc
 docs/plan
+opencode.json
+.mimocode/
