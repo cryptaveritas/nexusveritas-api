@@ -30,16 +30,20 @@ def get_active_rpc(provider):
 
 def rpc(url, method, params, sleep):
     payload = {'jsonrpc': '2.0', 'id': 1, 'method': method, 'params': params}
-    try:
-        resp = requests.post(url, json=payload, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        if 'error' in data:
-            return None
-        return data.get('result')
-    except Exception as e:
-        print(f'  RPC error {method}: {e}')
-        return None
+    for attempt in range(3):
+        try:
+            resp = requests.post(url, json=payload, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+            if 'error' in data:
+                return None
+            return data.get('result')
+        except Exception as e:
+            wait = sleep * (2 ** attempt)
+            print(f'  RPC error {method} (attempt {attempt+1}/3): {e} -- retrying in {wait:.1f}s')
+            if attempt < 2:
+                time.sleep(wait)
+    return None
 
 def get_signatures(url, address, sleep, limit=50):
     result = rpc(url, 'getSignaturesForAddress', [address, {'limit': limit}], sleep)
@@ -128,7 +132,7 @@ def main():
     if args.archetype:
         query += ' AND archetype = %s'
         params.append(args.archetype)
-    query += ' ORDER BY tokens_created ASC LIMIT %s'
+    query += ' ORDER BY tokens_created ASC LIMIT %s FOR UPDATE SKIP LOCKED'
     params.append(args.limit)
     cur.execute(query, params)
     operators = cur.fetchall()
