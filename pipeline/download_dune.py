@@ -44,23 +44,4 @@ with open(OUTPUT, 'w', newline='', encoding='utf-8') as f:
 print(f"\nDone! {total} rows -> {OUTPUT}")
 
 
-def validate_csv(filepath):
-    """Validate CSV integrity after download."""
-    import csv as csv_mod
-    bad = good = 0
-    with open(filepath, encoding='utf-8') as f:
-        reader = csv_mod.DictReader(f)
-        for row in reader:
-            try:
-                int(row['tokens_created'])
-                good += 1
-            except (ValueError, KeyError):
-                bad += 1
-    if bad > 0:
-        print(f'WARNING: {bad} corrupted rows detected in {filepath}')
-        print(f'Good rows: {good}, Bad rows: {bad}')
-        print('File may have been corrupted during resume download.')
-        print('Re-download the file from scratch.')
-        return False
-    print(f'CSV valid: {good} rows OK')
-    return True
+
