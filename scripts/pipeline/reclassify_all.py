@@ -2,7 +2,7 @@ import subprocess, json, os, datetime
 import psycopg2
 from dotenv import load_dotenv
 
-load_dotenv('C:/Users/User/Desktop/nexusveritas-api/.env')
+load_dotenv()
 DB_URL = os.environ.get('DATABASE_URL')
 CLASSIFY_JS = '/app/operator_classify.js'
 BATCH_SIZE = 1000

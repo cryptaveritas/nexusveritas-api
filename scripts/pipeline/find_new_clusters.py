@@ -3,7 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 
-load_dotenv('C:/Users/User/Desktop/nexusveritas-api/.env')
+load_dotenv()
 conn = psycopg2.connect(os.environ.get('DATABASE_URL'))
 cur = conn.cursor()
 
