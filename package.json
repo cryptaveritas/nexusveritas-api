@@ -5,9 +5,18 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "https-proxy-agent": "^5.0.1",
     "node-fetch": "^2.7.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
     "pg": "^8.21.0"
   },
   "devDependencies": {
